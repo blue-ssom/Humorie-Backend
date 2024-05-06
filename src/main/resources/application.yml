@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: humorie
+
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    url: jdbc:postgresql://localhost:5432/humorie
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+
