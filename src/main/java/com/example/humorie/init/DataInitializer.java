@@ -52,7 +52,6 @@ public class DataInitializer implements CommandLineRunner {
                 .counselingCount(17)
                 .reviewCount(8)
                 .counselingFields(new HashSet<>(Arrays.asList(CounselingField.DIVORCE, CounselingField.FORENSIC_SCIENCE)))
-                //.specialties(new ArrayList<>(Arrays.asList(Symptom.우울, Symptom.불안, Symptom.화병)))
                 .specialties(new ArrayList<>(Arrays.asList(Symptom.우울, Symptom.불안, Symptom.화병)))
                 .build();
 
@@ -62,7 +61,6 @@ public class DataInitializer implements CommandLineRunner {
                 .counselingCount(30)
                 .reviewCount(19)
                 .counselingFields(new HashSet<>(Arrays.asList(CounselingField.FAMILY)))
-                //.specialties(new ArrayList<>(Arrays.asList(Symptom.스트레스, Symptom.충동)))
                 .specialties(new ArrayList<>(Arrays.asList(Symptom.스트레스, Symptom.충동)))
                 .build();
 
@@ -71,7 +69,6 @@ public class DataInitializer implements CommandLineRunner {
                 .rating(4.5)
                 .counselingCount(22)
                 .counselingFields(new HashSet<>(Arrays.asList(CounselingField.DIVORCE, CounselingField.MARRIAGE, CounselingField.FAMILY)))
-                //.specialties(new ArrayList<>(Arrays.asList(Symptom.신체화, Symptom.불안, Symptom.스트레스)))
                 .specialties(new ArrayList<>(Arrays.asList(Symptom.신체화, Symptom.불안, Symptom.스트레스)))
                 .build();
 
