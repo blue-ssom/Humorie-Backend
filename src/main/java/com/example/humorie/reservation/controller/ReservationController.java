@@ -1,6 +1,7 @@
 package com.example.humorie.reservation.controller;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
+import com.example.humorie.reservation.dto.ReservationDto;
 import com.example.humorie.reservation.dto.request.CreateReservationReq;
 import com.example.humorie.reservation.entity.Reservation;
 import com.example.humorie.reservation.service.ReservationService;
@@ -8,14 +9,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,9 +30,11 @@ public class ReservationController {
         return reservationService.createReservation(principal, createReservationReq);
     }
 
-//    public ResponseEntity<List<Reservation>> getReservations(@AuthenticationPrincipal UserDetails user){
-//
-//    }
+    @Operation(summary = "상담 예약 조회")
+    @GetMapping("")
+    public ResponseEntity<List<ReservationDto>> getReservations(@AuthenticationPrincipal PrincipalDetails principal){
+        return reservationService.getReservations(principal);
+    }
 
 
 }
