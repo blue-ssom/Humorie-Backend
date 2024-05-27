@@ -2,10 +2,7 @@ package com.example.humorie.consultant.counselor.entity;
 
 import com.example.humorie.consultant.review.entity.Review;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Counselor {
 
     @Id
@@ -34,6 +32,10 @@ public class Counselor {
     @Column(name = "counseling_field")
     @Enumerated(EnumType.STRING)
     private Set<CounselingField> counselingFields;
+
+    @ElementCollection(targetClass = Symptom.class)
+    @Enumerated(EnumType.STRING)
+    private List<Symptom> specialties;
 
 
     @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL)
