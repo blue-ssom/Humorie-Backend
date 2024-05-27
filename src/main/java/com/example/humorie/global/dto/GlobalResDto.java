@@ -1,4 +1,4 @@
-package com.example.humorie.account.dto.response;
+package com.example.humorie.global.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
