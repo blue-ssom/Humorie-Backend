@@ -36,5 +36,4 @@ public class ReservationController {
         return reservationService.getReservations(principal);
     }
 
-
 }

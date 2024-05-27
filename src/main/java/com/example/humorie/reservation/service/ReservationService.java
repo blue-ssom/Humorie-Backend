@@ -7,17 +7,13 @@ import com.example.humorie.reservation.dto.ReservationDto;
 import com.example.humorie.reservation.dto.request.CreateReservationReq;
 import com.example.humorie.reservation.entity.Reservation;
 import com.example.humorie.reservation.repository.ReservationRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +26,9 @@ public class ReservationService {
         Counselor counselor = counselorRepository.findById(createReservationReq.getCounselorId())
                 .orElseThrow(() -> new RuntimeException("Counselor Not Found"));
 
+        if(principal == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         Reservation reservation = Reservation.builder()
                 .account(principal.getAccountDetail())
@@ -43,18 +42,22 @@ public class ReservationService {
     }
 
     public ResponseEntity<List<ReservationDto>> getReservations(PrincipalDetails principal) {
+        if (principal == null)
+            return ResponseEntity.badRequest().build();
+
         List<Reservation> reservations = reservationRepository.findAllByAccountEmailOrderByCreatedAtDesc(principal.getUsername());
-        List<ReservationDto> reservationDtos = new ArrayList<>();
+        List<ReservationDto> reservationDtos = reservations.stream()
+                .map(reservation -> new ReservationDto(
+                        reservation.getId(),
+                        reservation.getCounselor(),
+                        reservation.getCounselDate(),
+                        reservation.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
 
-        for(Reservation reservation : reservations) {
-            ReservationDto reservationDto = new ReservationDto(reservation.getId(),
-                    reservation.getCounselor(),
-                    reservation.getCounselDate(),
-                    reservation.getCreatedAt());
-
-            reservationDtos.add(reservationDto);
-        }
         return ResponseEntity.ok(reservationDtos);
     }
 
 }
+
+
