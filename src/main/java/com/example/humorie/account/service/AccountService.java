@@ -36,19 +36,6 @@ public class AccountService {
     private final SecurityConfig jwtSecurityConfig;
     private final RedisTemplate redisTemplate;
 
-    public String checkPhoneNumberDuplicate(String phoneNumber) {
-        Optional<AccountDetail> optionalAccountDetail = accountRepository.findByPhoneNumber(phoneNumber);
-
-        if (optionalAccountDetail.isPresent()) {
-            AccountDetail accountDetail = optionalAccountDetail.get();
-            if (accountDetail.getLoginType().equals(LoginType.JWT)) {
-                return "An account registered with normal login exists";
-            }
-        }
-
-        return "No duplicate data found";
-    }
-
     @Transactional
     public ResponseEntity<String> join(JoinReq request) {
         validationService.validateEmail(request.getEmail());
@@ -57,11 +44,6 @@ public class AccountService {
 
         if (!request.getPassword().equals(request.getPasswordCheck())) {
             throw new RuntimeException("Passwords do not match");
-        }
-
-        String existingPhone = checkPhoneNumberDuplicate(request.getPhoneNumber());
-        if (!"No duplicate data found".equals(existingPhone)) {
-            throw new RuntimeException(existingPhone);
         }
 
         if (accountRepository.existsByAccountName(request.getAccountName())) {
