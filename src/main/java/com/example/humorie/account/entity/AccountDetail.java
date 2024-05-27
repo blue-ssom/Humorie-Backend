@@ -29,7 +29,7 @@ public class AccountDetail {
 
     private String name;
 
-    private String phoneNumber;
+    //private String phoneNumber;
 
     private LocalDate joinDate;
 
@@ -41,12 +41,13 @@ public class AccountDetail {
     @Column(nullable = false)
     private AccountRole role;
 
-    public static AccountDetail joinAccount(String email, String encodedPassword, String accountName, String phoneNumber, String name) {
+    public static AccountDetail joinAccount(String email, String encodedPassword, String accountName, String name) {
         AccountDetail accountDetail = new AccountDetail();
         accountDetail.email = email;
         accountDetail.password = encodedPassword;
         accountDetail.accountName = accountName;
-        accountDetail.phoneNumber = phoneNumber;
+        //accountDetail.phoneNumber = phoneNumber;
+        accountDetail.name = name;
         accountDetail.role = AccountRole.USER;
         accountDetail.loginType = LoginType.JWT;
         accountDetail.joinDate = LocalDate.now();

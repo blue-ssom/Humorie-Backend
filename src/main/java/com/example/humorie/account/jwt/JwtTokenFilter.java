@@ -1,6 +1,6 @@
 package com.example.humorie.account.jwt;
 
-import com.example.humorie.account.dto.response.GlobalResDto;
+import com.example.humorie.global.dto.GlobalResDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

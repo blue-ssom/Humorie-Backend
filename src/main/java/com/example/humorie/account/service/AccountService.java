@@ -42,28 +42,33 @@ public class AccountService {
         if (optionalAccountDetail.isPresent()) {
             AccountDetail accountDetail = optionalAccountDetail.get();
             if (accountDetail.getLoginType().equals(LoginType.JWT)) {
-                return "일반 로그인으로 가입된 계정이 존재합니다.";
+                return "An account registered with normal login exists";
             }
         }
 
-        return "중복된 데이터가 없습니다.";
+        return "No duplicate data found";
     }
 
     @Transactional
     public ResponseEntity<String> join(JoinReq request) {
         validationService.validateEmail(request.getEmail());
+        validationService.validateAccountName(request.getAccountName());
         validationService.validatePassword(request.getPassword());
 
         if (!request.getPassword().equals(request.getPasswordCheck())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new RuntimeException("Passwords do not match");
         }
 
         String existingPhone = checkPhoneNumberDuplicate(request.getPhoneNumber());
-        if (!"중복된 데이터가 없습니다.".equals(existingPhone)) {
+        if (!"No duplicate data found".equals(existingPhone)) {
             throw new RuntimeException(existingPhone);
         }
 
-        AccountDetail accountDetail = AccountDetail.joinAccount(request.getEmail(), jwtSecurityConfig.passwordEncoder().encode(request.getPassword()), request.getAccountName(), request.getPhoneNumber(), request.getName());
+        if (accountRepository.existsByAccountName(request.getAccountName())) {
+            throw new RuntimeException("The username already exists");
+        }
+
+        AccountDetail accountDetail = AccountDetail.joinAccount(request.getEmail(), jwtSecurityConfig.passwordEncoder().encode(request.getPassword()), request.getAccountName(), request.getName());
         accountRepository.save(accountDetail);
 
         return ResponseEntity.ok("Success Join");
@@ -130,6 +135,15 @@ public class AccountService {
                 .refreshToken(refreshToken)
                 .refreshTokenExpirationTime(refreshTokenExpirationTime)
                 .build();
+    }
+
+    public String findAccountNameByEmail(String email) {
+        Optional<AccountDetail> accountDetail = accountRepository.findByEmail(email);
+        if (accountDetail.isPresent()) {
+            return accountDetail.get().getAccountName();
+        } else {
+            throw new RuntimeException("Account not found with email: " + email);
+        }
     }
 
 }
