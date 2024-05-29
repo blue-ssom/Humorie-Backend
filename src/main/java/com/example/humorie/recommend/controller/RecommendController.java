@@ -29,4 +29,9 @@ public class RecommendController {
         return ResponseEntity.status(HttpStatus.OK).body(recommendService.recommendCounselor(principal));
     }
 
+    @GetMapping("/review")
+    public ResponseEntity<List<RecommendReviewDto>> recommendReview(@AuthenticationPrincipal PrincipalDetails principal) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(recommendService.recommendReview(principal));
+    }
 }
