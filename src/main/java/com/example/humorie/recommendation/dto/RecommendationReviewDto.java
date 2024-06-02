@@ -1,14 +1,11 @@
-package com.example.humorie.recommend.dto;
+package com.example.humorie.recommendation.dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class RecommendReviewDto {
+public class RecommendationReviewDto {
 
     private final long id;
 
@@ -24,7 +21,7 @@ public class RecommendReviewDto {
 
     private final double recommendationRating;
 
-    public RecommendReviewDto(long id, String content, double rating, int recommendationCount, LocalDateTime createdAt, String accountName, double recommendationRating) {
+    public RecommendationReviewDto(long id, String content, double rating, int recommendationCount, LocalDateTime createdAt, String accountName, double recommendationRating) {
         this.id = id;
         this.content = content;
         this.rating = rating;

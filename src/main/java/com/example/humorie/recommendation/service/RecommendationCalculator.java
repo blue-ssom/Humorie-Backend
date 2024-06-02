@@ -1,4 +1,4 @@
-package com.example.humorie.recommend.service;
+package com.example.humorie.recommendation.service;
 
 import com.example.humorie.counselor.entity.CounselingField;
 import com.example.humorie.counselor.entity.Counselor;
@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class RecommendCalculator {
+public class RecommendationCalculator {
 
     private final Double RECOMMENDATION_RATING_BY_REVIEW_COUNT = 0.02; // 리뷰 수에 따른 추천도
     private final Double RECOMMENDATION_RATING_BY_COUNSELING_COUNT = 0.01; // 상담 수에 따른 추천도
