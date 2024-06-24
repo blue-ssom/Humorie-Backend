@@ -7,7 +7,7 @@ spring:
       maximum-pool-size: 4
     url: jdbc:postgresql://localhost:5432/humorie
     username: postgres
-    password: root
+    password: password
     driver-class-name: org.postgresql.Driver
 
 

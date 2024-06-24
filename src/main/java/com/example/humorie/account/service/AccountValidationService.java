@@ -33,5 +33,15 @@ public class AccountValidationService {
         }
     }
 
+    public void validateAccountName(String accountName) {
+        String accountNameRegex = "^[a-z0-9]{6,}$";
+        Pattern accountNamePatter = Pattern.compile(accountNameRegex);
+        Matcher accountNameMatcher = accountNamePatter.matcher(accountName);
+
+        if(!accountNameMatcher.matches()) {
+            throw  new RuntimeException("The accountName format is incorrect");
+        }
+    }
+
 
 }

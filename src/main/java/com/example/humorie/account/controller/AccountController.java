@@ -1,5 +1,6 @@
 package com.example.humorie.account.controller;
 
+import com.example.humorie.account.dto.request.AccountNameFinder;
 import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.request.JoinReq;
 import com.example.humorie.account.dto.request.LoginReq;
@@ -31,7 +32,6 @@ public class AccountController {
     @PostMapping("/join")
     @Operation(summary = "일반 로그인 회원가입")
     public ResponseEntity<String> join(@RequestBody JoinReq request) throws IOException {
-
         return accountService.join(request);
     }
 
@@ -40,13 +40,6 @@ public class AccountController {
     public ResponseEntity<LoginRes> login(@RequestBody @Valid LoginReq request, HttpServletResponse response) {
         return accountService.login(request, response);
     }
-
-    /*@DeleteMapping("/logout")
-    @Operation(summary = "로그아웃")
-    public ResponseEntity<String> logout(@RequestHeader(name = JwtTokenUtil.ACCESS_TOKEN) String accessToken,
-                                         @RequestHeader(name = JwtTokenUtil.REFRESH_TOKEN) String refreshToken) {
-        return accountService.logout(accessToken, refreshToken);
-    }*/
 
     @DeleteMapping("/logout")
     @Operation(summary = "로그아웃")
@@ -73,5 +66,13 @@ public class AccountController {
 
         return new ResponseEntity<>(newTokenDto, HttpStatus.OK);
     }
+
+    @PostMapping("/find-userId")
+    @Operation(summary = "아이디 찾기")
+    public ResponseEntity<String> findAccountNameByEmail(@RequestBody AccountNameFinder finder) {
+        return ResponseEntity.ok(accountService.findAccountNameByEmail(finder.getEmail()));
+    }
+
+
 
 }
