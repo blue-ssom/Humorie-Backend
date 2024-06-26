@@ -1,7 +1,7 @@
 package com.example.humorie.reservation.dto;
 
-import com.example.humorie.counselor.entity.Counselor;
-import com.example.humorie.reservation.entity.Reservation;
+
+import com.example.humorie.consultant.counselor.entity.Counselor;
 import lombok.Builder;
 import lombok.Getter;
 

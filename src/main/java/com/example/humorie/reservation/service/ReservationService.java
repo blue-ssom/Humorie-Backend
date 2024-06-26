@@ -1,8 +1,8 @@
 package com.example.humorie.reservation.service;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
-import com.example.humorie.counselor.entity.Counselor;
-import com.example.humorie.counselor.repository.CounselorRepository;
+import com.example.humorie.consultant.counselor.entity.Counselor;
+import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.reservation.dto.ReservationDto;
 import com.example.humorie.reservation.dto.request.CreateReservationReq;
 import com.example.humorie.reservation.entity.Reservation;

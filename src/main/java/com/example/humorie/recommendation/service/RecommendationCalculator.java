@@ -1,9 +1,10 @@
 package com.example.humorie.recommendation.service;
 
-import com.example.humorie.counselor.entity.CounselingField;
-import com.example.humorie.counselor.entity.Counselor;
+
+import com.example.humorie.consultant.counselor.entity.CounselingField;
+import com.example.humorie.consultant.counselor.entity.Counselor;
+import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.reservation.entity.Reservation;
-import com.example.humorie.review.entity.Review;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
