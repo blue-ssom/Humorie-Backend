@@ -1,7 +1,7 @@
 package com.example.humorie.reservation.entity;
 
 import com.example.humorie.account.entity.AccountDetail;
-import com.example.humorie.counselor.entity.Counselor;
+import com.example.humorie.consultant.counselor.entity.Counselor;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -1,14 +1,15 @@
 package com.example.humorie.recommendation.service;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
-import com.example.humorie.counselor.entity.Counselor;
-import com.example.humorie.counselor.repository.CounselorRepository;
+
+import com.example.humorie.consultant.counselor.entity.Counselor;
+import com.example.humorie.consultant.counselor.repository.CounselorRepository;
+import com.example.humorie.consultant.review.entity.Review;
+import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.recommendation.dto.RecommendationCounselorDto;
 import com.example.humorie.recommendation.dto.RecommendationReviewDto;
 import com.example.humorie.reservation.entity.Reservation;
 import com.example.humorie.reservation.repository.ReservationRepository;
-import com.example.humorie.review.entity.Review;
-import com.example.humorie.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +57,6 @@ public class RecommendationService {
         return counselors.stream()
                 .map(counselor -> new RecommendationCounselorDto(counselor.getId(),
                         counselor.getName(),
-                        counselor.getQualification(),
                         counselor.getCounselingFields(),
                         counselor.getRating(),
                         counselor.getReviewCount(),
@@ -69,7 +69,6 @@ public class RecommendationService {
         return counselors.stream()
                 .map(counselor -> new RecommendationCounselorDto(counselor.getId(),
                         counselor.getName(),
-                        counselor.getQualification(),
                         counselor.getCounselingFields(),
                         counselor.getRating(),
                         counselor.getReviewCount(),
