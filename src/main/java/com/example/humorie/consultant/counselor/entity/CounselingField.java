@@ -1,8 +1,25 @@
 package com.example.humorie.consultant.counselor.entity;
 
-public enum CounselingField {
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    //결혼, 이혼, 가정, 법의학
-    MARRIAGE, DIVORCE, FAMILY, FORENSIC_SCIENCE
+@Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CounselingField {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String field;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Counselor counselor;
 
 }
