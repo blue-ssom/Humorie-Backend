@@ -1,12 +1,13 @@
-package com.example.humorie.init;
+package com.example.humorie.global.init;
 
 import com.example.humorie.account.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.repository.AccountRepository;
-import com.example.humorie.consultant.counselor.entity.CounselingField;
-import com.example.humorie.consultant.counselor.entity.Counselor;
-import com.example.humorie.consultant.counselor.entity.Symptom;
+import com.example.humorie.consultant.counselor.entity.*;
+import com.example.humorie.consultant.counselor.repository.CounselingFieldRepository;
+import com.example.humorie.consultant.counselor.repository.CounselingMethodRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
+import com.example.humorie.consultant.counselor.repository.SymptomRepository;
 import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
@@ -25,6 +26,9 @@ public class DataInitializer implements CommandLineRunner {
 
     private final AccountRepository accountRepository;
     private final CounselorRepository counselorRepository;
+    private final CounselingMethodRepository methodRepository;
+    private final CounselingFieldRepository fieldRepository;
+    private final SymptomRepository symptomRepository;
     private final ReviewRepository reviewRepository;
     private final SecurityConfig securityConfig;
 
@@ -46,31 +50,56 @@ public class DataInitializer implements CommandLineRunner {
                         "test234",
                         "김여름")));
 
-        Counselor counselor1 = Counselor.builder().
-                name("김가을")
+        Counselor counselor1 = Counselor.builder()
+                .name("김가을")
+                .phoneNumber("01000000000")
+                .email("rkdmf@naver.com")
+                .gender("여성")
+                .region("서울시 강남구")
                 .rating(4.8)
                 .counselingCount(17)
                 .reviewCount(8)
-                .counselingFields(new HashSet<>(Arrays.asList(CounselingField.DIVORCE, CounselingField.FORENSIC_SCIENCE)))
-                .specialties(new ArrayList<>(Arrays.asList(Symptom.우울, Symptom.불안, Symptom.화병)))
                 .build();
 
         Counselor counselor2 = Counselor.builder()
                 .name("김겨울")
+                .phoneNumber("01011111111")
+                .email("rudnf@naver.com")
+                .gender("남성")
+                .region("서울시 강남구")
                 .rating(4.1)
                 .counselingCount(30)
                 .reviewCount(19)
-                .counselingFields(new HashSet<>(Arrays.asList(CounselingField.FAMILY)))
-                .specialties(new ArrayList<>(Arrays.asList(Symptom.스트레스, Symptom.충동)))
                 .build();
 
         Counselor counselor3 = Counselor.builder()
                 .name("이우정")
+                .phoneNumber("01022222222")
+                .email("dnwjd@naver.com")
+                .gender("여성")
+                .region("서울시 강남구")
                 .rating(4.5)
                 .counselingCount(22)
-                .counselingFields(new HashSet<>(Arrays.asList(CounselingField.DIVORCE, CounselingField.MARRIAGE, CounselingField.FAMILY)))
-                .specialties(new ArrayList<>(Arrays.asList(Symptom.신체화, Symptom.불안, Symptom.스트레스)))
                 .build();
+
+        CounselingMethod method1 = CounselingMethod.builder().method("online").counselor(counselor1).build();
+        CounselingMethod method2 = CounselingMethod.builder().method("offline").counselor(counselor1).build();
+        CounselingMethod method3 = CounselingMethod.builder().method("online").counselor(counselor2).build();
+        CounselingMethod method4 = CounselingMethod.builder().method("offline").counselor(counselor3).build();
+
+        CounselingField field1 = CounselingField.builder().field("청소년").counselor(counselor1).build();
+        CounselingField field2 = CounselingField.builder().field("개인").counselor(counselor1).build();
+        CounselingField field3 = CounselingField.builder().field("청소년").counselor(counselor2).build();
+        CounselingField field4 = CounselingField.builder().field("집단").counselor(counselor2).build();
+        CounselingField field5 = CounselingField.builder().field("중독").counselor(counselor2).build();
+        CounselingField field6 = CounselingField.builder().field("청소년").counselor(counselor3).build();
+
+        Symptom symptom1 = Symptom.builder().symptom("우울").counselor(counselor1).build();
+        Symptom symptom2 = Symptom.builder().symptom("대인관계").counselor(counselor1).build();
+        Symptom symptom3 = Symptom.builder().symptom("우울").counselor(counselor2).build();
+        Symptom symptom4 = Symptom.builder().symptom("자살").counselor(counselor2).build();
+        Symptom symptom5 = Symptom.builder().symptom("사회부적응").counselor(counselor2).build();
+        Symptom symptom6 = Symptom.builder().symptom("우울").counselor(counselor3).build();
 
 
         Review review1 = Review.builder().content("좋아요").rating(4.7).recommendationCount(30).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor1).build();
@@ -80,6 +109,9 @@ public class DataInitializer implements CommandLineRunner {
 
 
         counselorRepository.saveAll(Arrays.asList(counselor1, counselor2, counselor3));
+        methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4));
+        fieldRepository.saveAll(Arrays.asList(field1, field2, field3, field4, field5, field6));
+        symptomRepository.saveAll(Arrays.asList(symptom1, symptom2, symptom3, symptom4, symptom5, symptom6));
         reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4));
 
     }
