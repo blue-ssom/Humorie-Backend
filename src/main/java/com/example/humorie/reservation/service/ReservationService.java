@@ -5,6 +5,8 @@ import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.reservation.dto.ReservationDto;
 import com.example.humorie.reservation.dto.request.CreateReservationReq;
+import com.example.humorie.reservation.dto.response.AvailableReservationDatesResDto;
+import com.example.humorie.reservation.dto.response.AvailableReservationTimesResDto;
 import com.example.humorie.reservation.entity.Reservation;
 import com.example.humorie.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +72,7 @@ public class ReservationService {
         return ResponseEntity.ok(reservationDtos);
     }
 
-    public ResponseEntity<List<LocalDate>> getAvailableReservationDate(Long counselorId){
+    public ResponseEntity<AvailableReservationDatesResDto> getAvailableReservationDate(Long counselorId){
         List<LocalDate> dateList = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
@@ -91,10 +93,10 @@ public class ReservationService {
             }
         }
 
-        return ResponseEntity.ok(dateList);
+        return ResponseEntity.ok(new AvailableReservationDatesResDto(dateList));
     }
 
-    public ResponseEntity<List<LocalTime>> getAvailableReservationTime(Long counselorId, LocalDate selectDate){
+    public ResponseEntity<AvailableReservationTimesResDto> getAvailableReservationTime(Long counselorId, LocalDate selectDate){
         List<LocalTime> timeList = new ArrayList<>();
         LocalTime currentTime = LocalTime.now();
         LocalDate currentDate = LocalDate.now();
@@ -111,7 +113,7 @@ public class ReservationService {
             }
         }
 
-        return ResponseEntity.ok(timeList);
+        return ResponseEntity.ok(new AvailableReservationTimesResDto(timeList));
     }
 
 }
