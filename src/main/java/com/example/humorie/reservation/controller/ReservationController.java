@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Tag(name = "Reservation" , description = "Reservation 관련 API 모음")
@@ -34,6 +36,19 @@ public class ReservationController {
     @GetMapping("")
     public ResponseEntity<List<ReservationDto>> getReservations(@AuthenticationPrincipal PrincipalDetails principal){
         return reservationService.getReservations(principal);
+    }
+
+    @Operation(summary = "상담 가능 날짜")
+    @GetMapping("/available/date/{counselorId}")
+    public ResponseEntity<List<LocalDate>> getAvailableReservationDate(@PathVariable(value = "counselorId") Long counselorId){
+        return reservationService.getAvailableReservationDate(counselorId);
+    }
+
+    @Operation(summary = "상담 가능 시간")
+    @GetMapping("/available/time/{counselorId}")
+    public ResponseEntity<List<LocalTime>> getAvailableReservationTime(@PathVariable(value = "counselorId") Long counselorId,
+                                                                       @RequestParam(value = "selectDate") LocalDate selectDate){
+       return reservationService.getAvailableReservationTime(counselorId, selectDate);
     }
 
 }
