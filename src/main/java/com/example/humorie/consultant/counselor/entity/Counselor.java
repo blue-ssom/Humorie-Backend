@@ -21,24 +21,41 @@ public class Counselor {
 
     private String name;
 
+    private String phoneNumber;
+
+    private String email;
+
+    private String gender;
+
+    private String region;
+
+    private String qualification;
+
     private double rating;
 
     private int counselingCount;
 
     private int reviewCount;
 
-    @ElementCollection(targetClass = CounselingField.class)
-    @CollectionTable(name = "counselor_counseling_fields", joinColumns = @JoinColumn(name = "counselor_id"))
-    @Column(name = "counseling_field")
-    @Enumerated(EnumType.STRING)
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Affiliation> affiliations;
+
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Education> educations;
+
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Career> careers;
+
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CounselingMethod> counselingMethods;
+
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CounselingField> counselingFields;
 
-    @ElementCollection(targetClass = Symptom.class)
-    @Enumerated(EnumType.STRING)
-    private List<Symptom> specialties;
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Symptom> symptoms;
 
-
-    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
 }

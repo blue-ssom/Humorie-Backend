@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CounselingField {
+public class Career {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String field;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Counselor counselor;

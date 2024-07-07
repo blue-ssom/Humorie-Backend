@@ -47,8 +47,14 @@ public class CounselorService {
                 .collect(Collectors.toList());
 
         return CounselorProfileDto.builder()
+                .counselorId(counselor.getId())
                 .name(counselor.getName())
+                .phoneNumber(counselor.getPhoneNumber())
+                .email(counselor.getEmail())
                 .rating(counselor.getRating())
+                .affiliations(counselor.getAffiliations())
+                .educations(counselor.getEducations())
+                .careers(counselor.getCareers())
                 .counselingCount(counselor.getCounselingCount())
                 .reviewCount(counselor.getReviewCount())
                 .counselingField(counselor.getCounselingFields())

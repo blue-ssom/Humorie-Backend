@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CounselingField {
+public class Affiliation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String field;
+    private String societyName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Counselor counselor;
 
 }
+
