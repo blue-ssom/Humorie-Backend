@@ -1,9 +1,5 @@
 package com.example.humorie.consultant.counselor.dto;
 
-import com.example.humorie.consultant.counselor.entity.Affiliation;
-import com.example.humorie.consultant.counselor.entity.Career;
-import com.example.humorie.consultant.counselor.entity.CounselingField;
-import com.example.humorie.consultant.counselor.entity.Education;
 import com.example.humorie.consultant.review.dto.ReviewDto;
 import lombok.*;
 
@@ -32,13 +28,13 @@ public class CounselorProfileDto {
 
     private int reviewCount;
 
-    private Set<Affiliation> affiliations;
+    private Set<String> affiliations;
 
-    private List<Education> educations;
+    private List<String> educations;
 
-    private List<Career> careers;
+    private List<String> careers;
 
-    private Set<CounselingField> counselingField;
+    private Set<String> counselingFields;
 
     private List<ReviewDto> reviews;
 

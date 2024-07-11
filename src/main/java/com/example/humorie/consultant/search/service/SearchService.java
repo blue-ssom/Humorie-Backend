@@ -1,7 +1,11 @@
 package com.example.humorie.consultant.search.service;
 
+import com.example.humorie.consultant.counselor.entity.CounselingField;
+import com.example.humorie.consultant.counselor.entity.CounselingMethod;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.entity.Symptom;
+import com.example.humorie.consultant.counselor.repository.CounselingFieldRepository;
+import com.example.humorie.consultant.counselor.repository.CounselingMethodRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.consultant.search.dto.CounselorDto;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,12 +24,14 @@ import java.util.stream.Collectors;
 public class SearchService {
 
     private final CounselorRepository counselorRepository;
+    private final CounselingFieldRepository fieldRepository;
+    private final CounselingMethodRepository methodRepository;
 
     public List<CounselorDto> getAllCounselors() {
         List<Counselor> counselors = counselorRepository.findAll();
 
         return counselors.stream()
-                .map(CounselorDto::createDto)
+                .map(this::mapToCounselorDto)
                 .collect(Collectors.toList());
     }
 
@@ -38,7 +45,8 @@ public class SearchService {
                 List<Symptom> counselorSymptoms = counselor.getSymptoms();
 
                 if (containsAllSymptomKeywords(counselorSymptoms, symptomKeywords)) {
-                    result.add(CounselorDto.createDto(counselor));
+                    CounselorDto counselorDto = mapToCounselorDto(counselor);
+                    result.add(counselorDto);
                 }
             }
         } catch (Exception e) {
@@ -57,7 +65,8 @@ public class SearchService {
                 List<Symptom> counselorSymptoms = counselor.getSymptoms();
 
                 if (containsKeywordInSymptoms(counselorSymptoms, keyword)) {
-                    result.add(CounselorDto.createDto(counselor));
+                    CounselorDto counselorDto = mapToCounselorDto(counselor);
+                    result.add(counselorDto);
                 }
             }
         } catch (Exception e) {
@@ -77,7 +86,7 @@ public class SearchService {
         List<Counselor> counselors = counselorRepository.findAll(specification);
 
         return counselors.stream()
-                .map(CounselorDto::createDto)
+                .map(this::mapToCounselorDto)
                 .collect(Collectors.toList());
     }
 
@@ -108,7 +117,7 @@ public class SearchService {
         List<Counselor> filteredCounselors = counselorRepository.findAll(specification);
 
         List<CounselorDto> filteredDtoList = filteredCounselors.stream()
-                .map(CounselorDto::createDto)
+                .map(this::mapToCounselorDto)
                 .collect(Collectors.toList());
 
         return counselors.stream()
@@ -116,4 +125,25 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
+    private CounselorDto mapToCounselorDto(Counselor counselor) {
+        Set<String> counselingFields = fieldRepository.findByCounselorId(counselor.getId()).stream()
+                .map(CounselingField::getField)
+                .collect(Collectors.toSet());
+
+        Set<String> counselingMethods = methodRepository.findByCounselorId(counselor.getId()).stream()
+                .map(CounselingMethod::getMethod)
+                .collect(Collectors.toSet());
+
+        return new CounselorDto(
+                counselor.getId(),
+                counselor.getName(),
+                counselor.getGender(),
+                counselor.getRegion(),
+                counselor.getRating(),
+                counselor.getReviewCount(),
+                counselingFields,
+                counselingMethods
+        );
+
+    }
 }
