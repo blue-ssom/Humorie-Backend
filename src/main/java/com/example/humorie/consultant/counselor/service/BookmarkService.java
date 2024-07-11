@@ -6,14 +6,17 @@ import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.consultant.counselor.dto.BookmarkDto;
 import com.example.humorie.consultant.counselor.dto.CounselorDto;
 import com.example.humorie.consultant.counselor.entity.Bookmark;
+import com.example.humorie.consultant.counselor.entity.CounselingField;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.BookmarkRepository;
+import com.example.humorie.consultant.counselor.repository.CounselingFieldRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +27,7 @@ public class BookmarkService {
     private final CounselorRepository counselorRepository;
     private final AccountRepository accountRepository;
     private final JwtTokenUtil jwtTokenUtil;
+    private final CounselingFieldRepository fieldRepository;
 
     @Transactional
     public Bookmark addBookmark(String accessToken, long counselorId) {
@@ -92,8 +96,13 @@ public class BookmarkService {
     private CounselorDto convertToCounselorDto(Counselor counselor) {
         CounselorDto counselorDto = new CounselorDto();
 
+        counselorDto.setCounselorId(counselor.getId());
         counselorDto.setName(counselor.getName());
-        counselorDto.setCounselingField(counselor.getCounselingFields());
+
+        Set<String> counselingFields = fieldRepository.findByCounselorId(counselor.getId()).stream()
+                .map(CounselingField::getField)
+                .collect(Collectors.toSet());
+        counselorDto.setCounselingFields(counselingFields);
 
         return counselorDto;
     }
