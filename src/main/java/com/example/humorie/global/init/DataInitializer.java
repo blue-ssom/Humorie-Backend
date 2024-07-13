@@ -7,6 +7,8 @@ import com.example.humorie.consultant.counselor.entity.*;
 import com.example.humorie.consultant.counselor.repository.*;
 import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
+import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.mypage.repository.PointRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -30,6 +32,7 @@ public class DataInitializer implements CommandLineRunner {
     private final CareerRepository careerRepository;
     private final SymptomRepository symptomRepository;
     private final ReviewRepository reviewRepository;
+    private final PointRepository pointRepository;
     private final SecurityConfig securityConfig;
 
 
@@ -59,6 +62,7 @@ public class DataInitializer implements CommandLineRunner {
                 .rating(4.8)
                 .counselingCount(17)
                 .reviewCount(8)
+                .introduction("편안한 상담사")
                 .build();
 
         Counselor counselor2 = Counselor.builder()
@@ -70,6 +74,7 @@ public class DataInitializer implements CommandLineRunner {
                 .rating(4.1)
                 .counselingCount(30)
                 .reviewCount(19)
+                .introduction("든든한 상담사")
                 .build();
 
         Counselor counselor3 = Counselor.builder()
@@ -81,6 +86,7 @@ public class DataInitializer implements CommandLineRunner {
                 .rating(4.5)
                 .counselingCount(22)
                 .reviewCount(15)
+                .introduction("정직한 상담사")
                 .build();
 
         Counselor counselor4 = Counselor.builder()
@@ -92,6 +98,7 @@ public class DataInitializer implements CommandLineRunner {
                 .rating(4.5)
                 .counselingCount(50)
                 .reviewCount(40)
+                .introduction("성실한 상담사")
                 .build();
 
         Counselor counselor5 = Counselor.builder()
@@ -103,6 +110,7 @@ public class DataInitializer implements CommandLineRunner {
                 .rating(4.2)
                 .counselingCount(14)
                 .reviewCount(7)
+                .introduction("편안한 상담사")
                 .build();
 
         Counselor counselor6 = Counselor.builder()
@@ -113,6 +121,7 @@ public class DataInitializer implements CommandLineRunner {
                 .rating(3.9)
                 .counselingCount(7)
                 .reviewCount(1)
+                .introduction("편안한 상담사")
                 .build();
 
         CounselingMethod method1 = CounselingMethod.builder().method("online").counselor(counselor1).build();
@@ -191,6 +200,14 @@ public class DataInitializer implements CommandLineRunner {
         Career career7 = Career.builder().content("경력1").counselor(counselor5).build();
         Career career8 = Career.builder().content("경력1").counselor(counselor6).build();
 
+        Point point1 = Point.builder().points(100000).type("earn").transactionDate(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).build();
+        Point point2 = Point.builder().points(50000).type("spend").transactionDate(LocalDateTime.of(2024, 5, 10, 12, 30, 00)).account(accountDetail1).build();
+        Point point3 = Point.builder().points(1000).type("earn").transactionDate(LocalDateTime.of(2024, 5, 11, 12, 30, 00)).account(accountDetail1).build();
+        Point point4 = Point.builder().points(30000).type("spend").transactionDate(LocalDateTime.of(2024, 6, 2, 12, 30, 00)).account(accountDetail1).build();
+        Point point5 = Point.builder().points(2000).type("earn").transactionDate(LocalDateTime.of(2024, 6, 3, 12, 30, 00)).account(accountDetail1).build();
+        Point point6 = Point.builder().points(100000).type("earn").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00)).account(accountDetail2).build();
+        Point point7 = Point.builder().points(70000).type("spend").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00)).account(accountDetail2).build();
+
         counselorRepository.saveAll(Arrays.asList(counselor1, counselor2, counselor3, counselor4, counselor5, counselor6));
         methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4, method5, method6, method7, method8));
         fieldRepository.saveAll(Arrays.asList(field1, field2, field3, field4, field5, field6, field7, field8, field9, field10));
@@ -199,6 +216,7 @@ public class DataInitializer implements CommandLineRunner {
         affiliationRepository.saveAll(Arrays.asList(affiliation1, affiliation2, affiliation3, affiliation4, affiliation5, affiliation6, affiliation7, affiliation8, affiliation9));
         educationRepository.saveAll(Arrays.asList(education1, education2, education3, education4, education5, education6));
         careerRepository.saveAll(Arrays.asList(career1, career2, career3, career4, career5, career6, career7, career8));
+        pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7));
 
     }
 }
