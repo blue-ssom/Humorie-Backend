@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "Recommend" , description = "Recommend 관련 API 모음")
+@Tag(name = "Recommendation" , description = "Recommendation 관련 API 모음")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/recommend")
+@RequestMapping("/recommendation")
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
 
-    @Operation(summary = "상담사 추천 api 생성")
+    @Operation(summary = "상담사 추천")
     @GetMapping("/counselor")
     public ResponseEntity<List<RecommendationCounselorDto>> recommendCounselor(@AuthenticationPrincipal PrincipalDetails principal) {
 
         return ResponseEntity.status(HttpStatus.OK).body(recommendationService.recommendCounselor(principal));
     }
 
-    @Operation(summary = "리뷰 추천 api 생성")
+    @Operation(summary = "리뷰 추천")
     @GetMapping("/review")
     public ResponseEntity<List<RecommendationReviewDto>> recommendReview(@AuthenticationPrincipal PrincipalDetails principal) {
 

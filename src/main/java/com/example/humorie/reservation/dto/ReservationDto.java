@@ -7,24 +7,31 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 public class ReservationDto {
 
     private final Long reservationId;
 
-    private final Counselor counselor;
+    private final String counselorName;
 
-    private final LocalDateTime counselDate;
+    private final String location;
+
+    private final LocalDate counselDate;
+
+    private final LocalTime counselTime;
 
     private final LocalDateTime createdAt;
 
 
     @Builder
-    public ReservationDto(Long reservationId, Counselor counselor, LocalDateTime counselDate, LocalDateTime createdAt) {
+    public ReservationDto(Long reservationId, String counselorName,String location, LocalDate counselDate, LocalTime counselTime, LocalDateTime createdAt) {
         this.reservationId = reservationId;
-        this.counselor = counselor;
+        this.counselorName = counselorName;
+        this.location = location;
         this.counselDate = counselDate;
+        this.counselTime = counselTime;
         this.createdAt = createdAt;
     }
 }

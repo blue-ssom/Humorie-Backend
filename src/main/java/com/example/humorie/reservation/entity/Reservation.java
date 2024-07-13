@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,17 +31,23 @@ public class Reservation {
     @JoinColumn(name = "counselor_id")
     private Counselor counselor;
 
-    private LocalDateTime counselDate;
+    private String location;
+
+    private LocalDate counselDate;
+
+    private LocalTime counselTime;
 
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Builder
-    public Reservation(AccountDetail account, Counselor counselor, LocalDateTime counselDate) {
+    public Reservation(AccountDetail account, Counselor counselor,String location, LocalDate counselDate, LocalTime counselTime) {
         this.account = account;
         this.counselor = counselor;
+        this.location = location;
         this.counselDate = counselDate;
+        this.counselTime = counselTime;
         this.createdAt = LocalDateTime.now();
     }
 
