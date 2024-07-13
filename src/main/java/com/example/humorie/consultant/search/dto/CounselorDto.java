@@ -25,6 +25,8 @@ public class CounselorDto {
 
     private int reviewCount;
 
+    private String introduction;
+
     private Set<String> counselingMethods;
 
     private Set<String> counselingFields;

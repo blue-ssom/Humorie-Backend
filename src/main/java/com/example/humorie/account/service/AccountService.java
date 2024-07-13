@@ -10,6 +10,8 @@ import com.example.humorie.account.entity.LoginType;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
+import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.mypage.repository.PointRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PointRepository pointRepository;
     private final AccountValidationService validationService;
     private final CookieService cookieService;
     private final JwtTokenUtil jwtTokenUtil;
@@ -52,6 +55,9 @@ public class AccountService {
 
         AccountDetail accountDetail = AccountDetail.joinAccount(request.getEmail(), jwtSecurityConfig.passwordEncoder().encode(request.getPassword()), request.getAccountName(), request.getName());
         accountRepository.save(accountDetail);
+
+        Point earnedPoints = new Point(accountDetail, 100000, "earn");
+        pointRepository.save(earnedPoints);
 
         return ResponseEntity.ok("Success Join");
     }
