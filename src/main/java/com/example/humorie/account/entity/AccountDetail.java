@@ -1,5 +1,6 @@
 package com.example.humorie.account.entity;
 
+import com.example.humorie.mypage.entity.Point;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,6 +43,9 @@ public class AccountDetail {
     @Column(nullable = false)
     private AccountRole role;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Point> pointTransactions;
+
     public static AccountDetail joinAccount(String email, String encodedPassword, String accountName, String name) {
         AccountDetail accountDetail = new AccountDetail();
         accountDetail.email = email;
@@ -54,7 +59,5 @@ public class AccountDetail {
 
         return accountDetail;
     }
-
-
 
 }
