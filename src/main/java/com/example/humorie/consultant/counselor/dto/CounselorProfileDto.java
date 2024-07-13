@@ -28,6 +28,8 @@ public class CounselorProfileDto {
 
     private int reviewCount;
 
+    private String introduction;
+
     private Set<String> affiliations;
 
     private List<String> educations;

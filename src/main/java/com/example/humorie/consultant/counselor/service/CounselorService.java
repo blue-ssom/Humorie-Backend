@@ -73,6 +73,7 @@ public class CounselorService {
                 .phoneNumber(counselor.getPhoneNumber())
                 .email(counselor.getEmail())
                 .rating(counselor.getRating())
+                .introduction(counselor.getIntroduction())
                 .affiliations(affiliations)
                 .educations(educations)
                 .careers(careers)

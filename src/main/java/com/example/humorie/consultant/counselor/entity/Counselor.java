@@ -37,6 +37,8 @@ public class Counselor {
 
     private int reviewCount;
 
+    private String introduction;
+
     @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Affiliation> affiliations;
 

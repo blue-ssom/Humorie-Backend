@@ -141,6 +141,7 @@ public class SearchService {
                 counselor.getRegion(),
                 counselor.getRating(),
                 counselor.getReviewCount(),
+                counselor.getIntroduction(),
                 counselingFields,
                 counselingMethods
         );
