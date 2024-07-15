@@ -32,6 +32,7 @@ public enum ErrorCode {
     INVALID_EMAIL(false, 2006, "잘못된 이메일 형식입니다."),
     INVALID_PASSWORD(false, 2007, "잘못된 비밀번호 형식입니다. 비밀번호는 최소 8자 이상 16자 이하이며, 적어도 하나의 숫자와 알파벳, 특수문자가 포함되어야 합니다."),
     INVALID_ID(false, 2008, "잘못된 아이디 형식입니다. 아이디는 최소 6자 이상이어야 하며, 소문자 알파벳과 숫자로 구성되어야 합니다."),
+    SEND_EMAIL_FAILED(false, 2009, "이메일 전송에 실패했습니다."),
 
 
     /**
