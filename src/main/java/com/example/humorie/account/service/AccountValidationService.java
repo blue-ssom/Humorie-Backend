@@ -1,6 +1,8 @@
 package com.example.humorie.account.service;
 
 import com.example.humorie.account.repository.AccountRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ public class AccountValidationService {
         Matcher pwMatcher = pwPattern.matcher(password);
 
         if (!pwMatcher.matches()) {
-            throw new RuntimeException("The password format is incorrect");
+            throw new ErrorException(ErrorCode.INVALID_PASSWORD);
         }
     }
 
@@ -29,7 +31,7 @@ public class AccountValidationService {
         Matcher emailMatcher = emailPattern.matcher(email);
 
         if (!emailMatcher.matches()) {
-            throw new RuntimeException("The email format is incorrect");
+            throw new ErrorException(ErrorCode.INVALID_EMAIL);
         }
     }
 
@@ -39,7 +41,7 @@ public class AccountValidationService {
         Matcher accountNameMatcher = accountNamePatter.matcher(accountName);
 
         if(!accountNameMatcher.matches()) {
-            throw  new RuntimeException("The accountName format is incorrect");
+            throw  new ErrorException(ErrorCode.INVALID_ID);
         }
     }
 

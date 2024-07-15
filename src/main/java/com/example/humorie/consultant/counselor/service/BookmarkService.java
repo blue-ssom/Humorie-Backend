@@ -11,6 +11,8 @@ import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.BookmarkRepository;
 import com.example.humorie.consultant.counselor.repository.CounselingFieldRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,13 +36,13 @@ public class BookmarkService {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Not found user"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         Counselor counselor = counselorRepository.findById(counselorId)
-                .orElseThrow(() -> new RuntimeException("Not found counselor"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
 
         if (bookmarkRepository.existsByAccountAndCounselor(account, counselor)) {
-            throw new RuntimeException("Already bookmarked this counselor");
+            throw new ErrorException(ErrorCode.BOOKMARK_EXISTS);
         }
 
         Bookmark bookmark = Bookmark.builder()
@@ -56,13 +58,13 @@ public class BookmarkService {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Not found user"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         Counselor counselor = counselorRepository.findById(counselorId)
-                .orElseThrow(() -> new RuntimeException("Not found counselor"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
 
         Bookmark bookmark = bookmarkRepository.findByAccountAndCounselor(account, counselor)
-                .orElseThrow(() -> new RuntimeException("Bookmark not found"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_BOOKMARK));
 
 
         bookmarkRepository.deleteByAccountAndCounselor(account, counselor);
@@ -73,7 +75,7 @@ public class BookmarkService {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         List<Bookmark> bookmarks = bookmarkRepository.findAllByAccount(account);
 

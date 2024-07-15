@@ -9,6 +9,7 @@ import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.service.CookieService;
+import com.example.humorie.global.exception.ErrorException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -72,7 +73,5 @@ public class AccountController {
     public ResponseEntity<String> findAccountNameByEmail(@RequestBody AccountNameFinder finder) {
         return ResponseEntity.ok(accountService.findAccountNameByEmail(finder.getEmail()));
     }
-
-
 
 }

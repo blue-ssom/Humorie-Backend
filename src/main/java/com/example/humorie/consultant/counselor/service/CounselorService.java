@@ -6,6 +6,8 @@ import com.example.humorie.consultant.counselor.repository.*;
 import com.example.humorie.consultant.review.dto.ReviewDto;
 import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class CounselorService {
     @Transactional
     public CounselorProfileDto getCounselorProfile(long counselorId) {
         Counselor counselor = counselorRepository.findById(counselorId)
-                .orElseThrow(() -> new RuntimeException("Not found counselor"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
 
         List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
 
