@@ -32,7 +32,7 @@ public class BookmarkService {
     private final CounselingFieldRepository fieldRepository;
 
     @Transactional
-    public Bookmark addBookmark(String accessToken, long counselorId) {
+    public String addBookmark(String accessToken, long counselorId) {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
@@ -50,11 +50,13 @@ public class BookmarkService {
                 .counselor(counselor)
                 .build();
 
-        return bookmarkRepository.save(bookmark);
+        bookmarkRepository.save(bookmark);
+
+        return "Bookmark added successfully";
     }
 
     @Transactional
-    public void removeBookmark(String accessToken, long counselorId) {
+    public String removeBookmark(String accessToken, long counselorId) {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
@@ -68,6 +70,8 @@ public class BookmarkService {
 
 
         bookmarkRepository.deleteByAccountAndCounselor(account, counselor);
+
+        return "Bookmark removed successfully";
     }
 
     @Transactional

@@ -12,6 +12,7 @@ import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
+import com.example.humorie.global.exception.ErrorResponse;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +43,7 @@ public class AccountService {
     private final RedisTemplate redisTemplate;
 
     @Transactional
-    public ResponseEntity<String> join(JoinReq request) {
+    public String join(JoinReq request) {
         validationService.validateEmail(request.getEmail());
         validationService.validateAccountName(request.getAccountName());
         validationService.validatePassword(request.getPassword());
@@ -61,11 +62,11 @@ public class AccountService {
         Point earnedPoints = new Point(accountDetail, 100000, "earn");
         pointRepository.save(earnedPoints);
 
-        return ResponseEntity.ok("Success Join");
+        return "Success Join";
     }
 
     @Transactional
-    public ResponseEntity<LoginRes> login(LoginReq request, HttpServletResponse response) {
+    public LoginRes login(LoginReq request, HttpServletResponse response) {
         AccountDetail accountDetail = accountRepository.findByAccountName(request.getAccountName()).orElseThrow(() ->
                 new ErrorException(ErrorCode.NONE_EXIST_USER));
 
@@ -81,12 +82,12 @@ public class AccountService {
             String accessToken = tokenDto.getAccessToken();
             String refreshToken = tokenDto.getRefreshToken();
 
-            return ResponseEntity.ok(new LoginRes(accessToken, refreshToken));
+            return new LoginRes(accessToken, refreshToken);
         }
     }
 
     @Transactional
-    public ResponseEntity<String> logout(String accessToken, String refreshToken) {
+    public String logout(String accessToken, String refreshToken) {
         if(!jwtTokenUtil.tokenValidation(accessToken)) {
             throw new ErrorException(ErrorCode.INVALID_JWT);
         }
@@ -102,7 +103,7 @@ public class AccountService {
 
         redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
 
-        return ResponseEntity.ok("Success Logout");
+        return "Success Logout";
     }
 
     public TokenDto refreshAccessToken(String refreshToken) {

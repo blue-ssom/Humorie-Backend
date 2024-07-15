@@ -10,6 +10,7 @@ import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.service.CookieService;
 import com.example.humorie.global.exception.ErrorException;
+import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,27 +33,27 @@ public class AccountController {
 
     @PostMapping("/join")
     @Operation(summary = "일반 로그인 회원가입")
-    public ResponseEntity<String> join(@RequestBody JoinReq request) throws IOException {
-        return accountService.join(request);
+    public ErrorResponse<String> join(@RequestBody JoinReq request) throws IOException {
+        return new ErrorResponse<>(accountService.join(request));
     }
 
     @PostMapping("/login")
     @Operation(summary = "일반 로그인 로그인")
-    public ResponseEntity<LoginRes> login(@RequestBody @Valid LoginReq request, HttpServletResponse response) {
-        return accountService.login(request, response);
+    public ErrorResponse<LoginRes> login(@RequestBody @Valid LoginReq request, HttpServletResponse response) {
+        return new ErrorResponse<>(accountService.login(request, response));
     }
 
     @DeleteMapping("/logout")
     @Operation(summary = "로그아웃")
-    public ResponseEntity<String> logout(HttpServletRequest request, @RequestHeader(name = JwtTokenUtil.REFRESH_TOKEN) String refreshToken) {
+    public ErrorResponse<String> logout(HttpServletRequest request, @RequestHeader(name = JwtTokenUtil.REFRESH_TOKEN) String refreshToken) {
         String accessToken = jwtTokenUtil.resolveToken(request);
 
-        return accountService.logout(accessToken, refreshToken);
+        return new ErrorResponse<>(accountService.logout(accessToken, refreshToken));
     }
 
     @PostMapping("/issue/token")
     @Operation(summary = "Access Token 갱신")
-    public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response,
+    public ErrorResponse<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response,
                                                 @RequestHeader(name = JwtTokenUtil.REFRESH_TOKEN, required = false) String refreshToken) {
         TokenDto newTokenDto = null;
 
@@ -65,13 +66,13 @@ public class AccountController {
 
         cookieService.setHeader(response, newTokenDto);
 
-        return new ResponseEntity<>(newTokenDto, HttpStatus.OK);
+        return new ErrorResponse<>(newTokenDto);
     }
 
     @PostMapping("/find-userId")
     @Operation(summary = "아이디 찾기")
-    public ResponseEntity<String> findAccountNameByEmail(@RequestBody AccountNameFinder finder) {
-        return ResponseEntity.ok(accountService.findAccountNameByEmail(finder.getEmail()));
+    public ErrorResponse<String> findAccountNameByEmail(@RequestBody AccountNameFinder finder) {
+        return new ErrorResponse<>(accountService.findAccountNameByEmail(finder.getEmail()));
     }
 
 }
