@@ -10,6 +10,9 @@ import com.example.humorie.account.entity.LoginType;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
+import com.example.humorie.global.exception.ErrorResponse;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,17 +43,17 @@ public class AccountService {
     private final RedisTemplate redisTemplate;
 
     @Transactional
-    public ResponseEntity<String> join(JoinReq request) {
+    public String join(JoinReq request) {
         validationService.validateEmail(request.getEmail());
         validationService.validateAccountName(request.getAccountName());
         validationService.validatePassword(request.getPassword());
 
         if (!request.getPassword().equals(request.getPasswordCheck())) {
-            throw new RuntimeException("Passwords do not match");
+            throw new ErrorException(ErrorCode.PASSWORD_MISMATCH);
         }
 
         if (accountRepository.existsByAccountName(request.getAccountName())) {
-            throw new RuntimeException("The username already exists");
+            throw new ErrorException(ErrorCode.ID_EXISTS);
         }
 
         AccountDetail accountDetail = AccountDetail.joinAccount(request.getEmail(), jwtSecurityConfig.passwordEncoder().encode(request.getPassword()), request.getAccountName(), request.getName());
@@ -59,16 +62,16 @@ public class AccountService {
         Point earnedPoints = new Point(accountDetail, 100000, "earn");
         pointRepository.save(earnedPoints);
 
-        return ResponseEntity.ok("Success Join");
+        return "Success Join";
     }
 
     @Transactional
-    public ResponseEntity<LoginRes> login(LoginReq request, HttpServletResponse response) {
+    public LoginRes login(LoginReq request, HttpServletResponse response) {
         AccountDetail accountDetail = accountRepository.findByAccountName(request.getAccountName()).orElseThrow(() ->
-                new RuntimeException("Not found user"));
+                new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         if (!jwtSecurityConfig.passwordEncoder().matches(request.getPassword(), accountDetail.getPassword())) {
-            throw new RuntimeException("The passwords do not match");
+            throw new ErrorException(ErrorCode.PASSWORD_MISMATCH);
         } else {
             TokenDto tokenDto = jwtTokenUtil.createToken(accountDetail.getEmail());
 
@@ -79,14 +82,14 @@ public class AccountService {
             String accessToken = tokenDto.getAccessToken();
             String refreshToken = tokenDto.getRefreshToken();
 
-            return ResponseEntity.ok(new LoginRes(accessToken, refreshToken));
+            return new LoginRes(accessToken, refreshToken);
         }
     }
 
     @Transactional
-    public ResponseEntity<String> logout(String accessToken, String refreshToken) {
+    public String logout(String accessToken, String refreshToken) {
         if(!jwtTokenUtil.tokenValidation(accessToken)) {
-            throw new IllegalArgumentException("Invalid Access Token");
+            throw new ErrorException(ErrorCode.INVALID_JWT);
         }
 
         String email = jwtTokenUtil.getEmailFromToken(refreshToken);
@@ -100,17 +103,17 @@ public class AccountService {
 
         redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
 
-        return ResponseEntity.ok("Success Logout");
+        return "Success Logout";
     }
 
     public TokenDto refreshAccessToken(String refreshToken) {
         if (!jwtTokenUtil.refreshTokenValidation(refreshToken)) {
-            throw new RuntimeException("Invalid Refresh Token");
+            throw new ErrorException(ErrorCode.INVALID_JWT);
         }
 
         String email = jwtTokenUtil.getEmailFromToken(refreshToken);
         if(!refreshToken.equals(refreshToken)) {
-            throw new IllegalArgumentException("The refresh token information does not match");
+            throw new ErrorException(ErrorCode.INVALID_JWT);
         }
 
         String newAccessToken = jwtTokenUtil.recreateAccessToken(refreshToken);

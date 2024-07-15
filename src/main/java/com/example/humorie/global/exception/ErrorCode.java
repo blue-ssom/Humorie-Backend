@@ -1,0 +1,54 @@
+package com.example.humorie.global.exception;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum ErrorCode {
+
+    /**
+     * 1000 : 요청 성공
+     */
+
+    SUCCESS(true, 1000, "요청에 성공했습니다."),
+
+
+    /**
+     * 2000 : Request 오류
+     */
+
+    // common
+    REQUEST_ERROR(false, 2000, "잘못된 입력입니다."),
+
+    // user
+    EMPTY_JWT(false, 2001, "토큰을 입력해주세요."),
+    INVALID_JWT(false, 2002, "유효하지 않은 토큰입니다."),
+    NONE_EXIST_USER(false, 2003, "존재하지 않는 사용자입니다."),
+    ID_EXISTS(false, 2004, "중복된 아이디입니다."),
+    PASSWORD_MISMATCH(false, 2005, "비밀번호가 일치하지 않습니다."),
+    INVALID_EMAIL(false, 2006, "잘못된 이메일 형식입니다."),
+    INVALID_PASSWORD(false, 2007, "잘못된 비밀번호 형식입니다. 비밀번호는 최소 8자 이상 16자 이하이며, 적어도 하나의 숫자와 알파벳, 특수문자가 포함되어야 합니다."),
+    INVALID_ID(false, 2008, "잘못된 아이디 형식입니다. 아이디는 최소 6자 이상이어야 하며, 소문자 알파벳과 숫자로 구성되어야 합니다."),
+
+
+    /**
+     * 3000 : Response 오류
+     */
+
+    // counselor
+    NON_EXIST_COUNSELOR(false, 3001, "존재하지 않는 상담사입니다."),
+    BOOKMARK_EXISTS(false, 3002, "해당 상담사에 대한 북마크가 이미 존재합니다."),
+    NONE_EXIST_BOOKMARK(false, 3003, "존재하지 않는 북마크입니다."),
+    SEARCH_FAILED(false, 3004, "상담사에 대한 검색을 실패했습니다.");
+
+
+    private final boolean isSuccess;
+
+    private final int code;
+
+    private final String message;
+
+}

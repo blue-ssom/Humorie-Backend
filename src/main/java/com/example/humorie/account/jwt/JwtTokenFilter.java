@@ -1,6 +1,8 @@
 package com.example.humorie.account.jwt;
 
 import com.example.humorie.global.dto.GlobalResDto;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,8 +47,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private void processSecurity(String accessToken, String refreshToken, HttpServletResponse response) {
         if (accessToken != null) {
             if (!jwtTokenUtil.tokenValidation(accessToken)) {
-                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.BAD_REQUEST);
-                return;
+                throw new ErrorException(ErrorCode.INVALID_JWT);
             }
             String isLogout = (String) redisTemplate.opsForValue().get(accessToken);
 
@@ -55,9 +56,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         } else if (refreshToken != null) {
             if (!jwtTokenUtil.refreshTokenValidation(refreshToken)) {
-                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
-
-                return;
+                throw new ErrorException(ErrorCode.INVALID_JWT);
             }
 
             setAuthentication(jwtTokenUtil.getEmailFromToken(refreshToken));

@@ -3,6 +3,8 @@ package com.example.humorie.mypage.service;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.repository.AccountRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.mypage.dto.PointDto;
 import com.example.humorie.mypage.dto.TotalPointDto;
 import com.example.humorie.mypage.entity.Point;
@@ -27,7 +29,7 @@ public class PointService {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Not found user"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         return pointRepository.findByAccount(account).stream()
                 .sorted((t1, t2) -> t1.getTransactionDate().compareTo(t2.getTransactionDate()))
@@ -39,7 +41,7 @@ public class PointService {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Not found user"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         return pointRepository.findByAccountAndType(account, "earn").stream()
                 .sorted((t1, t2) -> t1.getTransactionDate().compareTo(t2.getTransactionDate()))
@@ -51,7 +53,7 @@ public class PointService {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Not found user"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         return pointRepository.findByAccountAndType(account, "spend").stream()
                 .sorted((t1, t2) -> t1.getTransactionDate().compareTo(t2.getTransactionDate()))
@@ -63,7 +65,7 @@ public class PointService {
         String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
         AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Not found user"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 
         List<Point> points = pointRepository.findByAccount(account);
 

@@ -8,6 +8,8 @@ import com.example.humorie.consultant.counselor.repository.CounselingFieldReposi
 import com.example.humorie.consultant.counselor.repository.CounselingMethodRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.consultant.search.dto.CounselorDto;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -50,7 +52,7 @@ public class SearchService {
                 }
             }
         } catch (Exception e) {
-            log.error("An error occurred while searching for counselors", e);
+            throw new ErrorException(ErrorCode.SEARCH_FAILED);
         }
 
         return filterByConditions(result, counselingMethod, gender, region, order);
@@ -70,7 +72,7 @@ public class SearchService {
                 }
             }
         } catch (Exception e) {
-            log.error("An error occurred while searching for counselors", e);
+            throw new ErrorException(ErrorCode.SEARCH_FAILED);
         }
 
         return filterByConditions(result, counselingMethod, gender, region, order);

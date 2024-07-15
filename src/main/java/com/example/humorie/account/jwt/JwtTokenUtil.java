@@ -6,6 +6,8 @@ import com.example.humorie.account.entity.AccountRole;
 import com.example.humorie.account.entity.RefreshToken;
 import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -159,7 +161,7 @@ public class JwtTokenUtil {
 
         if (accountDetail != null) { return accountDetail.getRole(); }
 
-        throw new UsernameNotFoundException("Not found user");
+        throw new ErrorException(ErrorCode.NONE_EXIST_USER);
 
     }
 
