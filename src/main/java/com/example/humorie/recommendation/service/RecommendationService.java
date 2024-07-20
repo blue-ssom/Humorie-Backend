@@ -2,6 +2,7 @@ package com.example.humorie.recommendation.service;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
 
+import com.example.humorie.consultant.counselor.entity.CounselingField;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.consultant.review.entity.Review;
@@ -57,7 +58,9 @@ public class RecommendationService {
         return counselors.stream()
                 .map(counselor -> new RecommendationCounselorDto(counselor.getId(),
                         counselor.getName(),
-                        counselor.getCounselingFields(),
+                        counselor.getCounselingFields().stream()
+                                .map(CounselingField::getField)
+                                .collect(Collectors.toSet()),
                         counselor.getRating(),
                         counselor.getReviewCount(),
                         calculator.calculateCounselorRecommendRatingWithoutLogin(counselor)))
@@ -69,7 +72,9 @@ public class RecommendationService {
         return counselors.stream()
                 .map(counselor -> new RecommendationCounselorDto(counselor.getId(),
                         counselor.getName(),
-                        counselor.getCounselingFields(),
+                        counselor.getCounselingFields().stream()
+                                .map(CounselingField::getField)
+                                .collect(Collectors.toSet()),
                         counselor.getRating(),
                         counselor.getReviewCount(),
                         calculator.calculateCounselorRecommendRatingWithLogin(counselor, reservations)))

@@ -12,7 +12,7 @@ public class RecommendationCounselorDto {
 
     private final String name;
 
-    private final Set<CounselingField> counselingFields;
+    private final Set<String> counselingFields;
 
     private final double rating;
 
@@ -20,7 +20,7 @@ public class RecommendationCounselorDto {
 
     private final double recommendationRating;
 
-    public RecommendationCounselorDto(long id, String name, Set<CounselingField> counselingFields,
+    public RecommendationCounselorDto(long id, String name, Set<String> counselingFields,
                                       double rating, int reviewCount, double recommendationRating){
         this.id = id;
         this.name = name;
