@@ -45,6 +45,12 @@ springdoc:
     path: /swagger-ui.html
     disable-swagger-default-url: true
 
+
+portOne :
+  api: 4856686155132082 # 테스트 용 추후 배포 시 숨길 예정
+  secret: NXcRVMP9sclmOP43hne7FMwalOzsjIUmsReyPPbTcYqlx4Noj0iYrkU0BfDnKXtFVoyI0FP7MTyS5sDs # 테스트 용 추후 배포 시 숨길 예정
+
+
 #logging:
 #  level:
 #    root: DEBUG
