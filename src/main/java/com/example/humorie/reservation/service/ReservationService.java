@@ -3,6 +3,8 @@ package com.example.humorie.reservation.service;
 import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.payment.entity.Payment;
 import com.example.humorie.payment.entity.PaymentStatus;
 import com.example.humorie.payment.repository.PaymentRepository;
@@ -39,12 +41,12 @@ public class ReservationService {
     private final static int RESERVATION_START_TIME = 10;
     private final static int RESERVATION_END_TIME = 19;
 
-    public ResponseEntity<CreateReservationResDto> createReservation(PrincipalDetails principal, CreateReservationReq createReservationReq) {
+    public CreateReservationResDto createReservation(PrincipalDetails principal, CreateReservationReq createReservationReq) {
         Counselor counselor = counselorRepository.findById(createReservationReq.getCounselorId())
-                .orElseThrow(() -> new RuntimeException("Counselor Not Found"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
 
         if(principal == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
         }
 
         // 임시 결제내역 생성
@@ -67,12 +69,12 @@ public class ReservationService {
                 .build();
 
         reservationRepository.save(reservation);
-        return ResponseEntity.ok(new CreateReservationResDto(reservation.getReservationUid()));
+        return new CreateReservationResDto(reservation.getReservationUid());
     }
 
-    public ResponseEntity<List<ReservationDto>> getReservations(PrincipalDetails principal) {
+    public List<ReservationDto> getReservations(PrincipalDetails principal) {
         if (principal == null)
-            return ResponseEntity.badRequest().build();
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
 
         List<Reservation> reservations = reservationRepository.findAllByAccountEmailOrderByCreatedAtDesc(principal.getUsername());
         List<ReservationDto> reservationDtos = reservations.stream()
@@ -86,25 +88,23 @@ public class ReservationService {
                 ))
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(reservationDtos);
+        return reservationDtos;
     }
 
-    public ResponseEntity<GetReservationResDto> getReservation(String uid){
+    public GetReservationResDto getReservation(String uid){
 
         Reservation reservation = reservationRepository.findReservationByReservationUid(uid)
-                .orElseThrow(() -> new RuntimeException("Reservation Not Found"));
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_RESERVATION));
 
-        GetReservationResDto resDto = GetReservationResDto.builder()
+        return GetReservationResDto.builder()
                 .ReservationUid(reservation.getReservationUid())
                 .buyerEmail(reservation.getAccount().getEmail())
                 .buyerName(reservation.getAccount().getName())
                 .counselorName(reservation.getCounselor().getName())
                 .build();
-
-        return ResponseEntity.ok(resDto);
     }
 
-    public ResponseEntity<AvailableReservationDatesResDto> getAvailableReservationDate(Long counselorId){
+    public AvailableReservationDatesResDto getAvailableReservationDate(Long counselorId){
         List<LocalDate> dateList = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
@@ -125,10 +125,10 @@ public class ReservationService {
             }
         }
 
-        return ResponseEntity.ok(new AvailableReservationDatesResDto(dateList));
+        return new AvailableReservationDatesResDto(dateList);
     }
 
-    public ResponseEntity<AvailableReservationTimesResDto> getAvailableReservationTime(Long counselorId, LocalDate selectDate){
+    public AvailableReservationTimesResDto getAvailableReservationTime(Long counselorId, LocalDate selectDate){
         List<LocalTime> timeList = new ArrayList<>();
         LocalTime currentTime = LocalTime.now();
         LocalDate currentDate = LocalDate.now();
@@ -145,7 +145,7 @@ public class ReservationService {
             }
         }
 
-        return ResponseEntity.ok(new AvailableReservationTimesResDto(timeList));
+        return new AvailableReservationTimesResDto(timeList);
     }
 
 }

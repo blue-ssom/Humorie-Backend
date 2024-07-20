@@ -1,6 +1,8 @@
 package com.example.humorie.payment.service;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.payment.dto.request.PaymentCallbackRequest;
 import com.example.humorie.payment.dto.response.PaymentResDto;
 import com.example.humorie.payment.entity.PaymentStatus;
@@ -13,6 +15,8 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentService {
 
+    private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
     private final ReservationRepository reservationRepository;
     private final PaymentRepository paymentRepository;
     private final IamportClient iamportClient;
@@ -43,7 +48,7 @@ public class PaymentService {
                 reservationRepository.delete(reservation);
                 paymentRepository.delete(reservation.getPayment());
 
-                throw new RuntimeException("Incomplete payment");
+                throw new ErrorException(ErrorCode.INCOMPLETE_PAYMENT);
             }
 
             // DB에 저장된 결제 금액
@@ -60,7 +65,7 @@ public class PaymentService {
                 // 결제금액 위변조로 의심되는 결제금액을 취소(아임포트)
                 iamportClient.cancelPaymentByImpUid(new CancelData(iamportResponse.getResponse().getImpUid(), true, new BigDecimal(iamportPrice)));
 
-                throw new RuntimeException("Suspected payment forgery");
+                throw new ErrorException(ErrorCode.SUSPECTED_PAYMENT_FORGERY);
             }
 
             // 결제 상태 변경
@@ -71,9 +76,9 @@ public class PaymentService {
             return "Success payment";
 
         } catch (IamportResponseException e) {
-            throw new RuntimeException(e);
+            throw new ErrorException(ErrorCode.FAILED_PAYMENT);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ErrorException(ErrorCode.FAILED_PAYMENT);
         }
     }
 
@@ -107,7 +112,7 @@ public class PaymentService {
                 paymentResDtos.add(paymentResDto);
 
             } catch (IamportResponseException | IOException e) {
-                throw new RuntimeException(e);
+                throw new ErrorException(ErrorCode.FAILED_PAYMENT);
             }
         }
 

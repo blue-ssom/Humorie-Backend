@@ -1,6 +1,7 @@
 package com.example.humorie.payment.controller;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
+import com.example.humorie.global.exception.ErrorResponse;
 import com.example.humorie.payment.dto.request.PaymentCallbackRequest;
 import com.example.humorie.payment.dto.response.PaymentResDto;
 import com.example.humorie.payment.service.PaymentService;
@@ -27,18 +28,18 @@ public class PaymentController {
 
     @Operation(summary = "결제 검증")
     @PostMapping("")
-    public ResponseEntity<String> validationPayment(@RequestBody PaymentCallbackRequest request) {
+    public ErrorResponse<String> validationPayment(@RequestBody PaymentCallbackRequest request) {
         String response = paymentService.paymentByCallback(request);
 
-        return ResponseEntity.ok(response);
+        return new ErrorResponse<>(response);
     }
 
     @Operation(summary = "결제 내역 조회")
     @GetMapping("/get")
-    public ResponseEntity<List<PaymentResDto>> getPayments(@AuthenticationPrincipal PrincipalDetails principal) {
+    public ErrorResponse<List<PaymentResDto>> getPayments(@AuthenticationPrincipal PrincipalDetails principal) {
         List<PaymentResDto> payments = paymentService.getPayments(principal);
 
-        return ResponseEntity.ok(payments);
+        return new ErrorResponse<>(payments);
     }
 
 }
