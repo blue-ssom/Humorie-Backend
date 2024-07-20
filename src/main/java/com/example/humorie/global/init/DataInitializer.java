@@ -9,12 +9,16 @@ import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
+import com.example.humorie.reservation.entity.Reservation;
+import com.example.humorie.reservation.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,6 +37,7 @@ public class DataInitializer implements CommandLineRunner {
     private final SymptomRepository symptomRepository;
     private final ReviewRepository reviewRepository;
     private final PointRepository pointRepository;
+    private final ReservationRepository reservationRepository;
     private final SecurityConfig securityConfig;
 
 
@@ -208,6 +213,13 @@ public class DataInitializer implements CommandLineRunner {
         Point point6 = Point.builder().points(100000).type("earn").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00)).account(accountDetail2).build();
         Point point7 = Point.builder().points(70000).type("spend").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00)).account(accountDetail2).build();
 
+        Reservation reservation1 = Reservation.builder().counselDate(LocalDate.of(2024,8,18)).account(accountDetail1).counselTime(LocalTime.of(12,0)).location("서울 강남구").counselor(counselor1).build();
+        Reservation reservation2 = Reservation.builder().counselDate(LocalDate.of(2024,8,19)).account(accountDetail2).counselTime(LocalTime.of(12,0)).location("서울 강남구").counselor(counselor2).build();
+        Reservation reservation3 = Reservation.builder().counselDate(LocalDate.of(2024,8,20)).account(accountDetail1).counselTime(LocalTime.of(12,0)).location("서울 강남구").counselor(counselor3).build();
+        Reservation reservation4 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail2).counselTime(LocalTime.of(12,0)).location("서울 강남구").counselor(counselor2).build();
+
+
+
         counselorRepository.saveAll(Arrays.asList(counselor1, counselor2, counselor3, counselor4, counselor5, counselor6));
         methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4, method5, method6, method7, method8));
         fieldRepository.saveAll(Arrays.asList(field1, field2, field3, field4, field5, field6, field7, field8, field9, field10));
@@ -217,6 +229,7 @@ public class DataInitializer implements CommandLineRunner {
         educationRepository.saveAll(Arrays.asList(education1, education2, education3, education4, education5, education6));
         careerRepository.saveAll(Arrays.asList(career1, career2, career3, career4, career5, career6, career7, career8));
         pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7));
+        reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4));
 
     }
 }
