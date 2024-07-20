@@ -1,6 +1,7 @@
 package com.example.humorie.account.controller;
 
 import com.example.humorie.account.dto.request.AccountNameFinder;
+import com.example.humorie.account.dto.request.EmailDto;
 import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.request.JoinReq;
 import com.example.humorie.account.dto.request.LoginReq;
@@ -9,6 +10,8 @@ import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.service.CookieService;
+import com.example.humorie.account.service.EmailService;
+import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +32,7 @@ public class AccountController {
 
     private final AccountService accountService;
     private final CookieService cookieService;
+    private final EmailService emailService;
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/join")
@@ -69,10 +73,21 @@ public class AccountController {
         return new ErrorResponse<>(newTokenDto);
     }
 
-    @PostMapping("/find-userId")
+    @PostMapping("/find-id")
     @Operation(summary = "아이디 찾기")
     public ErrorResponse<String> findAccountNameByEmail(@RequestBody AccountNameFinder finder) {
         return new ErrorResponse<>(accountService.findAccountNameByEmail(finder.getEmail()));
+    }
+
+    @PostMapping("/find-password")
+    @Operation(summary = "비밀번호 찾기")
+    public ErrorResponse<String> sendEmail(@RequestBody EmailDto emailDto) {
+        try {
+            return new ErrorResponse<>(emailService.sendEmail(emailDto.getEmail()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ErrorResponse<>(ErrorCode.SEND_EMAIL_FAILED);
+        }
     }
 
 }
