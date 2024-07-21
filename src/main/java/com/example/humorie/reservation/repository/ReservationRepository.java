@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -22,5 +23,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("SELECT COUNT(r) > 0 FROM Reservation r WHERE r.counselor.id = :counselorId AND r.counselDate = :counselDate AND r.counselTime = :counselTime")
     boolean existsByCounselorIdAndCounselDateAndCounselTime(@Param("counselorId") Long counselorId, @Param("counselDate") LocalDate counselDate, @Param("counselTime") LocalTime counselTime);
 
-
+    Optional<Reservation> findReservationByReservationUid(String uid);
 }

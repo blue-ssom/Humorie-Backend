@@ -13,7 +13,11 @@ public class CreateReservationReq {
 
     private String location;
 
+    private String counselContent;
+
     private LocalDate counselDate;
 
     private LocalTime counselTime;
+
+    private Integer price;
 }

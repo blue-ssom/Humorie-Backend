@@ -1,6 +1,7 @@
 package com.example.humorie.recommendation.controller;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
+import com.example.humorie.global.exception.ErrorResponse;
 import com.example.humorie.recommendation.dto.RecommendationCounselorDto;
 import com.example.humorie.recommendation.dto.RecommendationReviewDto;
 import com.example.humorie.recommendation.service.RecommendationService;
@@ -26,15 +27,17 @@ public class RecommendationController {
 
     @Operation(summary = "상담사 추천")
     @GetMapping("/counselor")
-    public ResponseEntity<List<RecommendationCounselorDto>> recommendCounselor(@AuthenticationPrincipal PrincipalDetails principal) {
+    public ErrorResponse<List<RecommendationCounselorDto>> recommendCounselor(@AuthenticationPrincipal PrincipalDetails principal) {
+        List<RecommendationCounselorDto> recommendationCounselorDtos = recommendationService.recommendCounselor(principal);
 
-        return ResponseEntity.status(HttpStatus.OK).body(recommendationService.recommendCounselor(principal));
+        return new ErrorResponse<>(recommendationCounselorDtos);
     }
 
     @Operation(summary = "리뷰 추천")
     @GetMapping("/review")
-    public ResponseEntity<List<RecommendationReviewDto>> recommendReview(@AuthenticationPrincipal PrincipalDetails principal) {
+    public  ErrorResponse<List<RecommendationReviewDto>>  recommendReview(@AuthenticationPrincipal PrincipalDetails principal) {
+        List<RecommendationReviewDto> recommendationReviewDtos = recommendationService.recommendReview(principal);
 
-        return ResponseEntity.status(HttpStatus.OK).body(recommendationService.recommendReview(principal));
+        return new ErrorResponse<>(recommendationReviewDtos);
     }
 }
