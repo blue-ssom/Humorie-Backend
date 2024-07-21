@@ -40,7 +40,7 @@ public class PaymentService {
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
             // 주문내역 조회
             Reservation reservation = reservationRepository.findReservationByReservationUid(request.getReservationUid())
-                    .orElseThrow(() -> new IllegalArgumentException("Reservation Not Found"));
+                    .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_RESERVATION));
 
             // 결제 완료가 아니면
             if(!iamportResponse.getResponse().getStatus().equals("paid")) {
