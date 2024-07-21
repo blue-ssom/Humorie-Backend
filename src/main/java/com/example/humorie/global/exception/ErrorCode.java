@@ -36,6 +36,7 @@ public enum ErrorCode {
     NONE_EXIST_RESERVATION(false, 2010, "존재하지 않는 예약입니다."),
     INCOMPLETE_PAYMENT(false, 2011, "완료되지 않은 결제입니다."),
     SUSPECTED_PAYMENT_FORGERY(false, 2011, "위변조 의심 결제입니다."),
+    INVALID_NAME(false, 2012, "잘못된 이름 형식입니다."),
 
 
 
