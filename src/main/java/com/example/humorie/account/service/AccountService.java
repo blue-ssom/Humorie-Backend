@@ -59,7 +59,7 @@ public class AccountService {
         AccountDetail accountDetail = AccountDetail.joinAccount(request.getEmail(), jwtSecurityConfig.passwordEncoder().encode(request.getPassword()), request.getAccountName(), request.getName());
         accountRepository.save(accountDetail);
 
-        Point earnedPoints = new Point(accountDetail, 100000, "earn");
+        Point earnedPoints = new Point(accountDetail, 100000, "웰컴 포인트", "earn");
         pointRepository.save(earnedPoints);
 
         return "Success Join";

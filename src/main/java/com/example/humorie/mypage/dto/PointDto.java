@@ -16,6 +16,8 @@ public class PointDto {
 
     private long pointId;
 
+    private String title;
+
     private int earnedPoints;
 
     private int spentPoints;
@@ -28,6 +30,7 @@ public class PointDto {
 
         return PointDto.builder()
                 .pointId(point.getId())
+                .title(point.getTitle())
                 .earnedPoints(earnedPoint)
                 .spentPoints(spentPoint)
                 .transactionDate(point.getTransactionDate())
