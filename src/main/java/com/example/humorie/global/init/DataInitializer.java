@@ -19,9 +19,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 
 @Component
 @RequiredArgsConstructor
@@ -205,13 +203,13 @@ public class DataInitializer implements CommandLineRunner {
         Career career7 = Career.builder().content("경력1").counselor(counselor5).build();
         Career career8 = Career.builder().content("경력1").counselor(counselor6).build();
 
-        Point point1 = Point.builder().points(100000).type("earn").transactionDate(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).build();
-        Point point2 = Point.builder().points(50000).type("spend").transactionDate(LocalDateTime.of(2024, 5, 10, 12, 30, 00)).account(accountDetail1).build();
-        Point point3 = Point.builder().points(1000).type("earn").transactionDate(LocalDateTime.of(2024, 5, 11, 12, 30, 00)).account(accountDetail1).build();
-        Point point4 = Point.builder().points(30000).type("spend").transactionDate(LocalDateTime.of(2024, 6, 2, 12, 30, 00)).account(accountDetail1).build();
-        Point point5 = Point.builder().points(2000).type("earn").transactionDate(LocalDateTime.of(2024, 6, 3, 12, 30, 00)).account(accountDetail1).build();
-        Point point6 = Point.builder().points(100000).type("earn").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00)).account(accountDetail2).build();
-        Point point7 = Point.builder().points(70000).type("spend").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00)).account(accountDetail2).build();
+        Point point1 = Point.builder().points(100000).type("earn").title("웰컴 포인트").transactionDate(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).build();
+        Point point2 = Point.builder().points(50000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 10, 12, 30, 00)).account(accountDetail1).build();
+        Point point3 = Point.builder().points(1000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 5, 11, 12, 30, 00)).account(accountDetail1).build();
+        Point point4 = Point.builder().points(30000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 6, 2, 12, 30, 00)).account(accountDetail1).build();
+        Point point5 = Point.builder().points(2000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 6, 3, 12, 30, 00)).account(accountDetail1).build();
+        Point point6 = Point.builder().points(100000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00)).account(accountDetail2).build();
+        Point point7 = Point.builder().points(70000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00)).account(accountDetail2).build();
 
         Reservation reservation1 = Reservation.builder().counselDate(LocalDate.of(2024,8,18)).account(accountDetail1).counselTime(LocalTime.of(12,0)).location("서울 강남구").counselor(counselor1).build();
         Reservation reservation2 = Reservation.builder().counselDate(LocalDate.of(2024,8,19)).account(accountDetail2).counselTime(LocalTime.of(12,0)).location("서울 강남구").counselor(counselor2).build();

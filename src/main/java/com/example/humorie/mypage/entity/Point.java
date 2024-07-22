@@ -22,6 +22,8 @@ public class Point {
 
     private int points;
 
+    private String title;
+
     //earn or spend
     private String type;
 
@@ -30,9 +32,10 @@ public class Point {
     @ManyToOne(fetch = FetchType.LAZY)
     private AccountDetail account;
 
-    public Point(AccountDetail accountDetail, int points, String type) {
+    public Point(AccountDetail accountDetail, int points, String title, String type) {
         this.account = accountDetail;
         this.points = points;
+        this.title = title;
         this.type = type;
         this.transactionDate = LocalDateTime.now();
     }
