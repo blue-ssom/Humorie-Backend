@@ -1,6 +1,6 @@
 package com.example.humorie.global.init;
 
-import com.example.humorie.account.config.SecurityConfig;
+import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.consultant.counselor.entity.*;
