@@ -1,4 +1,4 @@
-package com.example.humorie.account.config;
+package com.example.humorie.global.config;
 
 import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
