@@ -113,6 +113,8 @@ public class PaymentService {
 
             } catch (IamportResponseException | IOException e) {
                 throw new ErrorException(ErrorCode.FAILED_PAYMENT);
+            } catch (NullPointerException e){
+                throw new ErrorException(ErrorCode.NONE_EXIST_RESERVATION);
             }
         }
 
