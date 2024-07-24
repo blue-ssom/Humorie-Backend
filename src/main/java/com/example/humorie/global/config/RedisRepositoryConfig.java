@@ -1,4 +1,4 @@
-package com.example.humorie.account.config;
+package com.example.humorie.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
