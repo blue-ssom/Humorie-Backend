@@ -83,7 +83,7 @@ public class PaymentService {
     }
 
     public List<PaymentResDto> getPayments(PrincipalDetails principal) {
-        List<Reservation> reservations = reservationRepository.findAllByAccountEmailOrderByCreatedAtDesc(principal.getUsername());
+        List<Reservation> reservations = reservationRepository.findAllByAccount_EmailOrderByCreatedAtDesc(principal.getUsername());
 
         List<PaymentResDto> paymentResDtos = new ArrayList<>();
 

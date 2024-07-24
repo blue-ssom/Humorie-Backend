@@ -97,7 +97,7 @@ public class ReservationService {
         if (principal == null)
             throw new ErrorException(ErrorCode.NONE_EXIST_USER);
 
-        List<Reservation> reservations = reservationRepository.findAllByAccountEmailOrderByCreatedAtDesc(principal.getUsername());
+        List<Reservation> reservations = reservationRepository.findAllByAccount_EmailOrderByCreatedAtDesc(principal.getUsername());
         List<ReservationDto> reservationDtos = reservations.stream()
                 .map(reservation -> new ReservationDto(
                         reservation.getId(),

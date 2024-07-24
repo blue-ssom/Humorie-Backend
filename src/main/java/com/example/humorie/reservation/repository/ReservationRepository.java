@@ -14,8 +14,10 @@ import java.util.Optional;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    @Query("SELECT r FROM Reservation r WHERE r.account.email = :accountEmail ORDER BY r.createdAt DESC")
-    List<Reservation> findAllByAccountEmailOrderByCreatedAtDesc(@Param("accountEmail") String accountEmail);
+    List<Reservation> findAllByAccount_EmailOrderByCreatedAtDesc(String accountEmail);
+
+//    @Query("SELECT r FROM Reservation r WHERE r.account.email = :accountEmail ORDER BY r.createdAt DESC")
+//    List<Reservation> findAllByAccountEmailOrderByCreatedAtDesc(@Param("accountEmail") String accountEmail);
 
     @Query("SELECT COUNT(r) FROM Reservation r WHERE r.counselor.id = :counselorId AND r.counselDate = :counselDate")
     int countByCounselorIdAndCounselDate(@Param("counselorId") Long counselorId, @Param("counselDate") LocalDate counselDate);
