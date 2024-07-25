@@ -68,6 +68,10 @@ public class ReservationService {
 
         int totalPoints = totalEarnedPoints - totalSpentPoints;
 
+        if(totalPoints < createReservationReq.getPoint()){
+            throw new ErrorException(ErrorCode.EXCEED_POINT);
+        }
+
         // 임시 결제내역 생성
         Payment payment = Payment.builder()
                 .price(createReservationReq.getPrice())

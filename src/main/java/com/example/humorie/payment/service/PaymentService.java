@@ -3,6 +3,8 @@ package com.example.humorie.payment.service;
 import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
+import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.mypage.repository.PointRepository;
 import com.example.humorie.payment.dto.request.PaymentCallbackRequest;
 import com.example.humorie.payment.dto.response.PaymentResDto;
 import com.example.humorie.payment.entity.PaymentStatus;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class PaymentService {
     private final ReservationRepository reservationRepository;
     private final PaymentRepository paymentRepository;
     private final IamportClient iamportClient;
+    private final PointRepository pointRepository;
 
     public String paymentByCallback(PaymentCallbackRequest request) {
 
@@ -42,6 +46,11 @@ public class PaymentService {
             Reservation reservation = reservationRepository.findReservationByReservationUid(request.getReservationUid())
                     .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_RESERVATION));
 
+            // DB에 저장된 결제 금액
+            int price = reservation.getPayment().getFinalPrice();
+            // 실 결제 금액
+            int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
+
             // 결제 완료가 아니면
             if(!iamportResponse.getResponse().getStatus().equals("paid")) {
                 // 주문, 결제 삭제
@@ -51,33 +60,36 @@ public class PaymentService {
                 throw new ErrorException(ErrorCode.INCOMPLETE_PAYMENT);
             }
 
-            // DB에 저장된 결제 금액
-            int price = reservation.getPayment().getPrice();
-            // 실 결제 금액
-            int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
 
             // 결제 금액 검증
             if(iamportPrice != price) {
                 // 주문, 결제 삭제
                 reservationRepository.delete(reservation);
                 paymentRepository.delete(reservation.getPayment());
-
                 // 결제금액 위변조로 의심되는 결제금액을 취소(아임포트)
                 iamportClient.cancelPaymentByImpUid(new CancelData(iamportResponse.getResponse().getImpUid(), true, new BigDecimal(iamportPrice)));
 
                 throw new ErrorException(ErrorCode.SUSPECTED_PAYMENT_FORGERY);
             }
 
-            // 결제 상태 변경
+            // 포인트 사용
+            Point point = new Point().builder()
+                    .title("상담 예약")
+                    .transactionDate(LocalDateTime.now())
+                    .points(reservation.getPayment().getPoint())
+                    .account(reservation.getAccount())
+                    .type("spend")
+                    .build();
+
+            // 결제 상태 및 포인트 데이터베이스 반영
             reservation.getPayment().changePaymentBySuccess(PaymentStatus.OK, iamportResponse.getResponse().getImpUid());
             paymentRepository.save(reservation.getPayment());
+            pointRepository.save(point);
             reservationRepository.save(reservation);
 
             return "Success payment";
 
-        } catch (IamportResponseException e) {
-            throw new ErrorException(ErrorCode.FAILED_PAYMENT);
-        } catch (IOException e) {
+        } catch (IamportResponseException | IOException e) {
             throw new ErrorException(ErrorCode.FAILED_PAYMENT);
         }
     }
