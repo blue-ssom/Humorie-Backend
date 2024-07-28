@@ -53,19 +53,13 @@ public class ConsultDetailController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "9") int size
     ) {
-
         // 페이지 번호와 크기에 대한 유효성 검사
-        if (page < 1) {
+        if (page < 0 || size < 1 || size > 9) {
             // Size must be between 1 and 9
             throw new ErrorException(ErrorCode.REQUEST_ERROR);
         }
 
-        // 크기 제한 (최소 1, 최대 9)
-        if (size < 1 || size > 9) {
-            // Size must be between 1 and 9
-            throw new ErrorException(ErrorCode.REQUEST_ERROR);
-        }
-
+        // Pageable 객체 생성 - page는 1부터 시작하므로, 0 기반 인덱스로 변환하기 위해 1을 뺍니다.
         Pageable pageable = PageRequest.of(page - 1, size);
         return consultDetailService.findAllConsultDetail(principalDetails, pageable);
     }
