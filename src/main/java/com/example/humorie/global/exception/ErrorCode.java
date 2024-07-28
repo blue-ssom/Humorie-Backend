@@ -49,8 +49,11 @@ public enum ErrorCode {
     BOOKMARK_EXISTS(false, 3002, "해당 상담사에 대한 북마크가 이미 존재합니다."),
     NONE_EXIST_BOOKMARK(false, 3003, "존재하지 않는 북마크입니다."),
     SEARCH_FAILED(false, 3004, "상담사에 대한 검색을 실패했습니다."),
-    FAILED_PAYMENT(false, 3005, "결제 실패");
+    FAILED_PAYMENT(false, 3005, "결제 실패"),
 
+    // consult_detail
+    NONE_EXIST_CONSULT_DETAIL(false, 3006, "존재하지 않는 상담 내역입니다."),
+    CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요");
 
     private final boolean isSuccess;
 
