@@ -1,10 +1,7 @@
 package com.example.humorie.account.controller;
 
-import com.example.humorie.account.dto.request.AccountNameFinder;
-import com.example.humorie.account.dto.request.EmailDto;
+import com.example.humorie.account.dto.request.*;
 import com.example.humorie.account.dto.response.TokenDto;
-import com.example.humorie.account.dto.request.JoinReq;
-import com.example.humorie.account.dto.request.LoginReq;
 import com.example.humorie.account.dto.response.LoginRes;
 import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
@@ -88,6 +85,12 @@ public class AccountController {
             e.printStackTrace();
             return new ErrorResponse<>(ErrorCode.SEND_EMAIL_FAILED);
         }
+    }
+
+    @PostMapping("/account-name/duplicate")
+    @Operation(summary = "아이디 중복 확인")
+    public ErrorResponse<String> checkAccountNameAvailability(@RequestBody AccountNameAvailability availability) {
+        return new ErrorResponse<>(accountService.isAccountNameAvailable(availability.getAccountName()));
     }
 
 }
