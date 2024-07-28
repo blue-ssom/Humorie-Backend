@@ -1,23 +1,20 @@
 package com.example.humorie.consultant.review.dto;
 
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewRes {
-
-    private long reviewId;
+public class ReviewReq {
 
     private String title;
 
     private String content;
 
     private Double rating;
-
-    private LocalDateTime createdAt;
 
 }
