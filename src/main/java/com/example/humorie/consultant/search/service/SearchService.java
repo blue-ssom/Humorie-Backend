@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class SearchService {
         List<Counselor> counselors = counselorRepository.findAll();
 
         return counselors.stream()
+                .sorted(Comparator.comparingDouble(Counselor::getRating).reversed())
                 .map(this::mapToCounselorDto)
                 .collect(Collectors.toList());
     }
