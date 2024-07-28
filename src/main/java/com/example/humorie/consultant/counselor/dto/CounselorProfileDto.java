@@ -1,6 +1,6 @@
 package com.example.humorie.consultant.counselor.dto;
 
-import com.example.humorie.consultant.review.dto.ReviewDto;
+import com.example.humorie.consultant.review.dto.ReviewRes;
 import lombok.*;
 
 import java.util.List;
@@ -38,6 +38,6 @@ public class CounselorProfileDto {
 
     private Set<String> counselingFields;
 
-    private List<ReviewDto> reviews;
+    private List<ReviewRes> reviews;
 
 }
