@@ -33,7 +33,7 @@ public class RecommendationService {
         List<Counselor> counselors = counselorRepository.findAll();
 
         if(principal != null){
-            List<Reservation> reservations = reservationRepository.findAllByAccountEmailOrderByCreatedAtDesc(principal.getUsername());
+            List<Reservation> reservations = reservationRepository.findAllByAccount_EmailOrderByCreatedAtDesc(principal.getUsername());
             return getRecommendCounselorsWithLogin(counselors, reservations);
 
         }
@@ -45,7 +45,7 @@ public class RecommendationService {
         List<Review> reviews = reviewRepository.findAll();
 
         if(principal != null){
-            List<Reservation> reservations = reservationRepository.findAllByAccountEmailOrderByCreatedAtDesc(principal.getUsername());
+            List<Reservation> reservations = reservationRepository.findAllByAccount_EmailOrderByCreatedAtDesc(principal.getUsername());
             return getRecommendReviewsWithLogin(reviews, reservations);
 
         }
