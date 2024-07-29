@@ -4,7 +4,10 @@ import com.example.humorie.account.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.account.repository.AccountRepository;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.mypage.dto.request.UserInfoUpdate;
+import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,22 @@ public class UserInfoService {
     private final AccountRepository accountRepository;
     private final UserInfoValidationService userInfoValidationService;
     private final SecurityConfig jwtSecurityConfig;
+
+    // 사용자 정보 조회
+    public GetUserInfoResDto getMyAccount(PrincipalDetails principalDetails) {
+        AccountDetail account = principalDetails.getAccountDetail();
+
+        if(account == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
+
+        return GetUserInfoResDto.builder()
+                .accountName(account.getAccountName())
+                .email(account.getEmail())
+                .id(account.getId())
+                .emailSubscription(false)
+                .build();
+    }
 
     // 사용자 정보 업데이트
     public String updateUserInfo(PrincipalDetails principalDetails, UserInfoUpdate updateDto) {

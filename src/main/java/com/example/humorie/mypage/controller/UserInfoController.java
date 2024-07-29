@@ -22,7 +22,7 @@ public class UserInfoController {
     @GetMapping("/get")
     @Operation(summary = "내 정보 조회(마이페이지)")
     public ErrorResponse<GetUserInfoResDto> getAccountById(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        GetUserInfoResDto account = accountService.getMyAccount(principalDetails);
+        GetUserInfoResDto account = userInfoService.getMyAccount(principalDetails);
         return new ErrorResponse<>(account);
     }
 

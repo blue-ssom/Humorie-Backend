@@ -138,22 +138,6 @@ public class AccountService {
         }
     }
 
-    // 사용자 정보 조회
-    public GetUserInfoResDto getMyAccount(PrincipalDetails principalDetails) {
-        AccountDetail account = principalDetails.getAccountDetail();
-
-        if(account == null){
-            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
-        }
-
-        return GetUserInfoResDto.builder()
-                .accountName(account.getAccountName())
-                .email(account.getEmail())
-                .id(account.getId())
-                .emailSubscription(false)
-                .build();
-    }
-
     public String deleteAccount(PrincipalDetails principalDetails) {
        AccountDetail account = principalDetails.getAccountDetail();
 
