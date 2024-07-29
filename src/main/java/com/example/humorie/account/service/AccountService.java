@@ -2,20 +2,18 @@ package com.example.humorie.account.service;
 
 import com.example.humorie.account.config.SecurityConfig;
 import com.example.humorie.account.dto.request.AccountDetailUpdate;
-import com.example.humorie.account.dto.response.GetAccountResDto;
 import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.request.JoinReq;
 import com.example.humorie.account.dto.request.LoginReq;
 import com.example.humorie.account.dto.response.LoginRes;
 import com.example.humorie.account.entity.AccountDetail;
-import com.example.humorie.account.entity.LoginType;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.global.exception.ErrorResponse;
+import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,7 +21,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -141,14 +138,14 @@ public class AccountService {
     }
 
     // 사용자 정보 조회
-    public GetAccountResDto getMyAccount(PrincipalDetails principalDetails) {
+    public GetUserInfoResDto getMyAccount(PrincipalDetails principalDetails) {
         AccountDetail account = principalDetails.getAccountDetail();
 
         if(account == null){
             throw new ErrorException(ErrorCode.NONE_EXIST_USER);
         }
 
-        return GetAccountResDto.builder()
+        return GetUserInfoResDto.builder()
                 .accountName(account.getAccountName())
                 .email(account.getEmail())
                 .id(account.getId())
