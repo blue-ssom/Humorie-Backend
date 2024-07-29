@@ -5,6 +5,7 @@ import com.example.humorie.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +13,8 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 public class UserInfoValidationService {
+
+    private final PasswordEncoder passwordEncoder;
 
     // 이름 유효성 검사
     public void validateName(String name) {
@@ -60,4 +63,12 @@ public class UserInfoValidationService {
             throw new ErrorException(ErrorCode.PASSWORD_MISMATCH);
         }
     }
+
+    // 회원 탈퇴 시 원시 비밀번호와 암호화된 비밀번호가 일치하는지 확인
+    public void validatePasswordMatch(String rawPassword, String encodedPassword) {
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new  ErrorException(ErrorCode.PASSWORD_MISMATCH);
+        }
+    }
+
 }

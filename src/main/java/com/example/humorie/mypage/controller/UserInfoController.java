@@ -3,6 +3,7 @@ package com.example.humorie.mypage.controller;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.global.exception.ErrorResponse;
+import com.example.humorie.mypage.dto.request.UserInfoDelete;
 import com.example.humorie.mypage.dto.request.UserInfoUpdate;
 import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import com.example.humorie.mypage.service.UserInfoService;
@@ -31,6 +32,16 @@ public class UserInfoController {
     public ErrorResponse<String> updateUserInfo(@AuthenticationPrincipal PrincipalDetails principalDetails,
                                                @RequestBody UserInfoUpdate updateDto) {
         String response = userInfoService.updateUserInfo(principalDetails, updateDto);
+
+        return new ErrorResponse<>(response);
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "회원 탈퇴")
+    public ErrorResponse<String> deleteAccount(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                               @RequestBody UserInfoDelete deleteDto) {
+
+        String response = userInfoService.deleteUserInfo(principalDetails, deleteDto);
 
         return new ErrorResponse<>(response);
     }

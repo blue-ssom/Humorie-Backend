@@ -1,20 +1,16 @@
 package com.example.humorie.account.service;
 
 import com.example.humorie.account.config.SecurityConfig;
-import com.example.humorie.account.dto.request.AccountDetailUpdate;
 import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.request.JoinReq;
 import com.example.humorie.account.dto.request.LoginReq;
 import com.example.humorie.account.dto.response.LoginRes;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.JwtTokenUtil;
-import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.mypage.dto.request.UserInfoUpdate;
-import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -136,14 +132,6 @@ public class AccountService {
         } else {
             throw new RuntimeException("Account not found with email: " + email);
         }
-    }
-
-    public String deleteAccount(PrincipalDetails principalDetails) {
-       AccountDetail account = principalDetails.getAccountDetail();
-
-        accountRepository.deleteById(account.getId());
-
-        return "Success Delete";
     }
 }
 

@@ -85,13 +85,4 @@ public class AccountController {
             return new ErrorResponse<>(ErrorCode.SEND_EMAIL_FAILED);
         }
     }
-
-    @DeleteMapping("/delete")
-    @Operation(summary = "회원 탈퇴하기(마이페이지)")
-    public ErrorResponse<String> deleteAccount(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-
-        String response = accountService.deleteAccount(principalDetails);
-
-        return new ErrorResponse<>(response);
-    }
 }
