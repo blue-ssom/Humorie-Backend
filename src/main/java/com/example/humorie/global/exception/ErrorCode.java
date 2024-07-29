@@ -37,8 +37,7 @@ public enum ErrorCode {
     INCOMPLETE_PAYMENT(false, 2011, "완료되지 않은 결제입니다."),
     SUSPECTED_PAYMENT_FORGERY(false, 2011, "위변조 의심 결제입니다."),
     INVALID_NAME(false, 2012, "잘못된 이름 형식입니다."),
-
-
+    EXCEED_POINT(false, 2013, "포인트가 초과되었습니다."),
 
     /**
      * 3000 : Response 오류

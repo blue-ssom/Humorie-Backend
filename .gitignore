@@ -8,6 +8,12 @@ HELP.md
 /build/resources
 /build/tmp
 
+/build/classes
+/build/generated
+/build/resources
+/build/tmp
+
+
 ### STS ###
 .apt_generated
 .classpath

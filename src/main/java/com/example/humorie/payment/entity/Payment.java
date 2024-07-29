@@ -14,12 +14,16 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer price;
+    private Integer point;
+    private Integer finalPrice;
     private PaymentStatus status;
     private String paymentUid; // 결제 고유 번호
 
     @Builder
-    public Payment(Integer price, PaymentStatus status) {
+    public Payment(Integer price, Integer point, Integer finalPrice, PaymentStatus status) {
         this.price = price;
+        this.point = point;
+        this.finalPrice = finalPrice;
         this.status = status;
     }
 
