@@ -86,16 +86,6 @@ public class AccountController {
         }
     }
 
-
-    @PutMapping("/update")
-    @Operation(summary = "내 정보 업데이트(마이페이지)")
-    public ErrorResponse<String> updateAccount(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                                @RequestBody AccountDetailUpdate updateDto) {
-        String response = accountService.updateAccount(principalDetails, updateDto);
-
-        return new ErrorResponse<>(response);
-    }
-
     @DeleteMapping("/delete")
     @Operation(summary = "회원 탈퇴하기(마이페이지)")
     public ErrorResponse<String> deleteAccount(@AuthenticationPrincipal PrincipalDetails principalDetails) {

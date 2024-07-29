@@ -13,6 +13,7 @@ import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
+import com.example.humorie.mypage.dto.request.UserInfoUpdate;
 import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
@@ -151,35 +152,6 @@ public class AccountService {
                 .id(account.getId())
                 .emailSubscription(false)
                 .build();
-    }
-
-    // 사용자 정보 업데이트
-    public String updateAccount(PrincipalDetails principalDetails, AccountDetailUpdate updateDto) {
-        AccountDetail account = principalDetails.getAccountDetail();
-
-        // 유효성 검사 및 필드 업데이트
-        // 이름
-        validationService.validateName(updateDto.getName());
-        account.setName(updateDto.getName());
-
-        //이메일
-        validationService.validateEmail(updateDto.getEmail());
-        account.setEmail(updateDto.getEmail());
-
-        // 비밀번호
-        validationService.validatePassword(updateDto.getPassword());
-        validationService.validatePasswordConfirmation(updateDto.getPassword(), updateDto.getPasswordCheck());
-        account.setPassword(jwtSecurityConfig.passwordEncoder().encode(updateDto.getPassword()));
-
-        // 이메일 수신 여부 체크
-//        if (updateDto.getEmailSubscription() != null) {
-//            account.setEmailSubscription(updateDto.getEmailSubscription());
-//        }
-
-        accountRepository.save(account);
-
-        // 변경된 사용자 정보를 저장
-        return "Success Update";
     }
 
     public String deleteAccount(PrincipalDetails principalDetails) {
