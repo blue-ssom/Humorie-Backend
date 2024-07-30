@@ -37,11 +37,11 @@ public enum ErrorCode {
     INCOMPLETE_PAYMENT(false, 2011, "완료되지 않은 결제입니다."),
     SUSPECTED_PAYMENT_FORGERY(false, 2011, "위변조 의심 결제입니다."),
     EMPTY_NAME(false, 2012, "이름을 입력해주세요"),
+    EXCEED_POINT(false, 2013, "포인트가 초과되었습니다."),
     EMPTY_EMAIL(false, 2014, "이메일을 입력해주세요"),
     EMPTY_PASSWORD(false, 2015, "비밀번를 입력해주세요"),
 
-
-
+  
     /**
      * 3000 : Response 오류
      */

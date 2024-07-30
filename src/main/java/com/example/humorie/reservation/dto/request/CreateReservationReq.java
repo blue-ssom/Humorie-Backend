@@ -19,5 +19,9 @@ public class CreateReservationReq {
 
     private LocalTime counselTime;
 
+    private Integer point;
+
     private Integer price;
+
+    private Integer finalPrice;
 }

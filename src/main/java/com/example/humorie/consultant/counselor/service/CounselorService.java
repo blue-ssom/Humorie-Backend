@@ -44,7 +44,8 @@ public class CounselorService {
         counselorRepository.save(counselor);
 
         List<ReviewDto> reviewDTOs = reviews.stream()
-                .sorted(Comparator.comparingInt(Review::getRecommendationCount).reversed())
+                .sorted(Comparator.comparingDouble(Review::getRating).reversed()
+                        .thenComparing(Comparator.comparingInt(Review::getRecommendationCount).reversed()))
                 .map(review -> ReviewDto.builder()
                         .content(review.getContent())
                         .rating(review.getRating())
