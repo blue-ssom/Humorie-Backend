@@ -33,10 +33,6 @@ public enum ErrorCode {
     INVALID_PASSWORD(false, 2007, "잘못된 비밀번호 형식입니다. 비밀번호는 최소 8자 이상 16자 이하이며, 적어도 하나의 숫자와 알파벳, 특수문자가 포함되어야 합니다."),
     INVALID_ID(false, 2008, "잘못된 아이디 형식입니다. 아이디는 최소 6자 이상이어야 하며, 소문자 알파벳과 숫자로 구성되어야 합니다."),
     SEND_EMAIL_FAILED(false, 2009, "이메일 전송에 실패했습니다."),
-    NONE_EXIST_RESERVATION(false, 2010, "존재하지 않는 예약입니다."),
-    INCOMPLETE_PAYMENT(false, 2011, "완료되지 않은 결제입니다."),
-    SUSPECTED_PAYMENT_FORGERY(false, 2011, "위변조 의심 결제입니다."),
-    EXCEED_POINT(false, 2012, "포인트가 초과되었습니다."),
 
 
 
@@ -49,7 +45,12 @@ public enum ErrorCode {
     BOOKMARK_EXISTS(false, 3002, "해당 상담사에 대한 북마크가 이미 존재합니다."),
     NONE_EXIST_BOOKMARK(false, 3003, "존재하지 않는 북마크입니다."),
     SEARCH_FAILED(false, 3004, "상담사에 대한 검색을 실패했습니다."),
-    FAILED_PAYMENT(false, 3005, "결제 실패");
+    FAILED_PAYMENT(false, 3005, "결제 실패"),
+    NONE_EXIST_RESERVATION(false, 3006, "존재하지 않는 예약입니다."),
+    INCOMPLETE_PAYMENT(false, 3007, "완료되지 않은 결제입니다."),
+    SUSPECTED_PAYMENT_FORGERY(false, 3008, "위변조 의심 결제입니다."),
+    EXCEED_POINT(false, 3009, "포인트가 초과되었습니다."),
+    NONE_EXIST_REVIEW(false, 3010, "존재하지 않는 리뷰 입니다.");
 
 
     private final boolean isSuccess;
