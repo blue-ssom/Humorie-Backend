@@ -36,9 +36,13 @@ public enum ErrorCode {
     NONE_EXIST_RESERVATION(false, 2010, "존재하지 않는 예약입니다."),
     INCOMPLETE_PAYMENT(false, 2011, "완료되지 않은 결제입니다."),
     SUSPECTED_PAYMENT_FORGERY(false, 2011, "위변조 의심 결제입니다."),
-    INVALID_NAME(false, 2012, "잘못된 이름 형식입니다."),
-    EXCEED_POINT(false, 2013, "포인트가 초과되었습니다."),
+    EXCEED_POINT(false, 2012, "포인트가 초과되었습니다."),
+    NONE_EXIST_REVIEW(false, 2013, "존재하지 않는 리뷰입니다."),
+    REVIEW_PERMISSION_DENIED(false, 2014, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
+    INVALID_NAME(false, 2015, "잘못된 이름 형식입니다."),
+    EXCEED_POINT(false, 2016, "포인트가 초과되었습니다."),
 
+  
     /**
      * 3000 : Response 오류
      */

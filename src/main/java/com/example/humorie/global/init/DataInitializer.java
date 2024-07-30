@@ -120,7 +120,8 @@ public class DataInitializer implements CommandLineRunner {
                 .name("허윤지")
                 .phoneNumber("01055555555")
                 .email("gjdbswl@gmail.com")
-                .gender("경기도 수원시")
+                .gender("여성")
+                .region("경기도 수원시")
                 .rating(3.9)
                 .counselingCount(7)
                 .reviewCount(1)
@@ -160,22 +161,22 @@ public class DataInitializer implements CommandLineRunner {
         Symptom symptom11 = Symptom.builder().symptom("자살").counselor(counselor6).build();
 
 
-        Review review1 = Review.builder().content("좋아요").rating(4.7).recommendationCount(30).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor1).build();
-        Review review2 = Review.builder().content("도움돼요").rating(4.5).recommendationCount(7).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor1).build();
-        Review review3 = Review.builder().content("별로에요").rating(3.0).recommendationCount(29).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor2).build();
-        Review review4 = Review.builder().content("괜찮아요").rating(4.4).recommendationCount(12).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor2).build();
-        Review review5 = Review.builder().content("좋아요").rating(4.7).recommendationCount(30).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor3).build();
-        Review review6 = Review.builder().content("도움돼요").rating(4.5).recommendationCount(7).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor3).build();
-        Review review7 = Review.builder().content("별로에요").rating(3.0).recommendationCount(29).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor3).build();
-        Review review8 = Review.builder().content("괜찮아요").rating(4.4).recommendationCount(12).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor4).build();
-        Review review9 = Review.builder().content("좋아요").rating(4.7).recommendationCount(30).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor4).build();
-        Review review10 = Review.builder().content("도움돼요").rating(4.5).recommendationCount(7).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor4).build();
-        Review review11 = Review.builder().content("별로에요").rating(3.0).recommendationCount(29).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor5).build();
-        Review review12 = Review.builder().content("괜찮아요").rating(4.4).recommendationCount(12).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor5).build();
-        Review review13 = Review.builder().content("좋아요").rating(4.7).recommendationCount(30).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor5).build();
-        Review review14 = Review.builder().content("도움돼요").rating(4.5).recommendationCount(7).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor6).build();
-        Review review15 = Review.builder().content("별로에요").rating(3.0).recommendationCount(29).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor6).build();
-        Review review16 = Review.builder().content("괜찮아요").rating(4.4).recommendationCount(12).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor6).build();
+        Review review1 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor1).build();
+        Review review2 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor1).build();
+        Review review3 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor2).build();
+        Review review4 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor2).build();
+        Review review5 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor3).build();
+        Review review6 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor3).build();
+        Review review7 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor3).build();
+        Review review8 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor4).build();
+        Review review9 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor4).build();
+        Review review10 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor4).build();
+        Review review11 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor5).build();
+        Review review12 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor5).build();
+        Review review13 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor5).build();
+        Review review14 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor6).build();
+        Review review15 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor6).build();
+        Review review16 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor6).build();
 
         Affiliation affiliation1 = Affiliation.builder().societyName("학회1").counselor(counselor1).build();
         Affiliation affiliation2 = Affiliation.builder().societyName("학회2").counselor(counselor2).build();

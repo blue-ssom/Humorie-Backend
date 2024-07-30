@@ -92,6 +92,13 @@ public class AccountController {
         }
     }
 
+    @PostMapping("/account-name/duplicate")
+    @Operation(summary = "아이디 중복 확인")
+    public ErrorResponse<String> checkAccountNameAvailability(@RequestBody AccountNameAvailability availability) {
+        return new ErrorResponse<>(accountService.isAccountNameAvailable(availability.getAccountName()));
+    }
+
+
     @GetMapping("/get")
     @Operation(summary = "내 정보 조회(마이페이지)")
     public ErrorResponse<GetAccountResDto> getAccountById(@AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -116,4 +123,5 @@ public class AccountController {
 
         return new ErrorResponse<>(response);
     }
+  
 }

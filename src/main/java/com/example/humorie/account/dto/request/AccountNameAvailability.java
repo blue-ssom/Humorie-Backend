@@ -3,8 +3,8 @@ package com.example.humorie.account.dto.request;
 import lombok.Data;
 
 @Data
-public class AccountNameFinder {
+public class AccountNameAvailability {
 
-    private String email;
+    private String accountName;
 
 }

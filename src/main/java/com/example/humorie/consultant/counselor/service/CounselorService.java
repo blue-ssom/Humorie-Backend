@@ -3,7 +3,7 @@ package com.example.humorie.consultant.counselor.service;
 import com.example.humorie.consultant.counselor.dto.CounselorProfileDto;
 import com.example.humorie.consultant.counselor.entity.*;
 import com.example.humorie.consultant.counselor.repository.*;
-import com.example.humorie.consultant.review.dto.ReviewDto;
+import com.example.humorie.consultant.review.dto.ReviewRes;
 import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.global.exception.ErrorCode;
@@ -35,21 +35,20 @@ public class CounselorService {
 
         List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
 
-        double totalRating = reviews.stream().mapToDouble(Review::getRating).sum();
+        /*double totalRating = reviews.stream().mapToDouble(Review::getRating).sum();
         int reviewCount = reviews.size();
         double averageRating = reviewCount > 0 ? totalRating / reviewCount : 0.0;
 
         counselor.setRating(averageRating);
         counselor.setReviewCount(reviewCount);
-        counselorRepository.save(counselor);
+        counselorRepository.save(counselor);*/
 
-        List<ReviewDto> reviewDTOs = reviews.stream()
-                .sorted(Comparator.comparingDouble(Review::getRating).reversed()
-                        .thenComparing(Comparator.comparingInt(Review::getRecommendationCount).reversed()))
-                .map(review -> ReviewDto.builder()
+        List<ReviewRes> reviewDTOs = reviews.stream()
+                .sorted(Comparator.comparingDouble(Review::getRating).reversed())
+                .map(review -> ReviewRes.builder()
+                        .title(review.getTitle())
                         .content(review.getContent())
                         .rating(review.getRating())
-                        .recommendationCount(review.getRecommendationCount())
                         .createdAt(review.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());

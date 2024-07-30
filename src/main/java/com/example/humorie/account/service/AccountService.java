@@ -135,9 +135,19 @@ public class AccountService {
         if (accountDetail.isPresent()) {
             return accountDetail.get().getAccountName();
         } else {
-            throw new RuntimeException("Account not found with email: " + email);
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
         }
     }
+
+
+    public String isAccountNameAvailable(String accountName) {
+        if(accountRepository.existsByAccountName(accountName)) {
+            throw new ErrorException(ErrorCode.ID_EXISTS);
+        }
+
+        return "The account name is available";
+    }
+
 
     // 사용자 정보 조회
     public GetAccountResDto getMyAccount(PrincipalDetails principalDetails) {
@@ -191,5 +201,6 @@ public class AccountService {
 
         return "Success Delete";
     }
+
 }
 
