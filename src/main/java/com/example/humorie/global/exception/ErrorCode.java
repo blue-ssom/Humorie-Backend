@@ -39,9 +39,10 @@ public enum ErrorCode {
     EXCEED_POINT(false, 2012, "포인트가 초과되었습니다."),
     NONE_EXIST_REVIEW(false, 2013, "존재하지 않는 리뷰입니다."),
     REVIEW_PERMISSION_DENIED(false, 2014, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
+    INVALID_NAME(false, 2015, "잘못된 이름 형식입니다."),
+    EXCEED_POINT(false, 2016, "포인트가 초과되었습니다."),
 
-
-
+  
     /**
      * 3000 : Response 오류
      */
@@ -51,8 +52,11 @@ public enum ErrorCode {
     BOOKMARK_EXISTS(false, 3002, "해당 상담사에 대한 북마크가 이미 존재합니다."),
     NONE_EXIST_BOOKMARK(false, 3003, "존재하지 않는 북마크입니다."),
     SEARCH_FAILED(false, 3004, "상담사에 대한 검색을 실패했습니다."),
-    FAILED_PAYMENT(false, 3005, "결제 실패");
+    FAILED_PAYMENT(false, 3005, "결제 실패"),
 
+    // consult_detail
+    NONE_EXIST_CONSULT_DETAIL(false, 3006, "존재하지 않는 상담 내역입니다."),
+    CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요");
 
     private final boolean isSuccess;
 
