@@ -131,7 +131,7 @@ public class AccountService {
         if (accountDetail.isPresent()) {
             return accountDetail.get().getAccountName();
         } else {
-            throw new RuntimeException("Account not found with email: " + email);
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
         }
     }
 }

@@ -85,4 +85,11 @@ public class AccountController {
             return new ErrorResponse<>(ErrorCode.SEND_EMAIL_FAILED);
         }
     }
+
+    @PostMapping("/account-name/duplicate")
+    @Operation(summary = "아이디 중복 확인")
+    public ErrorResponse<String> checkAccountNameAvailability(@RequestBody AccountNameAvailability availability) {
+        return new ErrorResponse<>(accountService.isAccountNameAvailable(availability.getAccountName()));
+    }
+
 }

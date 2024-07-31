@@ -1,6 +1,5 @@
 package com.example.humorie.consultant.review.dto;
 
-import com.example.humorie.consultant.review.entity.Review;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,13 +8,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDto {
+public class ReviewRes {
+
+    private long reviewId;
+
+    private String title;
 
     private String content;
 
-    private double rating;
-
-    private int recommendationCount;
+    private Double rating;
 
     private LocalDateTime createdAt;
 

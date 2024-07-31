@@ -3,14 +3,12 @@ package com.example.humorie.consultant.counselor.controller;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.consultant.counselor.dto.BookmarkDto;
 import com.example.humorie.consultant.counselor.dto.CounselorProfileDto;
-import com.example.humorie.consultant.counselor.entity.Bookmark;
 import com.example.humorie.consultant.counselor.service.BookmarkService;
 import com.example.humorie.consultant.counselor.service.CounselorService;
 import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
