@@ -15,4 +15,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("SELECT r FROM Review r WHERE r.counselor.id = :counselorId ORDER BY r.rating LIMIT 1")
     Optional<Review> findTopRatingByCounselorId(@Param(value = "counselorId") long counselorId);
+  
+    List<Review> findAllByCounselorId(Long counselorId);
 }

@@ -16,6 +16,8 @@ public class AccountValidationService {
     private final AccountRepository accountRepository;
 
     public void validatePassword(String password) {
+        if (password == null) throw new ErrorException(ErrorCode.INVALID_PASSWORD);
+
         String passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,16}$";
         Pattern pwPattern = Pattern.compile(passwordRegex);
         Matcher pwMatcher = pwPattern.matcher(password);
@@ -45,5 +47,17 @@ public class AccountValidationService {
         }
     }
 
+    // 이름 유효성 검사
+    public void validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new ErrorException(ErrorCode.INVALID_NAME);
+        }
+    }
+
+    public void validatePasswordConfirmation(String password, String confirmPassword) {
+        if (!password.equals(confirmPassword)) {
+            throw new ErrorException(ErrorCode.PASSWORD_MISMATCH);
+        }
+    }
 
 }

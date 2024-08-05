@@ -1,13 +1,13 @@
 package com.example.humorie.account.controller;
 
-import com.example.humorie.account.dto.request.AccountNameFinder;
-import com.example.humorie.account.dto.request.EmailDto;
+import com.example.humorie.account.dto.request.*;
+import com.example.humorie.account.dto.response.GetAccountResDto;
 import com.example.humorie.account.dto.response.TokenDto;
-import com.example.humorie.account.dto.request.JoinReq;
-import com.example.humorie.account.dto.request.LoginReq;
 import com.example.humorie.account.dto.response.LoginRes;
+import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
+import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.service.CookieService;
 import com.example.humorie.account.service.EmailService;
@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -90,4 +92,36 @@ public class AccountController {
         }
     }
 
+    @PostMapping("/account-name/duplicate")
+    @Operation(summary = "아이디 중복 확인")
+    public ErrorResponse<String> checkAccountNameAvailability(@RequestBody AccountNameAvailability availability) {
+        return new ErrorResponse<>(accountService.isAccountNameAvailable(availability.getAccountName()));
+    }
+
+
+    @GetMapping("/get")
+    @Operation(summary = "내 정보 조회(마이페이지)")
+    public ErrorResponse<GetAccountResDto> getAccountById(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        GetAccountResDto account = accountService.getMyAccount(principalDetails);
+        return new ErrorResponse<>(account);
+    }
+
+    @PutMapping("/update")
+    @Operation(summary = "내 정보 업데이트(마이페이지)")
+    public ErrorResponse<String> updateAccount(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                @RequestBody AccountDetailUpdate updateDto) {
+        String response = accountService.updateAccount(principalDetails, updateDto);
+
+        return new ErrorResponse<>(response);
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "회원 탈퇴하기(마이페이지)")
+    public ErrorResponse<String> deleteAccount(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        String response = accountService.deleteAccount(principalDetails);
+
+        return new ErrorResponse<>(response);
+    }
+  
 }
