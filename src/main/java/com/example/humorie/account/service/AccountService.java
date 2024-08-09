@@ -134,5 +134,13 @@ public class AccountService {
             throw new ErrorException(ErrorCode.NONE_EXIST_USER);
         }
     }
+
+    public String isAccountNameAvailable(String accountName) {
+        if(accountRepository.existsByAccountName(accountName)) {
+            throw new ErrorException(ErrorCode.ID_EXISTS);
+        }
+
+        return "The account name is available";
+    }
 }
 
