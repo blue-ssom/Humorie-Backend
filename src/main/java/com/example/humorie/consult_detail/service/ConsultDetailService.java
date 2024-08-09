@@ -62,36 +62,24 @@ public class ConsultDetailService {
         // Page 객체를 가져옴
         Page<ConsultDetail> consultDetails = consultDetailRepository.findAllConsultDetail(accountDetail, pageable);
 
+        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber(), consultDetails.getTotalPages());
+            throw new ErrorException(ErrorCode.REQUEST_ERROR);
+        }
+
+        // 페이지가 비어 있는지 확인
+        if (consultDetails.isEmpty()) {
+            throw new ErrorException(ErrorCode.NO_RECENT_CONSULT_DETAIL);
+        }
+
         // Page 객체를 ConsultDetailListDto로 변환
         Page<ConsultDetailListDto> consultDetailListDtos = consultDetails.map(ConsultDetailListDto::fromEntity);
         log.info("Requested page number (0-based): {}", pageable.getPageNumber());
         log.info("Total pages available: {}", consultDetailListDtos.getTotalPages());
 
-        // 총 페이지 수가 0인 경우, 요청된 페이지 번호가 0인 경우는 통과
-        if (consultDetails.getTotalPages() == 0 && pageable.getPageNumber() == 0) {
-            return new ConsultDetailPageDto(
-                    consultDetailListDtos.getContent(),
-                    pageable.getPageNumber(),
-                    consultDetailListDtos.getSize(),
-                    consultDetailListDtos.getTotalElements(),
-                    consultDetailListDtos.getTotalPages()
-            );
-        }
-
-        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
-        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
-            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, consultDetailListDtos.getTotalPages());
-            throw new ErrorException(ErrorCode.REQUEST_ERROR);
-        }
-
         // Page 정보를 포함한 ConsultDetailPageDto로 반환
-        return new ConsultDetailPageDto(
-                consultDetailListDtos.getContent(),
-                consultDetailListDtos.getNumber() + 1, // 1 기반 페이지 번호로 변경
-                consultDetailListDtos.getSize(),
-                consultDetailListDtos.getTotalElements(),
-                consultDetailListDtos.getTotalPages());
-
+        return new ConsultDetailPageDto(consultDetailListDtos);
     }
 
     // 특정 상담 내역 조회
