@@ -1,6 +1,7 @@
 package com.example.humorie.consultant.review.repository;
 
 import com.example.humorie.consultant.review.entity.Review;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findTopRatingByCounselorId(@Param(value = "counselorId") long counselorId);
   
     List<Review> findAllByCounselorId(Long counselorId);
+
+    @Transactional
+    void deleteByAccount_Id(Long accountId);
+
 }

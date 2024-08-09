@@ -35,9 +35,12 @@ public enum ErrorCode {
     SEND_EMAIL_FAILED(false, 2009, "이메일 전송에 실패했습니다."),
     REVIEW_PERMISSION_DENIED(false, 2010, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
     INVALID_NAME(false, 2011, "잘못된 이름 형식입니다."),
+    REVIEW_PERMISSION_DENIED(false, 2012, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
+    INVALID_NAME(false, 2013, "잘못된 이름 형식입니다."),
+    EMPTY_NAME(false, 2014, "이름을 입력해주세요"),
+    EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요"),
+    EMPTY_PASSWORD(false, 2016, "비밀번를 입력해주세요"),
 
-
-  
     /**
      * 3000 : Response 오류
      */
@@ -50,8 +53,8 @@ public enum ErrorCode {
 
     // consult_detail
     NONE_EXIST_CONSULT_DETAIL(false, 3006, "존재하지 않는 상담 내역입니다."),
-    CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요");
-  
+    CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요")
+      
     NONE_EXIST_RESERVATION(false, 3008, "존재하지 않는 예약입니다."),
     INCOMPLETE_PAYMENT(false, 3009, "완료되지 않은 결제입니다."),
     SUSPECTED_PAYMENT_FORGERY(false, 3010, "위변조 의심 결제입니다."),

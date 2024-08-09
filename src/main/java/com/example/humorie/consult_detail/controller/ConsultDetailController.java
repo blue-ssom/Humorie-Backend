@@ -1,12 +1,9 @@
 package com.example.humorie.consult_detail.controller;
 
-import com.example.humorie.account.dto.response.GetAccountResDto;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.consult_detail.dto.response.ConsultDetailPageDto;
 import com.example.humorie.consult_detail.dto.response.LatestConsultDetailResDto;
-import com.example.humorie.consult_detail.dto.response.ConsultDetailListDto;
 import com.example.humorie.consult_detail.dto.response.SpecificConsultDetailDto;
-import com.example.humorie.consult_detail.entity.ConsultDetail;
 import com.example.humorie.consult_detail.service.ConsultDetailService;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
@@ -14,17 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.humorie.account.jwt.PrincipalDetails;
-import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import com.example.humorie.account.jwt.PrincipalDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
