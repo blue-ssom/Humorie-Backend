@@ -1,7 +1,7 @@
 package com.example.humorie.account.service;
 
 
-import com.example.humorie.account.config.SecurityConfig;
+import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.request.JoinReq;
 import com.example.humorie.account.dto.request.LoginReq;
