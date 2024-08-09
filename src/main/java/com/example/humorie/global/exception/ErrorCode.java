@@ -40,9 +40,7 @@ public enum ErrorCode {
     NONE_EXIST_REVIEW(false, 2013, "존재하지 않는 리뷰입니다."),
     REVIEW_PERMISSION_DENIED(false, 2014, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
     INVALID_NAME(false, 2015, "잘못된 이름 형식입니다."),
-    EXCEED_POINT(false, 2016, "포인트가 초과되었습니다."),
     EMPTY_NAME(false, 2017, "이름을 입력해주세요"),
-    EXCEED_POINT(false, 2018, "포인트가 초과되었습니다."),
     EMPTY_EMAIL(false, 2019, "이메일을 입력해주세요"),
     EMPTY_PASSWORD(false, 2020, "비밀번를 입력해주세요"),
 
