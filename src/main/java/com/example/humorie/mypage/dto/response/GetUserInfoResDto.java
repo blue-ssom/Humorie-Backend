@@ -1,11 +1,11 @@
-package com.example.humorie.account.dto.response;
+package com.example.humorie.mypage.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class GetAccountResDto {
+public class GetUserInfoResDto {
 
     private Long id;
 
@@ -17,6 +17,4 @@ public class GetAccountResDto {
 
     // 이메일 수신
     private Boolean emailSubscription;
-
-
 }

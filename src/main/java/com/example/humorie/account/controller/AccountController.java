@@ -1,10 +1,8 @@
 package com.example.humorie.account.controller;
 
 import com.example.humorie.account.dto.request.*;
-import com.example.humorie.account.dto.response.GetAccountResDto;
 import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.response.LoginRes;
-import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.jwt.PrincipalDetails;
@@ -12,16 +10,12 @@ import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.service.CookieService;
 import com.example.humorie.account.service.EmailService;
 import com.example.humorie.global.exception.ErrorCode;
-import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,30 +92,4 @@ public class AccountController {
         return new ErrorResponse<>(accountService.isAccountNameAvailable(availability.getAccountName()));
     }
 
-
-    @GetMapping("/get")
-    @Operation(summary = "내 정보 조회(마이페이지)")
-    public ErrorResponse<GetAccountResDto> getAccountById(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        GetAccountResDto account = accountService.getMyAccount(principalDetails);
-        return new ErrorResponse<>(account);
-    }
-
-    @PutMapping("/update")
-    @Operation(summary = "내 정보 업데이트(마이페이지)")
-    public ErrorResponse<String> updateAccount(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                                @RequestBody AccountDetailUpdate updateDto) {
-        String response = accountService.updateAccount(principalDetails, updateDto);
-
-        return new ErrorResponse<>(response);
-    }
-
-    @DeleteMapping("/delete")
-    @Operation(summary = "회원 탈퇴하기(마이페이지)")
-    public ErrorResponse<String> deleteAccount(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-
-        String response = accountService.deleteAccount(principalDetails);
-
-        return new ErrorResponse<>(response);
-    }
-  
 }
