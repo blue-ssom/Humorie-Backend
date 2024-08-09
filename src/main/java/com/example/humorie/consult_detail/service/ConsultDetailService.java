@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +30,7 @@ public class ConsultDetailService {
     private final AccountService accountService;
     private final ConsultDetailRepository consultDetailRepository;
 
-    // 가장 최근 상담 내역 조회
+    // 가장 최근에 받은 상담 조회
     public LatestConsultDetailResDto getLatestConsultDetailResponse(PrincipalDetails principalDetails) {
         AccountDetail accountDetail = principalDetails.getAccountDetail();
         if (accountDetail == null) {
@@ -37,12 +38,14 @@ public class ConsultDetailService {
         }
         log.info("Account ID: " + accountDetail.getId());
 
-        ConsultDetail consultDetail = consultDetailRepository.findLatestConsultDetail(accountDetail).orElse(null);
+        // Pageable을 사용하여 결과를 하나로 제한
+        List<ConsultDetail> consultDetails = consultDetailRepository.findLatestConsultDetail(accountDetail, PageRequest.of(0, 1));
 
-        if (consultDetail == null) {
+        // 첫 번째 결과만 선택, 없으면 예외 발생
+        ConsultDetail consultDetail = consultDetails.stream().findFirst().orElseThrow(() -> {
             log.info("No consult details found for account ID: {}", accountDetail.getId());
-            return null;
-        }
+            return new ErrorException(ErrorCode.NO_RECENT_CONSULT_DETAIL);
+        });
 
         return LatestConsultDetailResDto.fromEntity(consultDetail);
     }

@@ -30,9 +30,9 @@ public class ConsultDetailController {
     private final AccountService accountService;
     private final ConsultDetailService consultDetailService;
 
-    // 가장 최근 상담 내역 조회
+    // 가장 최근에 받은 상담 조회
     @GetMapping("/latest")
-    @Operation(summary = "가장 최근에 받은 상담")
+    @Operation(summary = "가장 최근에 받은 상담 조회")
     public LatestConsultDetailResDto getLatestConsultDetail(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return consultDetailService.getLatestConsultDetailResponse(principalDetails);
     }

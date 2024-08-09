@@ -58,7 +58,8 @@ public enum ErrorCode {
 
     // consult_detail
     NONE_EXIST_CONSULT_DETAIL(false, 3006, "존재하지 않는 상담 내역입니다."),
-    CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요");
+    CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요"),
+    NO_RECENT_CONSULT_DETAIL(false, 3008, "최근 상담 내역이 없습니다.");
 
     private final boolean isSuccess;
 
