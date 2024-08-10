@@ -11,6 +11,5 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByCounselorId(long counselorId);
 
-    @Transactional
     void deleteByAccount_Id(Long accountId);
 }

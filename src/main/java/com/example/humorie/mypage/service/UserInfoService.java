@@ -1,5 +1,6 @@
 package com.example.humorie.mypage.service;
 
+import com.example.humorie.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.PrincipalDetails;
@@ -11,6 +12,7 @@ import com.example.humorie.mypage.dto.request.UserInfoDelete;
 import com.example.humorie.mypage.dto.request.UserInfoUpdate;
 import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import com.example.humorie.reservation.repository.ReservationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class UserInfoService {
-
+    private final ConsultDetailRepository consultDetailRepository;
     private final AccountRepository accountRepository;
     private final ReviewRepository reviewRepository;
     private final ReservationRepository reservationRepository;
@@ -70,6 +72,7 @@ public class UserInfoService {
     }
 
     // 회원 탈퇴
+    @Transactional
     public String deleteUserInfo(PrincipalDetails principalDetails, UserInfoDelete deleteDto) {
         AccountDetail account = principalDetails.getAccountDetail();
 
@@ -77,13 +80,14 @@ public class UserInfoService {
         userInfoValidationService.validatePassword(deleteDto.getPassword());
         userInfoValidationService.validatePasswordMatch(deleteDto.getPassword(), account.getPassword());
 
+        // 상담 내역 삭제
+         consultDetailRepository.deleteByAccount_Id(account.getId());
+
         // 예약 삭제
         reservationRepository.deleteByAccount_Id(account.getId());
 
         // 리뷰 삭제
         reviewRepository.deleteByAccount_Id(account.getId());
-
-        // 상담 내역은 유지
 
         // 사용자 삭제
         accountRepository.deleteById(account.getId());

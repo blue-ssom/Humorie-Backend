@@ -21,4 +21,7 @@ public interface ConsultDetailRepository extends JpaRepository<ConsultDetail, Lo
     // 상담 내역 전체 조회
     @Query("SELECT c FROM ConsultDetail c WHERE c.account = :account ORDER BY c.reservation.counselDate DESC")
     Page<ConsultDetail> findAllConsultDetail(@Param("account") AccountDetail account, Pageable pageable);
+
+    // 예약 ID를 기준으로 상담 내역 삭제
+    void deleteByAccount_Id(Long accountId);
 }
