@@ -11,6 +11,8 @@ import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
+import com.example.humorie.notice.entity.Notice;
+import com.example.humorie.notice.repository.NoticeRepository;
 import com.example.humorie.reservation.entity.Reservation;
 import com.example.humorie.reservation.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +23,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -40,7 +44,7 @@ public class DataInitializer implements CommandLineRunner {
     private final ReservationRepository reservationRepository;
     private final SecurityConfig securityConfig;
     private final ConsultDetailRepository consultDetailRepository;
-
+    private final NoticeRepository noticeRepository;
 
     @Override
     @Transactional
@@ -240,6 +244,26 @@ public class DataInitializer implements CommandLineRunner {
                 .title("상담 제목 3")
                 .build();
 
+        List<Notice> notices = new ArrayList<>();
+        int importanceCount = 0;
+
+        for (int i = 1; i <= 10; i++) {
+            boolean isImportant = importanceCount < 3;  // 처음 3개만 중요
+            if (isImportant) {
+                importanceCount++;
+            }
+
+            Notice notice = Notice.builder()
+                    .title("공지사항 제목 " + i)
+                    .content("이것은 공지사항 내용 " + i + "입니다.")
+                    .importance(isImportant)
+                    .createdDate(LocalDate.now().minusDays(i / 2))  // 두 개씩 같은 날짜로 설정
+                    .createdTime(LocalTime.of(9, 0).plusHours(i))   // 시간을 다르게 설정
+                    .viewCount(i * 10)
+                    .author("작성자 " + i)
+                    .build();
+            notices.add(notice);
+        }
 
         counselorRepository.saveAll(Arrays.asList(counselor1, counselor2, counselor3, counselor4, counselor5, counselor6));
         methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4, method5, method6, method7, method8));
@@ -252,5 +276,6 @@ public class DataInitializer implements CommandLineRunner {
         pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7));
         reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4));
         consultDetailRepository.saveAll(Arrays.asList(consultDetail1, consultDetail3));
+        noticeRepository.saveAll(notices);
     }
 }
