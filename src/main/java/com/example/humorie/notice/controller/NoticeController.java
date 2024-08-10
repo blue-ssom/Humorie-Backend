@@ -4,6 +4,7 @@ import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.notice.dto.GetAllNoticeDto;
 import com.example.humorie.notice.dto.NoticeDetailDto;
+import com.example.humorie.notice.dto.NoticeDetailWithNavigationDto;
 import com.example.humorie.notice.dto.NoticePageDto;
 import com.example.humorie.notice.entity.Notice;
 import com.example.humorie.notice.service.NoticeService;
@@ -79,8 +80,8 @@ public class NoticeController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "특정 공지사항 조회")
-    public NoticeDetailDto getNoticeById(@PathVariable Long id) {
-        return noticeService.getNoticeById(id);
+    @Operation(summary = "특정 공지사항 및 이전/다음 공지사항 조회")
+    public NoticeDetailWithNavigationDto getNoticeWithNavigation(@PathVariable Long id) {
+        return noticeService.getNoticeWithNavigation(id);
     }
 }

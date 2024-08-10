@@ -2,9 +2,7 @@ package com.example.humorie.notice.service;
 
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.notice.dto.GetAllNoticeDto;
-import com.example.humorie.notice.dto.NoticeDetailDto;
-import com.example.humorie.notice.dto.NoticePageDto;
+import com.example.humorie.notice.dto.*;
 import com.example.humorie.notice.entity.Notice;
 import com.example.humorie.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -90,7 +88,7 @@ public class NoticeService {
         return NoticePageDto.from(dtoPage);
     }
 
-    public NoticeDetailDto getNoticeById(Long id) {
+    public  NoticeDetailWithNavigationDto getNoticeWithNavigation(Long id) {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_NOTICE));
 
@@ -98,6 +96,35 @@ public class NoticeService {
         notice.setViewCount(notice.getViewCount() + 1);
         noticeRepository.save(notice); // 변경된 조회수를 데이터베이스에 저장
 
-        return NoticeDetailDto.fromEntity(notice);
+        // 공지사항 목록을 날짜와 시간 순으로 정렬하여 가져옴
+        List<Notice> notices = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc();
+
+        // 현재 공지사항의 위치 파악
+        int currentIndex = notices.indexOf(notice);
+
+        // 이전 공지사항을 위한 변수
+        NoticeSummaryDto previousNotice = null;
+
+        // 다음 공지사항을 위한 변수
+        NoticeSummaryDto nextNotice = null;
+
+        // 현재 공지사항이 첫 번째가 아닌 경우에만 이전 공지사항을 설정
+        if (currentIndex > 0) {
+            Notice previousNoticeEntity = notices.get(currentIndex - 1); // 이전 공지사항 엔티티를 가져옴
+            previousNotice = new NoticeSummaryDto(previousNoticeEntity.getId(), previousNoticeEntity.getTitle());
+        }
+
+
+        // 현재 공지사항이 마지막이 아닌 경우에만 다음 공지사항을 설정
+        if (currentIndex < notices.size() - 1) {
+            Notice nextNoticeEntity = notices.get(currentIndex + 1); // 다음 공지사항 엔티티를 가져옴
+            nextNotice = new NoticeSummaryDto(nextNoticeEntity.getId(), nextNoticeEntity.getTitle());
+        }
+
+        // 현재 공지사항 DTO 생성
+        NoticeDetailDto currentNoticeDto = NoticeDetailDto.fromEntity(notice);
+
+        // 이전 공지사항, 현재 공지사항, 다음 공지사항을 포함한 DTO를 반환
+        return new NoticeDetailWithNavigationDto(currentNoticeDto, previousNotice, nextNotice);
     }
 }
