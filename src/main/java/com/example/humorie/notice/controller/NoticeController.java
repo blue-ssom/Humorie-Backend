@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/notice")
@@ -45,5 +44,34 @@ public class NoticeController {
 
         Pageable pageable = PageRequest.of(page, size);
         return noticeService.getAllNotices(pageable);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "공지사항 검색")
+    public NoticePageDto searchNotices(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "9") int size
+    ) {
+        // 페이지 번호에 대한 유효성 검사
+        if (page < 0) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
+        }
+
+        // 페이지 크기에 대한 유효성 검사
+        if (size < 1) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
+        } else if (size > 9) {
+            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 키워드가 없는 경우 전체 공지사항 반환
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return noticeService.getAllNotices(pageable);
+        }
+
+        return noticeService.searchNotices(keyword, pageable);
     }
 }
