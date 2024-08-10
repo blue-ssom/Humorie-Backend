@@ -59,7 +59,15 @@ public enum ErrorCode {
     // consult_detail
     NONE_EXIST_CONSULT_DETAIL(false, 3006, "존재하지 않는 상담 내역입니다."),
     CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요"),
-    NO_RECENT_CONSULT_DETAIL(false, 3008, "최근 상담 내역이 없습니다.");
+    NO_RECENT_CONSULT_DETAIL(false, 3008, "최근 상담 내역이 없습니다."),
+
+    // notice
+    NONE_EXIST_NOTICE(false, 3009,"존재하지 않는 공지사항입니다."),
+    NO_CONTENT(false, 3010,"표시할 콘텐츠가 없습니다."),
+    INVALID_PAGE_NUMBER(false, 3011,"페이지 번호가 전체 페이지 수를 초과했습니다."),
+    NEGATIVE_PAGE_NUMBER(false, 3012,"페이지 번호는 0 이상이어야 합니다."),
+    INVALID_PAGE_SIZE(false, 3013,"페이지 크기가 최대 허용 값을 초과했습니다."),
+    NEGATIVE_PAGE_SIZE(false, 3014,"페이지 크기는 0 이상이어야 합니다.");;
 
     private final boolean isSuccess;
 
