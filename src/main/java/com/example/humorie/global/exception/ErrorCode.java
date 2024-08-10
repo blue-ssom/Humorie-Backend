@@ -67,7 +67,8 @@ public enum ErrorCode {
     INVALID_PAGE_NUMBER(false, 3011,"페이지 번호가 전체 페이지 수를 초과했습니다."),
     NEGATIVE_PAGE_NUMBER(false, 3012,"페이지 번호는 0 이상이어야 합니다."),
     INVALID_PAGE_SIZE(false, 3013,"페이지 크기가 최대 허용 값을 초과했습니다."),
-    NEGATIVE_PAGE_SIZE(false, 3014,"페이지 크기는 0 이상이어야 합니다.");;
+    NEGATIVE_PAGE_SIZE(false, 3014,"페이지 크기는 0 이상이어야 합니다."),
+    NO_SEARCH_RESULTS(false, 3015,"검색 결과가 없습니다.");
 
     private final boolean isSuccess;
 
