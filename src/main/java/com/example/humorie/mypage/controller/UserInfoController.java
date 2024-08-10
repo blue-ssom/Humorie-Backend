@@ -8,6 +8,7 @@ import com.example.humorie.mypage.dto.request.UserInfoUpdate;
 import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import com.example.humorie.mypage.service.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,9 @@ public class UserInfoController {
     }
 
     @PatchMapping ("/update")
-    @Operation(summary = "내 정보 업데이트(마이페이지)")
+    @Operation(summary = "회원 정보 업데이트")
     public ErrorResponse<String> updateUserInfo(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                               @RequestBody UserInfoUpdate updateDto) {
+                                                @Valid @RequestBody UserInfoUpdate updateDto) {
         String response = userInfoService.updateUserInfo(principalDetails, updateDto);
 
         return new ErrorResponse<>(response);

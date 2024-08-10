@@ -18,36 +18,24 @@ public class UserInfoValidationService {
 
     // 이름 유효성 검사
     public void validateName(String name) {
-        // 이름 빈 값 체크
-        if (!StringUtils.hasText(name)) {
+        // 영어 알파벳(대소문자), 숫자, 그리고 자음과 모음이 결합된 완성된 한글로만 이루어진 문자열을 허용
+        // 그 외의 특수 문자나 미완성된 자모음 등은 허용하지 않음
+        String nameRegex = "^[a-zA-Z0-9가-힣]*$";
+        Pattern namePattern = Pattern.compile(nameRegex);
+        Matcher nameMatcher = namePattern.matcher(name);
+
+        // null 또는 빈 값 체크 (추가 가능)
+        if (name == null || name.isEmpty()) {
             throw new ErrorException(ErrorCode.EMPTY_NAME);
         }
-        // 추가 유효성 검사 로직
-    }
 
-    // 이메일 유효성 검사
-    public void validateEmail(String email) {
-        // 이메일 빈 값 체크
-        if (!StringUtils.hasText(email)) {
-            throw new ErrorException(ErrorCode.EMPTY_EMAIL);
-        }
-
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern emailPattern = Pattern.compile(emailRegex);
-        Matcher emailMatcher = emailPattern.matcher(email);
-
-        if (!emailMatcher.matches()) {
-            throw new ErrorException(ErrorCode.INVALID_EMAIL);
+        if (!nameMatcher.matches()) {
+            throw new ErrorException(ErrorCode.INVALID_NAME);
         }
     }
 
     // 비밀번호 유효성 검사
     public void validatePassword(String newPassword) {
-        // 비밀번호 빈 값 체크
-        if (!StringUtils.hasText(newPassword)) {
-            throw new ErrorException(ErrorCode.EMPTY_PASSWORD);
-        }
-
         String passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,16}$";
         Pattern pwPattern = Pattern.compile(passwordRegex);
         Matcher pwMatcher = pwPattern.matcher(newPassword);

@@ -47,19 +47,21 @@ public class UserInfoService {
         AccountDetail account = principalDetails.getAccountDetail();
 
         // 유효성 검사 및 필드 업데이트
-        // 이름
+        // 이름 (필수)
         userInfoValidationService.validateName(updateDto.getName());
         account.setName(updateDto.getName());
 
-        // 비밀번호
-        userInfoValidationService.validatePassword(updateDto.getNewPassword());
-        userInfoValidationService.validatePasswordConfirmation(updateDto.getNewPassword(), updateDto.getPasswordCheck());
-        account.setPassword(jwtSecurityConfig.passwordEncoder().encode(updateDto.getNewPassword()));
+        // 비밀번호 (선택 사항)
+        if (updateDto.getNewPassword() != null && !updateDto.getNewPassword().isEmpty()) {
+            userInfoValidationService.validatePassword(updateDto.getNewPassword());
+            userInfoValidationService.validatePasswordConfirmation(updateDto.getNewPassword(), updateDto.getPasswordCheck());
+            account.setPassword(jwtSecurityConfig.passwordEncoder().encode(updateDto.getNewPassword()));
+        }
 
-        // 이메일 수신 여부 체크
-//        if (updateDto.getEmailSubscription() != null) {
-//            account.setEmailSubscription(updateDto.getEmailSubscription());
-//        }
+        // 이메일 수신 여부 체크 (선택 사항)
+        if (updateDto.getEmailSubscription() != null) {
+            account.setEmailSubscription(updateDto.getEmailSubscription());
+        }
 
         accountRepository.save(account);
 
