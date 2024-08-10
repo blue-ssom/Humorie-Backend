@@ -54,7 +54,7 @@ public class AccountService {
             throw new ErrorException(ErrorCode.ID_EXISTS);
         }
 
-        AccountDetail accountDetail = AccountDetail.joinAccount(request.getEmail(), jwtSecurityConfig.passwordEncoder().encode(request.getPassword()), request.getAccountName(), request.getName());
+        AccountDetail accountDetail = AccountDetail.joinAccount(request.getEmail(), jwtSecurityConfig.passwordEncoder().encode(request.getPassword()), request.getAccountName(), request.getName(), request.getEmailSubscription());
         accountRepository.save(accountDetail);
 
         Point earnedPoints = new Point(accountDetail, 100000, "웰컴 포인트", "earn");

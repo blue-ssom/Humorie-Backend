@@ -54,14 +54,16 @@ public class DataInitializer implements CommandLineRunner {
                         "test1@naver.com",
                         securityConfig.passwordEncoder().encode("test1234!"),
                         "test123",
-                        "김봄")));
+                        "김봄",
+                        true)));
 
         AccountDetail accountDetail2 = accountRepository.findByEmail("test2@naver.com")
                 .orElseGet(() -> accountRepository.save(AccountDetail.joinAccount(
                         "test2@naver.com",
                         securityConfig.passwordEncoder().encode("test1234!"),
                         "test234",
-                        "김여름")));
+                        "김여름",
+                        false)));
 
         Counselor counselor1 = Counselor.builder()
                 .name("김가을")

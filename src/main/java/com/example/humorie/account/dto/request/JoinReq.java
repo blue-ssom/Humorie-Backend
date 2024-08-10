@@ -19,4 +19,6 @@ public class JoinReq {
 
     private String phoneNumber;
 
+    private Boolean emailSubscription;
+
 }

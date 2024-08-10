@@ -35,6 +35,8 @@ public class AccountDetail {
 
     private LocalDate joinDate;
 
+    private Boolean emailSubscription;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LoginType loginType;
@@ -46,13 +48,14 @@ public class AccountDetail {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Point> pointTransactions;
 
-    public static AccountDetail joinAccount(String email, String encodedPassword, String accountName, String name) {
+    public static AccountDetail joinAccount(String email, String encodedPassword, String accountName, String name, Boolean emailSubscription) {
         AccountDetail accountDetail = new AccountDetail();
         accountDetail.email = email;
         accountDetail.password = encodedPassword;
         accountDetail.accountName = accountName;
         //accountDetail.phoneNumber = phoneNumber;
         accountDetail.name = name;
+        accountDetail.emailSubscription = emailSubscription;
         accountDetail.role = AccountRole.USER;
         accountDetail.loginType = LoginType.JWT;
         accountDetail.joinDate = LocalDate.now();
