@@ -3,6 +3,7 @@ package com.example.humorie.notice.service;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.notice.dto.GetAllNoticeDto;
+import com.example.humorie.notice.dto.NoticeDetailDto;
 import com.example.humorie.notice.dto.NoticePageDto;
 import com.example.humorie.notice.entity.Notice;
 import com.example.humorie.notice.repository.NoticeRepository;
@@ -87,5 +88,16 @@ public class NoticeService {
         Page<GetAllNoticeDto> dtoPage = new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
 
         return NoticePageDto.from(dtoPage);
+    }
+
+    public NoticeDetailDto getNoticeById(Long id) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_NOTICE));
+
+        // 조회수 1 증가
+        notice.setViewCount(notice.getViewCount() + 1);
+        noticeRepository.save(notice); // 변경된 조회수를 데이터베이스에 저장
+
+        return NoticeDetailDto.fromEntity(notice);
     }
 }
