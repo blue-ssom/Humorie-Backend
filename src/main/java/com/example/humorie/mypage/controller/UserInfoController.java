@@ -21,7 +21,7 @@ public class UserInfoController {
     private final UserInfoService userInfoService;
 
     @GetMapping("/get")
-    @Operation(summary = "내 정보 조회(마이페이지)")
+    @Operation(summary = "회원 정보 조회")
     public ErrorResponse<GetUserInfoResDto> getAccountById(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         GetUserInfoResDto account = userInfoService.getMyAccount(principalDetails);
         return new ErrorResponse<>(account);

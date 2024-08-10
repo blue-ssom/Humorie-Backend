@@ -38,7 +38,7 @@ public class UserInfoService {
                 .accountName(account.getAccountName())
                 .email(account.getEmail())
                 .id(account.getId())
-                .emailSubscription(false)
+                .emailSubscription(account.getEmailSubscription())
                 .build();
     }
 
@@ -50,10 +50,6 @@ public class UserInfoService {
         // 이름
         userInfoValidationService.validateName(updateDto.getName());
         account.setName(updateDto.getName());
-
-        //이메일
-        userInfoValidationService.validateEmail(updateDto.getEmail());
-        account.setEmail(updateDto.getEmail());
 
         // 비밀번호
         userInfoValidationService.validatePassword(updateDto.getNewPassword());
