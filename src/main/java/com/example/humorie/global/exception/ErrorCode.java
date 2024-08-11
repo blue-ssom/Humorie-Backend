@@ -42,13 +42,11 @@ public enum ErrorCode {
     INVALID_NAME(false, 2015, "잘못된 이름 형식입니다."),
     EMPTY_NAME(false, 2017, "이름을 입력해주세요"),
     EMPTY_EMAIL(false, 2019, "이메일을 입력해주세요"),
-    EMPTY_PASSWORD(false, 2020, "비밀번를 입력해주세요"),
 
 
     /**
      * 3000 : Response 오류
      */
-
     // counselor
     NON_EXIST_COUNSELOR(false, 3001, "존재하지 않는 상담사입니다."),
     BOOKMARK_EXISTS(false, 3002, "해당 상담사에 대한 북마크가 이미 존재합니다."),
@@ -69,6 +67,7 @@ public enum ErrorCode {
     INVALID_PAGE_SIZE(false, 3013,"페이지 크기가 최대 허용 값을 초과했습니다."),
     NEGATIVE_PAGE_SIZE(false, 3014,"페이지 크기는 0 이상이어야 합니다."),
     NO_SEARCH_RESULTS(false, 3015,"검색 결과가 없습니다.");
+
 
     private final boolean isSuccess;
 
