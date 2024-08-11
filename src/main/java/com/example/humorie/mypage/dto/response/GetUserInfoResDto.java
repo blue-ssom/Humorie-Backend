@@ -6,15 +6,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class GetUserInfoResDto {
-
     private Long id;
-
-    // 아이디
-    private String accountName;
-
-    // 이메일
-    private String email;
-
-    // 이메일 수신
-    private Boolean emailSubscription;
+    private String email; // 이메일
+    private String accountName;// 아이디
+    private Boolean emailSubscription; // 이메일 수신
 }

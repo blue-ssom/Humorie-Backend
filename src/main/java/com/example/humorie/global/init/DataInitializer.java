@@ -1,5 +1,7 @@
 package com.example.humorie.global.init;
 
+import com.example.humorie.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.repository.AccountRepository;
@@ -9,6 +11,8 @@ import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
+import com.example.humorie.notice.entity.Notice;
+import com.example.humorie.notice.repository.NoticeRepository;
 import com.example.humorie.payment.entity.Payment;
 import com.example.humorie.payment.entity.PaymentStatus;
 import com.example.humorie.payment.repository.PaymentRepository;
@@ -22,7 +26,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -42,7 +48,8 @@ public class DataInitializer implements CommandLineRunner {
     private final ReservationRepository reservationRepository;
     private final PaymentRepository paymentRepository;
     private final SecurityConfig securityConfig;
-
+    private final ConsultDetailRepository consultDetailRepository;
+    private final NoticeRepository noticeRepository;
 
     @Override
     @Transactional
@@ -52,14 +59,16 @@ public class DataInitializer implements CommandLineRunner {
                         "test1@naver.com",
                         securityConfig.passwordEncoder().encode("test1234!"),
                         "test123",
-                        "김봄")));
+                        "김봄",
+                        true)));
 
         AccountDetail accountDetail2 = accountRepository.findByEmail("test2@naver.com")
                 .orElseGet(() -> accountRepository.save(AccountDetail.joinAccount(
                         "test2@naver.com",
                         securityConfig.passwordEncoder().encode("test1234!"),
                         "test234",
-                        "김여름")));
+                        "김여름",
+                        false)));
 
         Counselor counselor1 = Counselor.builder()
                 .name("김가을")
@@ -238,7 +247,46 @@ public class DataInitializer implements CommandLineRunner {
         Reservation reservation4 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail2).counselTime(LocalTime.of(14,0))
                 .location("인천 부평구").counselor(counselor2).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).payment(payment4).build();
 
+        ConsultDetail consultDetail1 = ConsultDetail.builder()
+                .status(true)
+                .account(accountDetail1)
+                .counselor(counselor1)
+                .reservation(reservation1)
+                .content("상담 내용 1")
+                .symptom("증상 1")
+                .title("상담 제목 1")
+                .build();
 
+        ConsultDetail consultDetail3 = ConsultDetail.builder()
+                .status(false)
+                .account(accountDetail1)
+                .counselor(counselor3)
+                .reservation(reservation3)
+                .content("상담 내용 3")
+                .symptom("증상 3")
+                .title("상담 제목 3")
+                .build();
+
+        List<Notice> notices = new ArrayList<>();
+        int importanceCount = 0;
+
+        for (int i = 1; i <= 10; i++) {
+            boolean isImportant = importanceCount < 3;  // 처음 3개만 중요
+            if (isImportant) {
+                importanceCount++;
+            }
+
+            Notice notice = Notice.builder()
+                    .title("공지사항 제목 " + i)
+                    .content("이것은 공지사항 내용 " + i + "입니다.")
+                    .importance(isImportant)
+                    .createdDate(LocalDate.now().minusDays(i / 2))  // 두 개씩 같은 날짜로 설정
+                    .createdTime(LocalTime.of(9, 0).plusHours(i))   // 시간을 다르게 설정
+                    .viewCount(i * 10)
+                    .author("작성자 " + i)
+                    .build();
+            notices.add(notice);
+        }
 
         counselorRepository.saveAll(Arrays.asList(counselor1, counselor2, counselor3, counselor4, counselor5, counselor6));
         methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4, method5, method6, method7, method8));
@@ -250,6 +298,7 @@ public class DataInitializer implements CommandLineRunner {
         careerRepository.saveAll(Arrays.asList(career1, career2, career3, career4, career5, career6, career7, career8));
         pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7));
         reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4));
-
+        consultDetailRepository.saveAll(Arrays.asList(consultDetail1, consultDetail3));
+        noticeRepository.saveAll(notices);
     }
 }

@@ -19,7 +19,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
   
     List<Review> findAllByCounselorId(Long counselorId);
 
-    @Transactional
     void deleteByAccount_Id(Long accountId);
-
 }

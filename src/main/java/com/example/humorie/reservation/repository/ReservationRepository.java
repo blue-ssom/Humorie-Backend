@@ -23,7 +23,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     Optional<Reservation> findReservationByReservationUid(String uid);
 
-    @Transactional
     void deleteByAccount_Id(Long accountId);
 
 }
