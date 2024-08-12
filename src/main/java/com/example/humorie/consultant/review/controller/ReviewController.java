@@ -22,10 +22,10 @@ public class ReviewController {
 
     @PostMapping
     @Operation(summary = "리뷰 작성")
-    public ErrorResponse<String> createReview(@RequestBody ReviewReq reviewReq, @RequestParam long counselorId, HttpServletRequest request) {
+    public ErrorResponse<String> createReview(@RequestBody ReviewReq reviewReq, @RequestParam long consultId, HttpServletRequest request) {
         String accessToken = jwtTokenUtil.resolveToken(request);
 
-        return new ErrorResponse<>(reviewService.createReview(accessToken, counselorId, reviewReq));
+        return new ErrorResponse<>(reviewService.createReview(accessToken, consultId, reviewReq));
     }
 
     @PatchMapping
