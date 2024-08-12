@@ -2,7 +2,7 @@ package com.example.humorie.global.init;
 
 import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
-import com.example.humorie.consultant.review.entity.ReviewTag;
+import com.example.humorie.consultant.review.entity.Tag;
 import com.example.humorie.consultant.review.repository.TagRepository;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
@@ -253,12 +253,12 @@ public class DataInitializer implements CommandLineRunner {
         Review review18 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
                 .account(accountDetail2).counselor(consultDetail18.getCounselor()).symptom(consultDetail18.getSymptom()).build();
 
-        ReviewTag tag1 = ReviewTag.builder().tagName("친절").tagContent("상담사님이 친절하세요.").account(accountDetail1).build();
-        ReviewTag tag2 = ReviewTag.builder().tagName("좋음").tagContent("상담이 매우 좋았습니다.").account(accountDetail1).build();
-        ReviewTag tag3 = ReviewTag.builder().tagName("아쉬움").tagContent("상담이 아쉬웠습니다.").account(accountDetail1).build();
-        ReviewTag tag4 = ReviewTag.builder().tagName("친절").tagContent("상담사님이 친절하세요.").account(accountDetail2).build();
-        ReviewTag tag5 = ReviewTag.builder().tagName("좋아요").tagContent("상담이 매우 좋았습니다.").account(accountDetail2).build();
-        ReviewTag tag6 = ReviewTag.builder().tagName("아쉬움").tagContent("상담이 아쉬웠습니다.").account(accountDetail2).build();
+        Tag tag1 = Tag.builder().tagName("친절").tagContent("상담사님이 친절하세요.").account(accountDetail1).build();
+        Tag tag2 = Tag.builder().tagName("좋음").tagContent("상담이 매우 좋았습니다.").account(accountDetail1).build();
+        Tag tag3 = Tag.builder().tagName("아쉬움").tagContent("상담이 아쉬웠습니다.").account(accountDetail1).build();
+        Tag tag4 = Tag.builder().tagName("친절").tagContent("상담사님이 친절하세요.").account(accountDetail2).build();
+        Tag tag5 = Tag.builder().tagName("좋아요").tagContent("상담이 매우 좋았습니다.").account(accountDetail2).build();
+        Tag tag6 = Tag.builder().tagName("아쉬움").tagContent("상담이 아쉬웠습니다.").account(accountDetail2).build();
 
         List<Notice> notices = new ArrayList<>();
         int importanceCount = 0;
