@@ -1,7 +1,9 @@
 package com.example.humorie.global.init;
 
-import com.example.humorie.consult_detail.entity.ConsultDetail;
-import com.example.humorie.consult_detail.repository.ConsultDetailRepository;
+import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
+import com.example.humorie.consultant.review.entity.ReviewTag;
+import com.example.humorie.consultant.review.repository.TagRepository;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.repository.AccountRepository;
@@ -49,6 +51,7 @@ public class DataInitializer implements CommandLineRunner {
     private final PaymentRepository paymentRepository;
     private final SecurityConfig securityConfig;
     private final ConsultDetailRepository consultDetailRepository;
+    private final TagRepository tagRepository;
     private final NoticeRepository noticeRepository;
 
     @Override
@@ -70,77 +73,18 @@ public class DataInitializer implements CommandLineRunner {
                         "김여름",
                         false)));
 
-        Counselor counselor1 = Counselor.builder()
-                .name("김가을")
-                .phoneNumber("01000000000")
-                .email("rkdmf@naver.com")
-                .gender("여성")
-                .region("서울시 강남구")
-                .rating(4.8)
-                .counselingCount(17)
-                .reviewCount(8)
-                .introduction("편안한 상담사")
-                .build();
-
-        Counselor counselor2 = Counselor.builder()
-                .name("김겨울")
-                .phoneNumber("01011111111")
-                .email("rudnf@naver.com")
-                .gender("남성")
-                .region("서울시 강남구")
-                .rating(4.1)
-                .counselingCount(30)
-                .reviewCount(19)
-                .introduction("든든한 상담사")
-                .build();
-
-        Counselor counselor3 = Counselor.builder()
-                .name("이우정")
-                .phoneNumber("01022222222")
-                .email("dnwjd@naver.com")
-                .gender("여성")
-                .region("서울시 강남구")
-                .rating(4.5)
-                .counselingCount(22)
-                .reviewCount(15)
-                .introduction("정직한 상담사")
-                .build();
-
-        Counselor counselor4 = Counselor.builder()
-                .name("명재현")
-                .phoneNumber("0103333333")
-                .email("audwogus@naver.com")
-                .gender("남성")
-                .region("경기도 광명시")
-                .rating(4.5)
-                .counselingCount(50)
-                .reviewCount(40)
-                .introduction("성실한 상담사")
-                .build();
-
-        Counselor counselor5 = Counselor.builder()
-                .name("박윤")
-                .phoneNumber("01044444444")
-                .email("qkrdbs@gmail.com")
-                .gender("여성")
-                .region("경기도 광명시")
-                .rating(4.2)
-                .counselingCount(14)
-                .reviewCount(7)
-                .introduction("편안한 상담사")
-                .build();
-
-        Counselor counselor6 = Counselor.builder()
-                .name("허윤지")
-                .phoneNumber("01055555555")
-                .email("gjdbswl@gmail.com")
-                .gender("여성")
-                .region("경기도 수원시")
-                .rating(3.9)
-                .counselingCount(7)
-                .reviewCount(1)
-                .introduction("편안한 상담사")
-                .build();
+        Counselor counselor1 = Counselor.builder().name("김가을").phoneNumber("01000000000").email("rkdmf@naver.com").gender("여성").region("서울시 강남구").rating(4.8)
+                .counselingCount(17).reviewCount(8).introduction("편안한 상담사").build();
+        Counselor counselor2 = Counselor.builder().name("김겨울").phoneNumber("01011111111").email("rudnf@naver.com").gender("남성").region("서울시 강남구").rating(4.1)
+                .counselingCount(30).reviewCount(19).introduction("든든한 상담사").build();
+        Counselor counselor3 = Counselor.builder().name("이우정").phoneNumber("01022222222").email("dnwjd@naver.com").gender("여성").region("서울시 강남구").rating(4.5)
+                .counselingCount(22).reviewCount(15).introduction("정직한 상담사").build();
+        Counselor counselor4 = Counselor.builder().name("명재현").phoneNumber("0103333333").email("audwogus@naver.com").gender("남성").region("경기도 광명시").rating(4.5)
+                .counselingCount(50).reviewCount(40).introduction("성실한 상담사").build();
+        Counselor counselor5 = Counselor.builder().name("박윤").phoneNumber("01044444444").email("qkrdbs@gmail.com").gender("여성").region("경기도 광명시").rating(4.2)
+                .counselingCount(14).reviewCount(7).introduction("편안한 상담사").build();
+        Counselor counselor6 = Counselor.builder().name("허윤지").phoneNumber("01055555555").email("gjdbswl@gmail.com").gender("여성").region("경기도 수원시").rating(3.9)
+                .counselingCount(7).reviewCount(1).introduction("편안한 상담사").build();
 
         CounselingMethod method1 = CounselingMethod.builder().method("online").counselor(counselor1).build();
         CounselingMethod method2 = CounselingMethod.builder().method("offline").counselor(counselor1).build();
@@ -174,24 +118,6 @@ public class DataInitializer implements CommandLineRunner {
         Symptom symptom10 = Symptom.builder().symptom("우울").counselor(counselor5).build();
         Symptom symptom11 = Symptom.builder().symptom("자살").counselor(counselor6).build();
 
-
-        Review review1 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor1).build();
-        Review review2 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor1).build();
-        Review review3 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor2).build();
-        Review review4 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor2).build();
-        Review review5 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor3).build();
-        Review review6 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor3).build();
-        Review review7 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor3).build();
-        Review review8 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor4).build();
-        Review review9 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor4).build();
-        Review review10 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor4).build();
-        Review review11 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor5).build();
-        Review review12 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor5).build();
-        Review review13 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).counselor(counselor5).build();
-        Review review14 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00)).account(accountDetail1).counselor(counselor6).build();
-        Review review15 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00)).account(accountDetail2).counselor(counselor6).build();
-        Review review16 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00)).account(accountDetail2).counselor(counselor6).build();
-
         Affiliation affiliation1 = Affiliation.builder().societyName("학회1").counselor(counselor1).build();
         Affiliation affiliation2 = Affiliation.builder().societyName("학회2").counselor(counselor2).build();
         Affiliation affiliation3 = Affiliation.builder().societyName("학회1").counselor(counselor3).build();
@@ -218,14 +144,20 @@ public class DataInitializer implements CommandLineRunner {
         Career career7 = Career.builder().content("경력1").counselor(counselor5).build();
         Career career8 = Career.builder().content("경력1").counselor(counselor6).build();
 
-        Point point1 = Point.builder().points(100000).type("earn").title("웰컴 포인트").transactionDate(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).account(accountDetail1).build();
-        Point point2 = Point.builder().points(50000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 10, 12, 30, 00)).account(accountDetail1).build();
-        Point point3 = Point.builder().points(1000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 5, 11, 12, 30, 00)).account(accountDetail1).build();
-        Point point4 = Point.builder().points(30000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 6, 2, 12, 30, 00)).account(accountDetail1).build();
-        Point point5 = Point.builder().points(2000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 6, 3, 12, 30, 00)).account(accountDetail1).build();
-        Point point6 = Point.builder().points(100000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00)).account(accountDetail2).build();
-        Point point7 = Point.builder().points(70000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00)).account(accountDetail2).build();
-
+        Point point1 = Point.builder().points(100000).type("earn").title("웰컴 포인트").transactionDate(LocalDateTime.of(2024, 5, 7, 12, 30, 00))
+                .account(accountDetail1).build();
+        Point point2 = Point.builder().points(50000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 10, 12, 30, 00)).
+                account(accountDetail1).build();
+        Point point3 = Point.builder().points(1000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 5, 11, 12, 30, 00))
+                .account(accountDetail1).build();
+        Point point4 = Point.builder().points(30000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 6, 2, 12, 30, 00))
+                .account(accountDetail1).build();
+        Point point5 = Point.builder().points(2000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 6, 3, 12, 30, 00))
+                .account(accountDetail1).build();
+        Point point6 = Point.builder().points(100000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00))
+                .account(accountDetail2).build();
+        Point point7 = Point.builder().points(70000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00))
+                .account(accountDetail2).build();
 
         Payment payment1 = Payment.builder().price(5000).point(0).finalPrice(5000).status(PaymentStatus.READY).build();
         Payment payment2 = Payment.builder().price(10000).point(1000).finalPrice(9000).status(PaymentStatus.READY).build();
@@ -247,25 +179,86 @@ public class DataInitializer implements CommandLineRunner {
         Reservation reservation4 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail2).counselTime(LocalTime.of(14,0))
                 .location("인천 부평구").counselor(counselor2).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).payment(payment4).build();
 
-        ConsultDetail consultDetail1 = ConsultDetail.builder()
-                .status(true)
-                .account(accountDetail1)
-                .counselor(counselor1)
-                .reservation(reservation1)
-                .content("상담 내용 1")
-                .symptom("증상 1")
-                .title("상담 제목 1")
-                .build();
+        ConsultDetail consultDetail1 = ConsultDetail.builder().status(true).account(accountDetail1).counselor(counselor1).reservation(reservation1).content("상담 내용 1")
+                .symptom("스트레스").title("상담 제목 1").build();
+        ConsultDetail consultDetail2 = ConsultDetail.builder().status(true).account(accountDetail1).counselor(counselor2).reservation(reservation2).content("상담 내용 2")
+                .symptom("우울").title("상담 제목 2").build();
+        ConsultDetail consultDetail3 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor3).reservation(reservation3).content("상담 내용 3")
+                .symptom("불안").title("상담 제목 3").build();
+        ConsultDetail consultDetail4 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor4).reservation(reservation3).content("상담 내용 4")
+                .symptom("트라우마").title("상담 제목 4").build();
+        ConsultDetail consultDetail5 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor5).reservation(reservation3).content("상담 내용 5")
+                .symptom("스트레스").title("상담 제목 5").build();
+        ConsultDetail consultDetail6 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor6).reservation(reservation3).content("상담 내용 6")
+                .symptom("우울").title("상담 제목 6").build();
+        ConsultDetail consultDetail7 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor1).reservation(reservation3).content("상담 내용 7")
+                .symptom("불안").title("상담 제목 7").build();
+        ConsultDetail consultDetail8 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor2).reservation(reservation3).content("상담 내용 8")
+                .symptom("트라우마").title("상담 제목 8").build();
+        ConsultDetail consultDetail9 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor3).reservation(reservation3).content("상담 내용 9")
+                .symptom("스트레스").title("상담 제목 9").build();
+        ConsultDetail consultDetail10 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor4).reservation(reservation3).content("상담 내용 10")
+                .symptom("우울").title("상담 제목 10").build();
+        ConsultDetail consultDetail11 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor5).reservation(reservation3).content("상담 내용 11")
+                .symptom("불안").title("상담 제목 11").build();
+        ConsultDetail consultDetail12 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor6).reservation(reservation3).content("상담 내용 12")
+                .symptom("트라우마").title("상담 제목 12").build();
+        ConsultDetail consultDetail13 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor1).reservation(reservation3).content("상담 내용 13")
+                .symptom("스트레스").title("상담 제목 13").build();
+        ConsultDetail consultDetail14 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor2).reservation(reservation3).content("상담 내용 14")
+                .symptom("우울").title("상담 제목 14").build();
+        ConsultDetail consultDetail15 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor3).reservation(reservation3).content("상담 내용 15")
+                .symptom("불안").title("상담 제목 15").build();
+        ConsultDetail consultDetail16 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor4).reservation(reservation3).content("상담 내용 16")
+                .symptom("트라우마").title("상담 제목 16").build();
+        ConsultDetail consultDetail17 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor5).reservation(reservation3).content("상담 내용 17")
+                .symptom("스트레스").title("상담 제목 17").build();
+        ConsultDetail consultDetail18 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor6).reservation(reservation3).content("상담 내용 18")
+                .symptom("우울").title("상담 제목 18").build();
 
-        ConsultDetail consultDetail3 = ConsultDetail.builder()
-                .status(false)
-                .account(accountDetail1)
-                .counselor(counselor3)
-                .reservation(reservation3)
-                .content("상담 내용 3")
-                .symptom("증상 3")
-                .title("상담 제목 3")
-                .build();
+        Review review1 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail1).counselor(consultDetail1.getCounselor()).symptom(consultDetail1.getSymptom()).build();
+        Review review2 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
+                .account(accountDetail1).counselor(consultDetail2.getCounselor()).symptom(consultDetail2.getSymptom()).build();
+        Review review3 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail1).counselor(consultDetail3.getCounselor()).symptom(consultDetail3.getSymptom()).build();
+        Review review4 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).
+                account(accountDetail1).counselor(consultDetail4.getCounselor()).symptom(consultDetail4.getSymptom()).build();
+        Review review5 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail1).counselor(consultDetail5.getCounselor()).symptom(consultDetail5.getSymptom()).build();
+        Review review6 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
+                .account(accountDetail1).counselor(consultDetail6.getCounselor()).symptom(consultDetail6.getSymptom()).build();
+        Review review7 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
+                .account(accountDetail1).counselor(consultDetail7.getCounselor()).symptom(consultDetail7.getSymptom()).build();
+        Review review8 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail1).counselor(consultDetail8.getCounselor()).symptom(consultDetail8.getSymptom()).build();
+        Review review9 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00))
+                .account(accountDetail1).counselor(consultDetail9.getCounselor()).symptom(consultDetail9.getSymptom()).build();
+        Review review10 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail2).counselor(consultDetail10.getCounselor()).symptom(consultDetail10.getSymptom()).build();
+        Review review11 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
+                .account(accountDetail2).counselor(consultDetail11.getCounselor()).symptom(consultDetail11.getSymptom()).build();
+        Review review12 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail12.getCounselor()).symptom(consultDetail12.getSymptom()).build();
+        Review review13 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00))
+                .account(accountDetail2).counselor(consultDetail13.getCounselor()).symptom(consultDetail13.getSymptom()).build();
+        Review review14 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail2).counselor(consultDetail14.getCounselor()).symptom(consultDetail14.getSymptom()).build();
+        Review review15 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
+                .account(accountDetail2).counselor(consultDetail15.getCounselor()).symptom(consultDetail15.getSymptom()).build();
+        Review review16 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail16.getCounselor()).symptom(consultDetail16.getSymptom()).build();
+        Review review17 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail17.getCounselor()).symptom(consultDetail17.getSymptom()).build();
+        Review review18 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail18.getCounselor()).symptom(consultDetail18.getSymptom()).build();
+
+        ReviewTag tag1 = ReviewTag.builder().tagName("친절").tagContent("상담사님이 친절하세요.").account(accountDetail1).build();
+        ReviewTag tag2 = ReviewTag.builder().tagName("좋음").tagContent("상담이 매우 좋았습니다.").account(accountDetail1).build();
+        ReviewTag tag3 = ReviewTag.builder().tagName("아쉬움").tagContent("상담이 아쉬웠습니다.").account(accountDetail1).build();
+        ReviewTag tag4 = ReviewTag.builder().tagName("친절").tagContent("상담사님이 친절하세요.").account(accountDetail2).build();
+        ReviewTag tag5 = ReviewTag.builder().tagName("좋아요").tagContent("상담이 매우 좋았습니다.").account(accountDetail2).build();
+        ReviewTag tag6 = ReviewTag.builder().tagName("아쉬움").tagContent("상담이 아쉬웠습니다.").account(accountDetail2).build();
 
         List<Notice> notices = new ArrayList<>();
         int importanceCount = 0;
@@ -292,13 +285,15 @@ public class DataInitializer implements CommandLineRunner {
         methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4, method5, method6, method7, method8));
         fieldRepository.saveAll(Arrays.asList(field1, field2, field3, field4, field5, field6, field7, field8, field9, field10));
         symptomRepository.saveAll(Arrays.asList(symptom1, symptom2, symptom3, symptom4, symptom5, symptom6, symptom7, symptom8, symptom9, symptom10, symptom11));
-        reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4, review5, review6, review7,  review8, review9, review10, review11, review12, review13, review14, review15, review16));
+        reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4, review5, review6, review7, review8, review9, review10, review11, review12, review13, review14, review15, review16, review17, review18));
         affiliationRepository.saveAll(Arrays.asList(affiliation1, affiliation2, affiliation3, affiliation4, affiliation5, affiliation6, affiliation7, affiliation8, affiliation9));
         educationRepository.saveAll(Arrays.asList(education1, education2, education3, education4, education5, education6));
         careerRepository.saveAll(Arrays.asList(career1, career2, career3, career4, career5, career6, career7, career8));
         pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7));
         reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4));
-        consultDetailRepository.saveAll(Arrays.asList(consultDetail1, consultDetail3));
+        consultDetailRepository.saveAll(Arrays.asList(consultDetail1, consultDetail2, consultDetail3, consultDetail4, consultDetail5, consultDetail6, consultDetail7, consultDetail8, consultDetail9, consultDetail10, consultDetail1, consultDetail12, consultDetail13, consultDetail14, consultDetail15, consultDetail16, consultDetail17, consultDetail18));
+        tagRepository.saveAll(Arrays.asList(tag1, tag2, tag3, tag4, tag5, tag6));
         noticeRepository.saveAll(notices);
     }
+
 }
