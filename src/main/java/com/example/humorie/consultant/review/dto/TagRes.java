@@ -7,10 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagReq {
+public class TagRes {
+
+    private long tagId;
 
     private String tagName;
 
     private String tagContent;
 
 }
+
