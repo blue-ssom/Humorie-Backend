@@ -1,33 +1,29 @@
 package com.example.humorie.consultant.review.entity;
 
-import com.example.humorie.account.entity.AccountDetail;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tag {
+public class ReviewTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String tagName;
-
-    private String tagContent;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private Review review;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private AccountDetail account;
-
-    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ReviewTag> reviewTags;
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 
 }

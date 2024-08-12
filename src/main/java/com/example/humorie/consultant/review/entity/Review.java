@@ -42,7 +42,7 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     private Counselor counselor;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<ReviewTag> tags;
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ReviewTag> reviewTags;
 
 }
