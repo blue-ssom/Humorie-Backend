@@ -1,6 +1,6 @@
-package com.example.humorie.consult_detail.dto.response;
+package com.example.humorie.consultant.consult_detail.dto.response;
 
-import com.example.humorie.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import lombok.Builder;
 import lombok.Getter;
 

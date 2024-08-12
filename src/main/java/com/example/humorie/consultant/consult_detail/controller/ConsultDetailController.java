@@ -1,10 +1,10 @@
-package com.example.humorie.consult_detail.controller;
+package com.example.humorie.consultant.consult_detail.controller;
 
 import com.example.humorie.account.service.AccountService;
-import com.example.humorie.consult_detail.dto.response.ConsultDetailPageDto;
-import com.example.humorie.consult_detail.dto.response.LatestConsultDetailResDto;
-import com.example.humorie.consult_detail.dto.response.SpecificConsultDetailDto;
-import com.example.humorie.consult_detail.service.ConsultDetailService;
+import com.example.humorie.consultant.consult_detail.dto.response.ConsultDetailPageDto;
+import com.example.humorie.consultant.consult_detail.dto.response.LatestConsultDetailResDto;
+import com.example.humorie.consultant.consult_detail.dto.response.SpecificConsultDetailDto;
+import com.example.humorie.consultant.consult_detail.service.ConsultDetailService;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import org.springframework.web.bind.annotation.GetMapping;

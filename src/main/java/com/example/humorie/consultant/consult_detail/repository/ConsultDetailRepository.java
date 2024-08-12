@@ -1,6 +1,6 @@
-package com.example.humorie.consult_detail.repository;
+package com.example.humorie.consultant.consult_detail.repository;
 
-import com.example.humorie.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import com.example.humorie.account.entity.AccountDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.List;
 
 @Repository

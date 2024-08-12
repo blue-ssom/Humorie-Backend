@@ -1,4 +1,4 @@
-package com.example.humorie.consult_detail.entity;
+package com.example.humorie.consultant.consult_detail.entity;
 
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.consultant.counselor.entity.Counselor;
