@@ -22,7 +22,6 @@ public interface ReviewMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "account", ignore = true)
     @Mapping(target = "counselor", ignore = true)
-    @Mapping(target = "tags", ignore = true)
     Review toReview(ReviewReq reviewReq);
 
     List<ReviewRes> toReviewResList(List<Review> reviews);

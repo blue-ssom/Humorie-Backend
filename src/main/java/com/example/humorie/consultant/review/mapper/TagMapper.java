@@ -18,7 +18,6 @@ public interface TagMapper {
     TagRes toTagRes(Tag tag);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "reviews", ignore = true)
     Tag toReviewTag(TagReq tagReq);
 
     List<TagRes> toTagResList(List<Tag> tags);

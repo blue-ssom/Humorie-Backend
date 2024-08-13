@@ -27,7 +27,4 @@ public class Tag {
     @ManyToOne(fetch = FetchType.LAZY)
     private AccountDetail account;
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ReviewTag> reviewTags;
-
 }
