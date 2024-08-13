@@ -8,6 +8,7 @@ import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
+import com.example.humorie.global.service.CommonService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,21 +28,13 @@ public class CounselorService {
     private final EducationRepository educationRepository;
     private final AffiliationRepository affiliationRepository;
     private final CareerRepository careerRepository;
+    private final CommonService commonService;
 
     @Transactional
     public CounselorProfileDto getCounselorProfile(long counselorId) {
-        Counselor counselor = counselorRepository.findById(counselorId)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
+        Counselor counselor = commonService.getCounselorById(counselorId);
 
         List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
-
-        /*double totalRating = reviews.stream().mapToDouble(Review::getRating).sum();
-        int reviewCount = reviews.size();
-        double averageRating = reviewCount > 0 ? totalRating / reviewCount : 0.0;
-
-        counselor.setRating(averageRating);
-        counselor.setReviewCount(reviewCount);
-        counselorRepository.save(counselor);*/
 
         List<ReviewRes> reviewDTOs = reviews.stream()
                 .sorted(Comparator.comparingDouble(Review::getRating).reversed())

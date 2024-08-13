@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -29,6 +28,8 @@ public class Review {
     private String content;
 
     private Double rating;
+
+    private String symptom;
 
     private int recommendationCount;
 

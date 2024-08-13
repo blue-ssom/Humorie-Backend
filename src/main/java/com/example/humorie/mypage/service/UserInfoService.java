@@ -1,6 +1,6 @@
 package com.example.humorie.mypage.service;
 
-import com.example.humorie.consult_detail.repository.ConsultDetailRepository;
+impocom.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.PrincipalDetails;
