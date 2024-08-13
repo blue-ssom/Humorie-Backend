@@ -28,7 +28,7 @@ public class ReviewController {
         return new ErrorResponse<>(reviewService.createReview(accessToken, consultId, reviewReq));
     }
 
-    @PatchMapping("/reviewId")
+    @PatchMapping("/{reviewId}")
     @Operation(summary = "리뷰 수정")
     public ErrorResponse<String> modifyReview(@RequestBody ReviewReq reviewReq, @RequestParam long reviewId, HttpServletRequest request) {
         String accessToken = jwtTokenUtil.resolveToken(request);
@@ -36,7 +36,7 @@ public class ReviewController {
         return new ErrorResponse<>(reviewService.modifyReview(accessToken, reviewId, reviewReq));
     }
 
-    @DeleteMapping("/reviewId")
+    @DeleteMapping("/{reviewId}")
     @Operation(summary = "리뷰 삭제")
     public ErrorResponse<String> deleteReview(@RequestParam long reviewId, HttpServletRequest request) {
         String accessToken = jwtTokenUtil.resolveToken(request);
