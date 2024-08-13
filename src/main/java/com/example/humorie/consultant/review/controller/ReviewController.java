@@ -44,7 +44,7 @@ public class ReviewController {
         return new ErrorResponse<>(reviewService.deleteReview(accessToken, reviewId));
     }
 
-    @GetMapping("/reviews")
+    @GetMapping
     @Operation(summary = "리뷰 리스트 조회")
     public ErrorResponse<List<ReviewRes>> getReviewList(@RequestParam long counselorId) {
         return new ErrorResponse<>(reviewService.getReviewListByCounselor(counselorId));
