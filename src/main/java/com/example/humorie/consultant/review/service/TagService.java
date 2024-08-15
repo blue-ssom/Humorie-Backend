@@ -3,7 +3,7 @@ package com.example.humorie.consultant.review.service;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.consultant.review.dto.TagReq;
 import com.example.humorie.consultant.review.dto.TagRes;
-import com.example.humorie.consultant.review.entity.ReviewTag;
+import com.example.humorie.consultant.review.entity.Tag;
 import com.example.humorie.consultant.review.mapper.TagMapper;
 import com.example.humorie.consultant.review.repository.TagRepository;
 import com.example.humorie.global.exception.ErrorCode;
@@ -33,7 +33,7 @@ public class TagService {
             throw new ErrorException(ErrorCode.DUPLICATE_TAG_NAME);
         }
 
-        ReviewTag tag = mapper.toReviewTag(tagReq);
+        Tag tag = mapper.toReviewTag(tagReq);
         tag.setAccount(account);
         tagRepository.save(tag);
 
@@ -44,7 +44,7 @@ public class TagService {
     public TagRes getTagByName(String accessToken, String tagName) {
         AccountDetail account = commonService.getAccountFromToken(accessToken);
 
-        ReviewTag tag = tagRepository.findByTagNameAndAccount(tagName, account)
+        Tag tag = tagRepository.findByTagNameAndAccount(tagName, account)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_TAG));
 
         return mapper.toTagRes(tag);
@@ -54,7 +54,7 @@ public class TagService {
     public List<TagRes> getAllTags(String accessToken) {
         AccountDetail account = commonService.getAccountFromToken(accessToken);
 
-        List<ReviewTag> tags = tagRepository.findByAccount(account);
+        List<Tag> tags = tagRepository.findByAccount(account);
 
         return mapper.toTagResList(tags);
     }
