@@ -12,6 +12,6 @@ public class CounselorDto {
 
     private String name;
 
-    private Set<String> counselingFields;
+    private Set<String> symptoms;
 
 }

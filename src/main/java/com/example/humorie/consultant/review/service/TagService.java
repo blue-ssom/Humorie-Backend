@@ -1,6 +1,7 @@
 package com.example.humorie.consultant.review.service;
 
 import com.example.humorie.account.entity.AccountDetail;
+import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.consultant.review.dto.TagReq;
 import com.example.humorie.consultant.review.dto.TagRes;
 import com.example.humorie.consultant.review.entity.Tag;
@@ -31,6 +32,11 @@ public class TagService {
         boolean tagExists = tagRepository.existsByTagNameAndAccount(tagReq.getTagName(), account);
         if (tagExists) {
             throw new ErrorException(ErrorCode.DUPLICATE_TAG_NAME);
+        }
+
+        int tagCount = tagRepository.countByAccount(account);
+        if(tagCount >= 5) {
+            throw new ErrorException(ErrorCode.MAX_TAG_LIMIT_EXCEEDED);
         }
 
         Tag tag = mapper.toReviewTag(tagReq);

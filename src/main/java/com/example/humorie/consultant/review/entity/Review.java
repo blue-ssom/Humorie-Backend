@@ -29,8 +29,6 @@ public class Review {
 
     private Double rating;
 
-    private String symptom;
-
     private int recommendationCount;
 
     @CreationTimestamp

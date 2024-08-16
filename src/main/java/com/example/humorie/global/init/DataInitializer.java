@@ -40,7 +40,6 @@ public class DataInitializer implements CommandLineRunner {
     private final AccountRepository accountRepository;
     private final CounselorRepository counselorRepository;
     private final CounselingMethodRepository methodRepository;
-    private final CounselingFieldRepository fieldRepository;
     private final AffiliationRepository affiliationRepository;
     private final EducationRepository educationRepository;
     private final CareerRepository careerRepository;
@@ -86,37 +85,38 @@ public class DataInitializer implements CommandLineRunner {
         Counselor counselor6 = Counselor.builder().name("허윤지").phoneNumber("01055555555").email("gjdbswl@gmail.com").gender("여성").region("경기도 수원시").rating(3.9)
                 .counselingCount(7).reviewCount(1).introduction("편안한 상담사").build();
 
-        CounselingMethod method1 = CounselingMethod.builder().method("online").counselor(counselor1).build();
-        CounselingMethod method2 = CounselingMethod.builder().method("offline").counselor(counselor1).build();
-        CounselingMethod method3 = CounselingMethod.builder().method("online").counselor(counselor2).build();
-        CounselingMethod method4 = CounselingMethod.builder().method("offline").counselor(counselor3).build();
-        CounselingMethod method5 = CounselingMethod.builder().method("online").counselor(counselor4).build();
-        CounselingMethod method6 = CounselingMethod.builder().method("offline").counselor(counselor4).build();
-        CounselingMethod method7 = CounselingMethod.builder().method("online").counselor(counselor5).build();
-        CounselingMethod method8 = CounselingMethod.builder().method("offline").counselor(counselor6).build();
+        CounselingMethod method1 = CounselingMethod.builder().method("온라인").counselor(counselor1).build();
+        CounselingMethod method2 = CounselingMethod.builder().method("오프라인").counselor(counselor1).build();
+        CounselingMethod method3 = CounselingMethod.builder().method("온라인").counselor(counselor2).build();
+        CounselingMethod method4 = CounselingMethod.builder().method("오프라인").counselor(counselor3).build();
+        CounselingMethod method5 = CounselingMethod.builder().method("온라인").counselor(counselor4).build();
+        CounselingMethod method6 = CounselingMethod.builder().method("오프라인").counselor(counselor4).build();
+        CounselingMethod method7 = CounselingMethod.builder().method("온라인").counselor(counselor5).build();
+        CounselingMethod method8 = CounselingMethod.builder().method("오프라인").counselor(counselor6).build();
 
-        CounselingField field1 = CounselingField.builder().field("청소년").counselor(counselor1).build();
-        CounselingField field2 = CounselingField.builder().field("개인").counselor(counselor1).build();
-        CounselingField field3 = CounselingField.builder().field("청소년").counselor(counselor2).build();
-        CounselingField field4 = CounselingField.builder().field("집단").counselor(counselor2).build();
-        CounselingField field5 = CounselingField.builder().field("중독").counselor(counselor2).build();
-        CounselingField field6 = CounselingField.builder().field("청소년").counselor(counselor3).build();
-        CounselingField field7 = CounselingField.builder().field("중독").counselor(counselor4).build();
-        CounselingField field8 = CounselingField.builder().field("청소년").counselor(counselor4).build();
-        CounselingField field9 = CounselingField.builder().field("개인").counselor(counselor5).build();
-        CounselingField field10 = CounselingField.builder().field("집단").counselor(counselor6).build();
-
-        Symptom symptom1 = Symptom.builder().symptom("우울").counselor(counselor1).build();
-        Symptom symptom2 = Symptom.builder().symptom("대인관계").counselor(counselor1).build();
-        Symptom symptom3 = Symptom.builder().symptom("우울").counselor(counselor2).build();
-        Symptom symptom4 = Symptom.builder().symptom("자살").counselor(counselor2).build();
-        Symptom symptom5 = Symptom.builder().symptom("사회부적응").counselor(counselor2).build();
-        Symptom symptom6 = Symptom.builder().symptom("우울").counselor(counselor3).build();
-        Symptom symptom7 = Symptom.builder().symptom("우울").counselor(counselor4).build();
-        Symptom symptom8 = Symptom.builder().symptom("대인관계").counselor(counselor4).build();
-        Symptom symptom9 = Symptom.builder().symptom("사회부적은").counselor(counselor4).build();
-        Symptom symptom10 = Symptom.builder().symptom("우울").counselor(counselor5).build();
-        Symptom symptom11 = Symptom.builder().symptom("자살").counselor(counselor6).build();
+        Symptom symptom1 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("우울").counselor(counselor1).build();
+        Symptom symptom2 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("대인관계").counselor(counselor1).build();
+        Symptom symptom3 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("우울").counselor(counselor2).build();
+        Symptom symptom4 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("자살").counselor(counselor2).build();
+        Symptom symptom5 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("사회부적응").counselor(counselor2).build();
+        Symptom symptom6 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("우울").counselor(counselor3).build();
+        Symptom symptom7 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("우울").counselor(counselor4).build();
+        Symptom symptom8 = Symptom.builder().categoryType("가족").issueAreaType("자녀 문제").symptom("대인관계").counselor(counselor4).build();
+        Symptom symptom9 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("사회부적응").counselor(counselor4).build();
+        Symptom symptom10 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("우울").counselor(counselor5).build();
+        Symptom symptom11 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("자살").counselor(counselor6).build();
+        Symptom symptom12 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("외상후 스트레스").counselor(counselor1).build();
+        Symptom symptom13 = Symptom.builder().categoryType("개인").issueAreaType("개인 문제").symptom("인터넷 중독").counselor(counselor1).build();
+        Symptom symptom14 = Symptom.builder().categoryType("가족").issueAreaType("가족 문제").symptom("원가족 갈등").counselor(counselor2).build();
+        Symptom symptom15 = Symptom.builder().categoryType("가족").issueAreaType("가족 문제").symptom("친자 갈등").counselor(counselor2).build();
+        Symptom symptom16 = Symptom.builder().categoryType("가족").issueAreaType("가족 문제").symptom("종교차이").counselor(counselor3).build();
+        Symptom symptom17 = Symptom.builder().categoryType("가족").issueAreaType("가족 문제").symptom("가족 죽음").counselor(counselor3).build();
+        Symptom symptom18 = Symptom.builder().categoryType("가족").issueAreaType("부부 문제").symptom("부부관계갈등").counselor(counselor4).build();
+        Symptom symptom19 = Symptom.builder().categoryType("가족").issueAreaType("부부 문제").symptom("의사소통").counselor(counselor4).build();
+        Symptom symptom20 = Symptom.builder().categoryType("가족").issueAreaType("부부 문제").symptom("성격차이").counselor(counselor5).build();
+        Symptom symptom21 = Symptom.builder().categoryType("가족").issueAreaType("부부 문제").symptom("별거").counselor(counselor5).build();
+        Symptom symptom22 = Symptom.builder().categoryType("가족").issueAreaType("자녀 문제").symptom("자녀 성격").counselor(counselor6).build();
+        Symptom symptom23 = Symptom.builder().categoryType("가족").issueAreaType("자녀 문제").symptom("학업/진로").counselor(counselor6).build();
 
         Affiliation affiliation1 = Affiliation.builder().societyName("학회1").counselor(counselor1).build();
         Affiliation affiliation2 = Affiliation.builder().societyName("학회2").counselor(counselor2).build();
@@ -216,42 +216,42 @@ public class DataInitializer implements CommandLineRunner {
         ConsultDetail consultDetail18 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor6).reservation(reservation3).content("상담 내용 18")
                 .symptom("우울").title("상담 제목 18").build();
 
-        Review review1 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
-                .account(accountDetail1).counselor(consultDetail1.getCounselor()).symptom(consultDetail1.getSymptom()).build();
+        Review review1 = Review.builder().title("도움돼요").content("도움돼요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail1).counselor(consultDetail1.getCounselor()).build();
         Review review2 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
-                .account(accountDetail1).counselor(consultDetail2.getCounselor()).symptom(consultDetail2.getSymptom()).build();
-        Review review3 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
-                .account(accountDetail1).counselor(consultDetail3.getCounselor()).symptom(consultDetail3.getSymptom()).build();
-        Review review4 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).
-                account(accountDetail1).counselor(consultDetail4.getCounselor()).symptom(consultDetail4.getSymptom()).build();
-        Review review5 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
-                .account(accountDetail1).counselor(consultDetail5.getCounselor()).symptom(consultDetail5.getSymptom()).build();
+                .account(accountDetail1).counselor(consultDetail2.getCounselor()).build();
+        Review review3 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail1).counselor(consultDetail3.getCounselor()).build();
+        Review review4 = Review.builder().title("좋아요").content("좋아요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00)).
+                account(accountDetail1).counselor(consultDetail4.getCounselor()).build();
+        Review review5 = Review.builder().title("도움돼요").content("도움돼요").rating(5.0).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail1).counselor(consultDetail5.getCounselor()).build();
         Review review6 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
-                .account(accountDetail1).counselor(consultDetail6.getCounselor()).symptom(consultDetail6.getSymptom()).build();
+                .account(accountDetail1).counselor(consultDetail6.getCounselor()).build();
         Review review7 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
-                .account(accountDetail1).counselor(consultDetail7.getCounselor()).symptom(consultDetail7.getSymptom()).build();
+                .account(accountDetail1).counselor(consultDetail7.getCounselor()).build();
         Review review8 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
-                .account(accountDetail1).counselor(consultDetail8.getCounselor()).symptom(consultDetail8.getSymptom()).build();
-        Review review9 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00))
-                .account(accountDetail1).counselor(consultDetail9.getCounselor()).symptom(consultDetail9.getSymptom()).build();
-        Review review10 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
-                .account(accountDetail2).counselor(consultDetail10.getCounselor()).symptom(consultDetail10.getSymptom()).build();
+                .account(accountDetail1).counselor(consultDetail8.getCounselor()).build();
+        Review review9 = Review.builder().title("좋아요").content("좋아요").rating(5.0).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00))
+                .account(accountDetail1).counselor(consultDetail9.getCounselor()).build();
+        Review review10 = Review.builder().title("도움돼요").content("도움돼요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail2).counselor(consultDetail10.getCounselor()).build();
         Review review11 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
-                .account(accountDetail2).counselor(consultDetail11.getCounselor()).symptom(consultDetail11.getSymptom()).build();
-        Review review12 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
-                .account(accountDetail2).counselor(consultDetail12.getCounselor()).symptom(consultDetail12.getSymptom()).build();
-        Review review13 = Review.builder().title("좋아요").content("좋아요").rating(4.7).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00))
-                .account(accountDetail2).counselor(consultDetail13.getCounselor()).symptom(consultDetail13.getSymptom()).build();
-        Review review14 = Review.builder().title("도움돼요").content("도움돼요").rating(4.5).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
-                .account(accountDetail2).counselor(consultDetail14.getCounselor()).symptom(consultDetail14.getSymptom()).build();
+                .account(accountDetail2).counselor(consultDetail11.getCounselor()).build();
+        Review review12 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail12.getCounselor()).build();
+        Review review13 = Review.builder().title("좋아요").content("좋아요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 7, 12, 30, 00))
+                .account(accountDetail2).counselor(consultDetail13.getCounselor()).build();
+        Review review14 = Review.builder().title("도움돼요").content("도움돼요").rating(5.0).createdAt(LocalDateTime.of(2024, 5, 15, 13, 00, 00))
+                .account(accountDetail2).counselor(consultDetail14.getCounselor()).build();
         Review review15 = Review.builder().title("별로에요").content("별로에요").rating(3.0).createdAt(LocalDateTime.of(2024, 5, 12, 8, 30, 00))
-                .account(accountDetail2).counselor(consultDetail15.getCounselor()).symptom(consultDetail15.getSymptom()).build();
-        Review review16 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
-                .account(accountDetail2).counselor(consultDetail16.getCounselor()).symptom(consultDetail16.getSymptom()).build();
-        Review review17 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
-                .account(accountDetail2).counselor(consultDetail17.getCounselor()).symptom(consultDetail17.getSymptom()).build();
-        Review review18 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.4).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
-                .account(accountDetail2).counselor(consultDetail18.getCounselor()).symptom(consultDetail18.getSymptom()).build();
+                .account(accountDetail2).counselor(consultDetail15.getCounselor()).build();
+        Review review16 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail16.getCounselor()).build();
+        Review review17 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail17.getCounselor()).build();
+        Review review18 = Review.builder().title("괜찮아요").content("괜찮아요").rating(4.0).createdAt(LocalDateTime.of(2024, 5, 20, 17, 00, 00))
+                .account(accountDetail2).counselor(consultDetail18.getCounselor()).build();
 
         Tag tag1 = Tag.builder().tagName("친절").tagContent("상담사님이 친절하세요.").account(accountDetail1).build();
         Tag tag2 = Tag.builder().tagName("좋음").tagContent("상담이 매우 좋았습니다.").account(accountDetail1).build();
@@ -283,8 +283,7 @@ public class DataInitializer implements CommandLineRunner {
 
         counselorRepository.saveAll(Arrays.asList(counselor1, counselor2, counselor3, counselor4, counselor5, counselor6));
         methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4, method5, method6, method7, method8));
-        fieldRepository.saveAll(Arrays.asList(field1, field2, field3, field4, field5, field6, field7, field8, field9, field10));
-        symptomRepository.saveAll(Arrays.asList(symptom1, symptom2, symptom3, symptom4, symptom5, symptom6, symptom7, symptom8, symptom9, symptom10, symptom11));
+        symptomRepository.saveAll(Arrays.asList(symptom1, symptom2, symptom3, symptom4, symptom5, symptom6, symptom7, symptom8, symptom9, symptom10, symptom11, symptom12, symptom13, symptom14, symptom15, symptom16, symptom17, symptom18, symptom19, symptom20, symptom21, symptom22, symptom23));
         reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4, review5, review6, review7, review8, review9, review10, review11, review12, review13, review14, review15, review16, review17, review18));
         affiliationRepository.saveAll(Arrays.asList(affiliation1, affiliation2, affiliation3, affiliation4, affiliation5, affiliation6, affiliation7, affiliation8, affiliation9));
         educationRepository.saveAll(Arrays.asList(education1, education2, education3, education4, education5, education6));

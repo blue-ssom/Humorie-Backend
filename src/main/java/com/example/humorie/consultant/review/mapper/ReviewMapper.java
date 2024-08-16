@@ -18,7 +18,6 @@ public interface ReviewMapper {
     ReviewRes toReviewRes(Review review);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "symptom", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "account", ignore = true)
     @Mapping(target = "counselor", ignore = true)

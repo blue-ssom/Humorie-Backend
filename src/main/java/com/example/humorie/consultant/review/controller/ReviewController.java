@@ -2,6 +2,7 @@ package com.example.humorie.consultant.review.controller;
 
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.consultant.review.dto.ReviewRes;
+import com.example.humorie.consultant.review.dto.ReviewResList;
 import com.example.humorie.consultant.review.service.ReviewService;
 import com.example.humorie.consultant.review.dto.ReviewReq;
 import com.example.humorie.global.exception.ErrorResponse;
@@ -46,7 +47,7 @@ public class ReviewController {
 
     @GetMapping("/{counselorId}")
     @Operation(summary = "리뷰 리스트 조회")
-    public ErrorResponse<List<ReviewRes>> getReviewList(@RequestParam long counselorId) {
+    public ErrorResponse<ReviewResList> getReviewList(@RequestParam long counselorId) {
         return new ErrorResponse<>(reviewService.getReviewListByCounselor(counselorId));
     }
 

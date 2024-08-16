@@ -4,11 +4,11 @@ import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.consultant.counselor.dto.BookmarkDto;
 import com.example.humorie.consultant.counselor.dto.CounselorDto;
 import com.example.humorie.consultant.counselor.entity.Bookmark;
-import com.example.humorie.consultant.counselor.entity.CounselingField;
 import com.example.humorie.consultant.counselor.entity.Counselor;
+import com.example.humorie.consultant.counselor.entity.Symptom;
 import com.example.humorie.consultant.counselor.repository.BookmarkRepository;
-import com.example.humorie.consultant.counselor.repository.CounselingFieldRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
+import com.example.humorie.consultant.counselor.repository.SymptomRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.global.service.CommonService;
@@ -26,7 +26,7 @@ public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final CounselorRepository counselorRepository;
-    private final CounselingFieldRepository fieldRepository;
+    private final SymptomRepository symptomRepository;
     private final CommonService commonService;
 
     @Transactional
@@ -90,10 +90,10 @@ public class BookmarkService {
         counselorDto.setCounselorId(counselor.getId());
         counselorDto.setName(counselor.getName());
 
-        Set<String> counselingFields = fieldRepository.findByCounselorId(counselor.getId()).stream()
-                .map(CounselingField::getField)
+        Set<String> symptoms = symptomRepository.findByCounselorId(counselor.getId()).stream()
+                .map(Symptom::getSymptom)
                 .collect(Collectors.toSet());
-        counselorDto.setCounselingFields(counselingFields);
+        counselorDto.setSymptoms(symptoms);
 
         return counselorDto;
     }

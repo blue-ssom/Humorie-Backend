@@ -17,6 +17,10 @@ public class Symptom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String categoryType;
+
+    private String issueAreaType;
+
     private String symptom;
 
     @ManyToOne(fetch = FetchType.LAZY)

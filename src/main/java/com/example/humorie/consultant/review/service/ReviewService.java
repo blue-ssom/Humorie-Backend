@@ -7,6 +7,7 @@ import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.consultant.review.dto.ReviewReq;
 import com.example.humorie.consultant.review.dto.ReviewRes;
+import com.example.humorie.consultant.review.dto.ReviewResList;
 import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.mapper.ReviewMapper;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
@@ -42,7 +43,6 @@ public class ReviewService {
         Counselor counselor = consultDetail.getCounselor();
 
         Review review = mapper.toReview(reviewReq);
-        review.setSymptom(consultDetail.getSymptom());
         review.setCreatedAt(LocalDateTime.now());
         review.setAccount(account);
         review.setCounselor(counselor);
@@ -99,14 +99,21 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewRes> getReviewListByCounselor(long counselorId) {
-        List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
+    public ReviewResList getReviewListByCounselor(long counselorId) {
+        Counselor counselor = commonService.getCounselorById(counselorId);
 
+        List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
         List<ReviewRes> reviewResList = mapper.toReviewResList(reviews);
 
-        return reviewResList.stream()
+        List<ReviewRes> sortedReviewByRating = reviewResList.stream()
                 .sorted(Comparator.comparingDouble(ReviewRes::getRating).reversed())
                 .collect(Collectors.toList());
+
+        return ReviewResList.builder()
+                .averageRating(counselor.getRating())
+                .reviewCount(counselor.getReviewCount())
+                .reviewResList(sortedReviewByRating)
+                .build();
     }
 
     private void updateCounselorRating(Counselor counselor) {

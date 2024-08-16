@@ -47,6 +47,7 @@ public enum ErrorCode {
     REVIEW_PERMISSION_DENIED(false, 2017, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
     NONE_EXIST_TAG(false, 2018, "존재하지 않는 태그입니다."),
     DUPLICATE_TAG_NAME(false, 2019, "중복죈 태그 이름입니다."),
+    MAX_TAG_LIMIT_EXCEEDED(false, 2020, "등록할 수 있는 태그의 수는 최대 5개 입니다."),
 
 
 

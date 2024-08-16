@@ -170,7 +170,7 @@ public class JwtTokenUtil {
 
         if(StringUtils.hasText(token)) {
             if(token.startsWith("Bearer ")) {
-                return token.substring(7);
+                return token.substring(7).trim();
             } else {
                 return token;
             }

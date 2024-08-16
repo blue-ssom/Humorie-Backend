@@ -52,9 +52,6 @@ public class Counselor {
     private Set<CounselingMethod> counselingMethods;
 
     @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CounselingField> counselingFields;
-
-    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Symptom> symptoms;
 
     @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true)
