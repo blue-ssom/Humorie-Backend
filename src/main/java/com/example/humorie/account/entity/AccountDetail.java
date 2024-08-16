@@ -31,8 +31,6 @@ public class AccountDetail {
 
     private String name;
 
-    //private String phoneNumber;
-
     private LocalDate joinDate;
 
     private Boolean emailSubscription;
@@ -53,7 +51,6 @@ public class AccountDetail {
         accountDetail.email = email;
         accountDetail.password = encodedPassword;
         accountDetail.accountName = accountName;
-        //accountDetail.phoneNumber = phoneNumber;
         accountDetail.name = name;
         accountDetail.emailSubscription = emailSubscription;
         accountDetail.role = AccountRole.USER;
