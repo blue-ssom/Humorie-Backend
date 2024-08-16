@@ -19,4 +19,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     boolean existsByTagNameAndAccount(String tagName, AccountDetail account);
 
+    int countByAccount(AccountDetail account);
+
 }

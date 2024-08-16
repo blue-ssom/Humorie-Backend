@@ -1,6 +1,7 @@
 package com.example.humorie.consultant.review.controller;
 
 import com.example.humorie.account.jwt.JwtTokenUtil;
+import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.consultant.review.dto.TagReq;
 import com.example.humorie.consultant.review.dto.TagRes;
 import com.example.humorie.consultant.review.service.TagService;
@@ -8,6 +9,7 @@ import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
