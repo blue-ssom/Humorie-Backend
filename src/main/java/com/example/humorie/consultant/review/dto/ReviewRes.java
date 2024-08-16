@@ -18,8 +18,6 @@ public class ReviewRes {
 
     private Double rating;
 
-    private String symptom;
-
     private LocalDateTime createdAt;
 
 }
