@@ -1,9 +1,7 @@
 package com.example.humorie.recommendation.service;
 
-import com.example.humorie.account.jwt.PrincipalDetails;
-
-import com.example.humorie.consultant.counselor.entity.CounselingField;
 import com.example.humorie.consultant.counselor.entity.Counselor;
+import com.example.humorie.consultant.counselor.entity.Symptom;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
@@ -11,13 +9,10 @@ import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.recommendation.dto.RecommendationCounselorDto;
 import com.example.humorie.recommendation.dto.RecommendationReviewDto;
-import com.example.humorie.reservation.entity.Reservation;
-import com.example.humorie.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,8 +50,8 @@ public class RecommendationService {
                 .map(counselor -> new RecommendationCounselorDto(
                         counselor.getId(),
                         counselor.getName(),
-                        counselor.getCounselingFields().stream()
-                                .map(CounselingField::getField)
+                        counselor.getSymptoms().stream()
+                                .map(Symptom::getSymptom)
                                 .collect(Collectors.toSet()),
                         counselor.getRating(),
                         counselor.getReviewCount()))

@@ -36,7 +36,7 @@ public class CounselorProfileDto {
 
     private List<String> careers;
 
-    private Set<String> counselingFields;
+    private Set<String> symptoms;
 
     private List<ReviewRes> reviews;
 
