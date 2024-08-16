@@ -2,6 +2,7 @@ package com.example.humorie.consultant.search.controller;
 
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.search.dto.CounselorDto;
+import com.example.humorie.consultant.search.dto.SearchReq;
 import com.example.humorie.consultant.search.service.SearchService;
 import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,14 +29,14 @@ public class SearchController {
         return new ErrorResponse<>(counselors);
     }
 
-    @GetMapping("/keywords")
+    @PostMapping("/keywords")
     @Operation(summary = "키워드 선택으로 상담사 검색")
-    public ErrorResponse<List<CounselorDto>> searchByKeywords(@RequestParam List<String> keywords,
+    public ErrorResponse<List<CounselorDto>> searchByKeywords(@RequestBody SearchReq searchReq,
                                                                @RequestParam(required = false) String counselingMethod,
                                                                @RequestParam(required = false) String gender,
                                                                @RequestParam(required = false) String region,
                                                                @RequestParam(required = false) String order) {
-        List<CounselorDto> counselors = searchService.searchByKeywords(keywords, counselingMethod, gender, region, order);
+        List<CounselorDto> counselors = searchService.searchByKeywords(searchReq, counselingMethod, gender, region, order);
 
         return new ErrorResponse<>(counselors);
     }

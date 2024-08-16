@@ -1,13 +1,14 @@
 package com.example.humorie.consultant.search.service;
 
-import com.example.humorie.consultant.counselor.entity.CounselingField;
 import com.example.humorie.consultant.counselor.entity.CounselingMethod;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.entity.Symptom;
-import com.example.humorie.consultant.counselor.repository.CounselingFieldRepository;
 import com.example.humorie.consultant.counselor.repository.CounselingMethodRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
+import com.example.humorie.consultant.counselor.repository.SymptomRepository;
 import com.example.humorie.consultant.search.dto.CounselorDto;
+import com.example.humorie.consultant.search.dto.SearchReq;
+import com.example.humorie.consultant.search.dto.SymptoDto;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ import java.util.stream.Collectors;
 public class SearchService {
 
     private final CounselorRepository counselorRepository;
-    private final CounselingFieldRepository fieldRepository;
     private final CounselingMethodRepository methodRepository;
+    private final SymptomRepository symptomRepository;
 
     public List<CounselorDto> getAllCounselors() {
         List<Counselor> counselors = counselorRepository.findAll();
@@ -40,7 +41,7 @@ public class SearchService {
     }
 
 
-    public List<CounselorDto> searchByKeywords(List<String> symptomKeywords, String counselingMethod, String gender, String region, String order) {
+    public List<CounselorDto> searchByKeywords(SearchReq searchReq, String counselingMethod, String gender, String region, String order) {
         List<Counselor> counselorList = counselorRepository.findAll();
         List<CounselorDto> result = new ArrayList<>();
 
@@ -48,7 +49,10 @@ public class SearchService {
             for (Counselor counselor : counselorList) {
                 List<Symptom> counselorSymptoms = counselor.getSymptoms();
 
-                if (containsAllSymptomKeywords(counselorSymptoms, symptomKeywords)) {
+                boolean matchAllGroups = searchReq.getSymptoms().stream()
+                        .allMatch(group -> matchesCategoryIssueAndSymptom(counselorSymptoms, group));
+
+                if(matchAllGroups) {
                     CounselorDto counselorDto = mapToCounselorDto(counselor);
                     result.add(counselorDto);
                 }
@@ -94,12 +98,15 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
-    private boolean containsAllSymptomKeywords(List<Symptom> symptoms, List<String> symptomKeywords) {
-        List<String> symptomNames = symptoms.stream()
-                .map(Symptom::getSymptom)
-                .collect(Collectors.toList());
-
-        return symptomNames.containsAll(symptomKeywords);
+    private boolean matchesCategoryIssueAndSymptom(List<Symptom> symptoms, SymptoDto symptoDto) {
+        for (Symptom symptom : symptoms) {
+            if (symptom.getCategoryType().equals(symptoDto.getCategoryType()) &&
+                    symptom.getIssueAreaType().equals(symptoDto.getIssueAreaType()) &&
+                    symptom.getSymptom().equals(symptoDto.getSymptom())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean containsKeywordInSymptoms(List<Symptom> symptoms, String keyword) {
@@ -130,8 +137,8 @@ public class SearchService {
     }
 
     private CounselorDto mapToCounselorDto(Counselor counselor) {
-        Set<String> counselingFields = fieldRepository.findByCounselorId(counselor.getId()).stream()
-                .map(CounselingField::getField)
+        Set<String> symptoms = symptomRepository.findByCounselorId(counselor.getId()).stream()
+                .map(Symptom::getSymptom)
                 .collect(Collectors.toSet());
 
         Set<String> counselingMethods = methodRepository.findByCounselorId(counselor.getId()).stream()
@@ -146,8 +153,8 @@ public class SearchService {
                 counselor.getRating(),
                 counselor.getReviewCount(),
                 counselor.getIntroduction(),
-                counselingFields,
-                counselingMethods
+                counselingMethods,
+                symptoms
         );
 
     }
