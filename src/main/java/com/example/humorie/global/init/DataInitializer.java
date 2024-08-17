@@ -136,7 +136,7 @@ public class DataInitializer implements CommandLineRunner {
         Education education6 = Education.builder().content("3대학교 심리학 박사").counselor(counselor6).build();
 
         Career career1 = Career.builder().content("경력1").counselor(counselor1).build();
-        Career career2 = Career.builder().content("경력1").counselor(counselor1).build();
+        Career career2 = Career.builder().content("경력2").counselor(counselor1).build();
         Career career3 = Career.builder().content("경력1").counselor(counselor2).build();
         Career career4 = Career.builder().content("경력1").counselor(counselor3).build();
         Career career5 = Career.builder().content("경력1").counselor(counselor4).build();
@@ -154,7 +154,7 @@ public class DataInitializer implements CommandLineRunner {
                 .account(accountDetail1).build();
         Point point5 = Point.builder().points(2000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 6, 3, 12, 30, 00))
                 .account(accountDetail1).build();
-        Point point6 = Point.builder().points(100000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00))
+        Point point6 = Point.builder().points(100000).type("earn").title("웰컴 포인트").transactionDate(LocalDateTime.of(2024, 5, 9, 12, 30, 00))
                 .account(accountDetail2).build();
         Point point7 = Point.builder().points(70000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00))
                 .account(accountDetail2).build();
