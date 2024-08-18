@@ -96,11 +96,7 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         return CreateReservationResDto.builder()
-                    .accountName(account.getAccountName())
                     .reservationUid(reservation.getReservationUid())
-                    .accountEmail(account.getEmail())
-                    .counselorName(counselor.getName())
-                    .finalPrice(createReservationReq.getFinalPrice())
                     .build();
     }
 
@@ -133,6 +129,7 @@ public class ReservationService {
                 .buyerEmail(reservation.getAccount().getEmail())
                 .buyerName(reservation.getAccount().getName())
                 .counselorName(reservation.getCounselor().getName())
+                .finalPrice(reservation.getPayment().getFinalPrice())
                 .build();
     }
 
