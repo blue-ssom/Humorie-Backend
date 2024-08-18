@@ -1,6 +1,5 @@
 package com.example.humorie.recommendation.dto;
 
-import com.example.humorie.consultant.counselor.entity.CounselingField;
 import lombok.Getter;
 
 import java.util.Set;
@@ -12,17 +11,17 @@ public class RecommendationCounselorDto {
 
     private final String name;
 
-    private final Set<String> counselingFields;
+    private final Set<String> symptoms;
 
     private final double rating;
 
     private final int reviewCount;
 
-    public RecommendationCounselorDto(long id, String name, Set<String> counselingFields,
+    public RecommendationCounselorDto(long id, String name, Set<String> symptoms,
                                       double rating, int reviewCount){
         this.id = id;
         this.name = name;
-        this.counselingFields = counselingFields;
+        this.symptoms = symptoms;
         this.rating = rating;
         this.reviewCount = reviewCount;
     }

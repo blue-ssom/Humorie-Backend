@@ -2,6 +2,7 @@ package com.example.humorie.consultant.review.controller;
 
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.consultant.review.dto.ReviewRes;
+import com.example.humorie.consultant.review.dto.ReviewResList;
 import com.example.humorie.consultant.review.service.ReviewService;
 import com.example.humorie.consultant.review.dto.ReviewReq;
 import com.example.humorie.global.exception.ErrorResponse;
@@ -20,15 +21,15 @@ public class ReviewController {
     private final JwtTokenUtil jwtTokenUtil;
     private final ReviewService reviewService;
 
-    @PostMapping
+    @PostMapping("/{consultId}")
     @Operation(summary = "리뷰 작성")
-    public ErrorResponse<String> createReview(@RequestBody ReviewReq reviewReq, @RequestParam long counselorId, HttpServletRequest request) {
+    public ErrorResponse<String> createReview(@RequestBody ReviewReq reviewReq, @RequestParam long consultId, HttpServletRequest request) {
         String accessToken = jwtTokenUtil.resolveToken(request);
 
-        return new ErrorResponse<>(reviewService.createReview(accessToken, counselorId, reviewReq));
+        return new ErrorResponse<>(reviewService.createReview(accessToken, consultId, reviewReq));
     }
 
-    @PatchMapping
+    @PatchMapping("/{reviewId}")
     @Operation(summary = "리뷰 수정")
     public ErrorResponse<String> modifyReview(@RequestBody ReviewReq reviewReq, @RequestParam long reviewId, HttpServletRequest request) {
         String accessToken = jwtTokenUtil.resolveToken(request);
@@ -36,7 +37,7 @@ public class ReviewController {
         return new ErrorResponse<>(reviewService.modifyReview(accessToken, reviewId, reviewReq));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{reviewId}")
     @Operation(summary = "리뷰 삭제")
     public ErrorResponse<String> deleteReview(@RequestParam long reviewId, HttpServletRequest request) {
         String accessToken = jwtTokenUtil.resolveToken(request);
@@ -44,9 +45,9 @@ public class ReviewController {
         return new ErrorResponse<>(reviewService.deleteReview(accessToken, reviewId));
     }
 
-    @GetMapping("/reviews")
+    @GetMapping("/{counselorId}")
     @Operation(summary = "리뷰 리스트 조회")
-    public ErrorResponse<List<ReviewRes>> getReviewList(@RequestParam long counselorId) {
+    public ErrorResponse<ReviewResList> getReviewList(@RequestParam long counselorId) {
         return new ErrorResponse<>(reviewService.getReviewListByCounselor(counselorId));
     }
 

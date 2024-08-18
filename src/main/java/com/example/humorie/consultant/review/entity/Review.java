@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -40,8 +39,5 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Counselor counselor;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<ReviewTag> tags;
 
 }

@@ -1,21 +1,20 @@
 package com.example.humorie.consultant.counselor.service;
 
 import com.example.humorie.account.entity.AccountDetail;
-import com.example.humorie.account.jwt.JwtTokenUtil;
-import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.consultant.counselor.dto.BookmarkDto;
 import com.example.humorie.consultant.counselor.dto.CounselorDto;
 import com.example.humorie.consultant.counselor.entity.Bookmark;
-import com.example.humorie.consultant.counselor.entity.CounselingField;
 import com.example.humorie.consultant.counselor.entity.Counselor;
+import com.example.humorie.consultant.counselor.entity.Symptom;
 import com.example.humorie.consultant.counselor.repository.BookmarkRepository;
-import com.example.humorie.consultant.counselor.repository.CounselingFieldRepository;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
+import com.example.humorie.consultant.counselor.repository.SymptomRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import jakarta.transaction.Transactional;
+import com.example.humorie.global.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -27,19 +26,13 @@ public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final CounselorRepository counselorRepository;
-    private final AccountRepository accountRepository;
-    private final JwtTokenUtil jwtTokenUtil;
-    private final CounselingFieldRepository fieldRepository;
+    private final SymptomRepository symptomRepository;
+    private final CommonService commonService;
 
     @Transactional
     public String addBookmark(String accessToken, long counselorId) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
-
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
-
-        Counselor counselor = counselorRepository.findById(counselorId)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
+        AccountDetail account = commonService.getAccountFromToken(accessToken);
+        Counselor counselor = commonService.getCounselorById(counselorId);
 
         if (bookmarkRepository.existsByAccountAndCounselor(account, counselor)) {
             throw new ErrorException(ErrorCode.BOOKMARK_EXISTS);
@@ -57,29 +50,21 @@ public class BookmarkService {
 
     @Transactional
     public String removeBookmark(String accessToken, long counselorId) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
-
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
-
-        Counselor counselor = counselorRepository.findById(counselorId)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
+        AccountDetail account = commonService.getAccountFromToken(accessToken);
+        Counselor counselor = commonService.getCounselorById(counselorId);
 
         Bookmark bookmark = bookmarkRepository.findByAccountAndCounselor(account, counselor)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_BOOKMARK));
 
 
-        bookmarkRepository.deleteByAccountAndCounselor(account, counselor);
+        bookmarkRepository.deleteById(bookmark.getId());
 
         return "Bookmark removed successfully";
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<BookmarkDto> getAllBookmarks(String accessToken) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
-
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+        AccountDetail account = commonService.getAccountFromToken(accessToken);
 
         List<Bookmark> bookmarks = bookmarkRepository.findAllByAccount(account);
 
@@ -105,10 +90,10 @@ public class BookmarkService {
         counselorDto.setCounselorId(counselor.getId());
         counselorDto.setName(counselor.getName());
 
-        Set<String> counselingFields = fieldRepository.findByCounselorId(counselor.getId()).stream()
-                .map(CounselingField::getField)
+        Set<String> symptoms = symptomRepository.findByCounselorId(counselor.getId()).stream()
+                .map(Symptom::getSymptom)
                 .collect(Collectors.toSet());
-        counselorDto.setCounselingFields(counselingFields);
+        counselorDto.setSymptoms(symptoms);
 
         return counselorDto;
     }

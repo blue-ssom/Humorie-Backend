@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewTag {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,5 @@ public class ReviewTag {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private AccountDetail account;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Review> reviews;
 
 }

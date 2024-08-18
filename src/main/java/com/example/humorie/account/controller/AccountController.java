@@ -5,7 +5,6 @@ import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.response.LoginRes;
 import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
-import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.service.CookieService;
 import com.example.humorie.account.service.EmailService;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -79,7 +77,7 @@ public class AccountController {
     @Operation(summary = "비밀번호 찾기")
     public ErrorResponse<String> sendEmail(@RequestBody EmailDto emailDto) {
         try {
-            return new ErrorResponse<>(emailService.sendEmail(emailDto.getEmail()));
+            return new ErrorResponse<>(emailService.sendPasswordResetEmail(emailDto.getEmail()));
         } catch (Exception e) {
             e.printStackTrace();
             return new ErrorResponse<>(ErrorCode.SEND_EMAIL_FAILED);
@@ -90,6 +88,29 @@ public class AccountController {
     @Operation(summary = "아이디 중복 확인")
     public ErrorResponse<String> checkAccountNameAvailability(@RequestBody AccountNameAvailability availability) {
         return new ErrorResponse<>(accountService.isAccountNameAvailable(availability.getAccountName()));
+    }
+
+    @PostMapping("/send/verification")
+    @Operation(summary = "이메일 본인 인증")
+    public ErrorResponse<String> sendVerificationEmail(@RequestBody EmailDto emailDto) {
+        try {
+            return new ErrorResponse<>(emailService.sendVerificationEmail(emailDto.getEmail()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ErrorResponse<>(ErrorCode.SEND_EMAIL_FAILED);
+        }
+    }
+
+    @PostMapping("/verification")
+    @Operation(summary = "인증 번호 검증")
+    public ErrorResponse<String> verifyCode(@RequestBody VerificationDto verificationDto) {
+        boolean isVerified = emailService.verifyCode(verificationDto.getEmail(), verificationDto.getCode());
+
+        if(isVerified) {
+            return new ErrorResponse<>("Verification successful");
+        } else {
+            return new ErrorResponse<>(ErrorCode.VERIFICATION_FAILED);
+        }
     }
 
 }

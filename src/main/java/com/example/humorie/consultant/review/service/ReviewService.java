@@ -1,19 +1,22 @@
 package com.example.humorie.consultant.review.service;
 
 import com.example.humorie.account.entity.AccountDetail;
-import com.example.humorie.account.jwt.JwtTokenUtil;
-import com.example.humorie.account.repository.AccountRepository;
+import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.consultant.review.dto.ReviewReq;
 import com.example.humorie.consultant.review.dto.ReviewRes;
+import com.example.humorie.consultant.review.dto.ReviewResList;
 import com.example.humorie.consultant.review.entity.Review;
+import com.example.humorie.consultant.review.mapper.ReviewMapper;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import jakarta.transaction.Transactional;
+import com.example.humorie.global.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -24,42 +27,30 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final JwtTokenUtil jwtTokenUtil;
-    private final AccountRepository accountRepository;
     private final CounselorRepository counselorRepository;
     private final ReviewRepository reviewRepository;
+    private final ConsultDetailRepository consultDetailRepository;
+    private final CommonService commonService;
+    private final ReviewMapper mapper = ReviewMapper.INSTANCE;
 
     @Transactional
-    public String createReview(String accessToken, long counselorId, ReviewReq reviewReq) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
+    public String createReview(String accessToken, long consultId, ReviewReq reviewReq) {
+        AccountDetail account = commonService.getAccountFromToken(accessToken);
 
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+        ConsultDetail consultDetail = consultDetailRepository.findById(consultId)
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_CONSULT_DETAIL));
 
-        Counselor counselor = counselorRepository.findById(counselorId)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
+        Counselor counselor = consultDetail.getCounselor();
 
-
-        Review review = Review.builder()
-                .title(reviewReq.getTitle())
-                .content(reviewReq.getContent())
-                .rating(reviewReq.getRating())
-                .createdAt(LocalDateTime.now())
-                .account(account)
-                .counselor(counselor)
-                .build();
+        Review review = mapper.toReview(reviewReq);
+        review.setCreatedAt(LocalDateTime.now());
+        review.setAccount(account);
+        review.setCounselor(counselor);
 
         reviewRepository.save(review);
 
         counselor.setReviewCount(counselor.getReviewCount() + 1);
-
-        List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
-        double averageRating = reviews.stream()
-                .mapToDouble(Review::getRating)
-                .average()
-                .orElse(0.0);
-
-        counselor.setRating(averageRating);
+        updateCounselorRating(counselor);
         counselorRepository.save(counselor);
 
         return "Creation Success";
@@ -67,10 +58,7 @@ public class ReviewService {
 
     @Transactional
     public String modifyReview(String accessToken, long reviewId, ReviewReq reviewReq) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
-
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+        AccountDetail account = commonService.getAccountFromToken(accessToken);
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_REVIEW));
@@ -96,10 +84,7 @@ public class ReviewService {
 
     @Transactional
     public String deleteReview(String accessToken, long reviewId) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
-
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+        AccountDetail account = commonService.getAccountFromToken(accessToken);
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_REVIEW));
@@ -113,23 +98,31 @@ public class ReviewService {
         return "Deletion Success";
     }
 
-    public List<ReviewRes> getReviewListByCounselor(long counselorId) {
-        List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
+    @Transactional(readOnly = true)
+    public ReviewResList getReviewListByCounselor(long counselorId) {
+        Counselor counselor = commonService.getCounselorById(counselorId);
 
-        return reviews.stream()
-                .sorted(Comparator.comparingDouble(Review::getRating).reversed())
-                .map(this::convertToDto)
+        List<Review> reviews = reviewRepository.findByCounselorId(counselorId);
+        List<ReviewRes> reviewResList = mapper.toReviewResList(reviews);
+
+        List<ReviewRes> sortedReviewByRating = reviewResList.stream()
+                .sorted(Comparator.comparingDouble(ReviewRes::getRating).reversed())
                 .collect(Collectors.toList());
+
+        return ReviewResList.builder()
+                .averageRating(counselor.getRating())
+                .reviewCount(counselor.getReviewCount())
+                .reviewResList(sortedReviewByRating)
+                .build();
     }
 
-    private ReviewRes convertToDto(Review review) {
-        return ReviewRes.builder()
-                .reviewId(review.getId())
-                .title(review.getTitle())
-                .content(review.getContent())
-                .rating(review.getRating())
-                .createdAt(review.getCreatedAt())
-                .build();
+    private void updateCounselorRating(Counselor counselor) {
+        List<Review> reviews = reviewRepository.findByCounselorId(counselor.getId());
+        double averageRating = reviews.stream()
+                .mapToDouble(Review::getRating)
+                .average()
+                .orElse(0.0);
+        counselor.setRating(averageRating);
     }
 
 }

@@ -32,41 +32,53 @@ public enum ErrorCode {
     INVALID_EMAIL(false, 2006, "잘못된 이메일 형식입니다."),
     INVALID_PASSWORD(false, 2007, "잘못된 비밀번호 형식입니다. 비밀번호는 최소 8자 이상 16자 이하이며, 적어도 하나의 숫자와 알파벳, 특수문자가 포함되어야 합니다."),
     INVALID_ID(false, 2008, "잘못된 아이디 형식입니다. 아이디는 최소 6자 이상이어야 하며, 소문자 알파벳과 숫자로 구성되어야 합니다."),
-    SEND_EMAIL_FAILED(false, 2009, "이메일 전송에 실패했습니다."),
-    NONE_EXIST_RESERVATION(false, 2010, "존재하지 않는 예약입니다."),
-    INCOMPLETE_PAYMENT(false, 2011, "완료되지 않은 결제입니다."),
-    SUSPECTED_PAYMENT_FORGERY(false, 2011, "위변조 의심 결제입니다."),
-    EXCEED_POINT(false, 2012, "포인트가 초과되었습니다."),
-    NONE_EXIST_REVIEW(false, 2013, "존재하지 않는 리뷰입니다."),
-    REVIEW_PERMISSION_DENIED(false, 2014, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
-    INVALID_NAME(false, 2015, "잘못된 이름 형식입니다."),
-    EMPTY_NAME(false, 2017, "이름을 입력해주세요"),
-    EMPTY_EMAIL(false, 2019, "이메일을 입력해주세요"),
+    INVALID_NAME(false, 2009, "잘못된 이름 형식입니다."),
+    EMPTY_NAME(false, 2010, "이름을 입력해주세요"),
+    EMPTY_EMAIL(false, 2011, "이메일을 입력해주세요"),
+
+    // reservation
+    NONE_EXIST_RESERVATION(false, 2012, "존재하지 않는 예약입니다."),
+    INCOMPLETE_PAYMENT(false, 2013, "완료되지 않은 결제입니다."),
+    SUSPECTED_PAYMENT_FORGERY(false, 2014, "위변조 의심 결제입니다."),
+    EXCEED_POINT(false, 2015, "포인트가 초과되었습니다."),
+
+    // review
+    NONE_EXIST_REVIEW(false, 2016, "존재하지 않는 리뷰입니다."),
+    REVIEW_PERMISSION_DENIED(false, 2017, "본인이 작성한 리뷰만 수정, 삭제할 수 있습니다."),
+    NONE_EXIST_TAG(false, 2018, "존재하지 않는 태그입니다."),
+    DUPLICATE_TAG_NAME(false, 2019, "중복된 태그 이름입니다."),
+    MAX_TAG_LIMIT_EXCEEDED(false, 2020, "등록할 수 있는 태그의 수는 최대 5개 입니다."),
+
 
 
     /**
      * 3000 : Response 오류
      */
+
+    // user
+    SEND_EMAIL_FAILED(false, 3001, "이메일 전송에 실패했습니다."),
+    VERIFICATION_FAILED(false, 3002, "이메일 인증에 실패했습니다."),
+
     // counselor
-    NON_EXIST_COUNSELOR(false, 3001, "존재하지 않는 상담사입니다."),
-    BOOKMARK_EXISTS(false, 3002, "해당 상담사에 대한 북마크가 이미 존재합니다."),
-    NONE_EXIST_BOOKMARK(false, 3003, "존재하지 않는 북마크입니다."),
-    SEARCH_FAILED(false, 3004, "상담사에 대한 검색을 실패했습니다."),
-    FAILED_PAYMENT(false, 3005, "결제 실패"),
+    NON_EXIST_COUNSELOR(false, 3003, "존재하지 않는 상담사입니다."),
+    BOOKMARK_EXISTS(false, 3004, "해당 상담사에 대한 북마크가 이미 존재합니다."),
+    NONE_EXIST_BOOKMARK(false, 3005, "존재하지 않는 북마크입니다."),
+    SEARCH_FAILED(false, 3006, "상담사에 대한 검색을 실패했습니다."),
+    FAILED_PAYMENT(false, 3007, "결제 실패"),
 
     // consult_detail
-    NONE_EXIST_CONSULT_DETAIL(false, 3006, "존재하지 않는 상담 내역입니다."),
-    CONSULT_DETAIL_NOT_COMPLETED(false, 3007, "상담 내용을 작성하고 있는 중이에요"),
-    NO_RECENT_CONSULT_DETAIL(false, 3008, "최근 상담 내역이 없습니다."),
+    NONE_EXIST_CONSULT_DETAIL(false, 3008, "존재하지 않는 상담 내역입니다."),
+    CONSULT_DETAIL_NOT_COMPLETED(false, 3009, "상담 내용을 작성하고 있는 중이에요"),
+    NO_RECENT_CONSULT_DETAIL(false, 3010, "최근 상담 내역이 없습니다."),
 
     // notice
-    NONE_EXIST_NOTICE(false, 3009,"존재하지 않는 공지사항입니다."),
-    NO_CONTENT(false, 3010,"표시할 콘텐츠가 없습니다."),
-    INVALID_PAGE_NUMBER(false, 3011,"페이지 번호가 전체 페이지 수를 초과했습니다."),
-    NEGATIVE_PAGE_NUMBER(false, 3012,"페이지 번호는 0 이상이어야 합니다."),
-    INVALID_PAGE_SIZE(false, 3013,"페이지 크기가 최대 허용 값을 초과했습니다."),
-    NEGATIVE_PAGE_SIZE(false, 3014,"페이지 크기는 0 이상이어야 합니다."),
-    NO_SEARCH_RESULTS(false, 3015,"검색 결과가 없습니다.");
+    NONE_EXIST_NOTICE(false, 3011,"존재하지 않는 공지사항입니다."),
+    NO_CONTENT(false, 3012,"표시할 콘텐츠가 없습니다."),
+    INVALID_PAGE_NUMBER(false, 3013,"페이지 번호가 전체 페이지 수를 초과했습니다."),
+    NEGATIVE_PAGE_NUMBER(false, 3014,"페이지 번호는 0 이상이어야 합니다."),
+    INVALID_PAGE_SIZE(false, 3015,"페이지 크기가 최대 허용 값을 초과했습니다."),
+    NEGATIVE_PAGE_SIZE(false, 3016,"페이지 크기는 0 이상이어야 합니다."),
+    NO_SEARCH_RESULTS(false, 3017,"검색 결과가 없습니다.");
 
 
     private final boolean isSuccess;

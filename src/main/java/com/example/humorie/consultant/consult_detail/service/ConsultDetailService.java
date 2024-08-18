@@ -1,17 +1,16 @@
-package com.example.humorie.consult_detail.service;
+package com.example.humorie.consultant.consult_detail.service;
 
 import com.example.humorie.account.service.AccountService;
-import com.example.humorie.consult_detail.dto.response.ConsultDetailPageDto;
-import com.example.humorie.consult_detail.dto.response.LatestConsultDetailResDto;
-import com.example.humorie.consult_detail.dto.response.ConsultDetailListDto;
+import com.example.humorie.consultant.consult_detail.dto.response.ConsultDetailPageDto;
+import com.example.humorie.consultant.consult_detail.dto.response.LatestConsultDetailResDto;
+import com.example.humorie.consultant.consult_detail.dto.response.ConsultDetailListDto;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.PrincipalDetails;
-import com.example.humorie.consult_detail.dto.response.SpecificConsultDetailDto;
-import com.example.humorie.consult_detail.entity.ConsultDetail;
-import com.example.humorie.consult_detail.repository.ConsultDetailRepository;
+import com.example.humorie.consultant.consult_detail.dto.response.SpecificConsultDetailDto;
+import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

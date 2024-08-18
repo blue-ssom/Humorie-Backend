@@ -94,7 +94,10 @@ public class ReservationService {
                 .build();
 
         reservationRepository.save(reservation);
-        return new CreateReservationResDto(reservation.getReservationUid());
+
+        return CreateReservationResDto.builder()
+                    .reservationUid(reservation.getReservationUid())
+                    .build();
     }
 
     public List<ReservationDto> getReservations(PrincipalDetails principal) {
@@ -126,6 +129,7 @@ public class ReservationService {
                 .buyerEmail(reservation.getAccount().getEmail())
                 .buyerName(reservation.getAccount().getName())
                 .counselorName(reservation.getCounselor().getName())
+                .finalPrice(reservation.getPayment().getFinalPrice())
                 .build();
     }
 
