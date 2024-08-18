@@ -42,15 +42,9 @@ public class ConsultDetailController {
     @Operation(summary = "전체 상담 내역 조회")
     public ConsultDetailPageDto getConsultDetails(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestParam(defaultValue = "0") int page, // 페이지 번호를 0부터 시작
-            @RequestParam(defaultValue = "9") int size
+            @RequestParam int page, // 페이지 번호를 0부터 시작
+            @RequestParam int size
     ) {
-        // 페이지 번호와 크기에 대한 유효성 검사
-        if (page < 0 || size < 1 || size > 9) {
-            // Size must be between 1 and 9
-            throw new ErrorException(ErrorCode.REQUEST_ERROR);
-        }
-
         Pageable pageable = PageRequest.of(page, size);
         return consultDetailService.findAllConsultDetail(principalDetails, pageable);
     }
