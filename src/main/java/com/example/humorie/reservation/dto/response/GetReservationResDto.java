@@ -13,4 +13,6 @@ public class GetReservationResDto {
     String buyerName;
 
     String buyerEmail;
+
+    Integer finalPrice;
 }
