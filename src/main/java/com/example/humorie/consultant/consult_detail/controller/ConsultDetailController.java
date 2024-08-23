@@ -51,11 +51,11 @@ public class ConsultDetailController {
         return consultDetailService.findAllConsultDetail(principalDetails, page, size);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{consultDetailId}")
     @Operation(summary = "특정 상담 내역 조회")
     public Map<String, Object> getSpecificConsultDetail(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @PathVariable Long id
+            @PathVariable Long consultDetailId
     ) {
         // 사용자 아이디를 가져옴
         String accountName = principalDetails.getAccountDetail().getAccountName();
@@ -65,7 +65,7 @@ public class ConsultDetailController {
         String maskedAccountName = maskAccountName(accountName);
 
         // 상담 내역 DTO를 가져옴
-        SpecificConsultDetailDto consultDetail = consultDetailService.getSpecificConsultDetail(id);
+        SpecificConsultDetailDto consultDetail = consultDetailService.getSpecificConsultDetail(consultDetailId);
 
         // 응답 데이터 구성
         Map<String, Object> response = new HashMap<>();
