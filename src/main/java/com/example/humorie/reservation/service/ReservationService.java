@@ -109,6 +109,7 @@ public class ReservationService {
                 .map(reservation -> new ReservationDto(
                         reservation.getId(),
                         reservation.getCounselor().getName(),
+                        reservation.getIsOnline(),
                         reservation.getLocation(),
                         reservation.getCounselDate(),
                         reservation.getCounselTime(),

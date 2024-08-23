@@ -16,6 +16,8 @@ public class ReservationDto {
 
     private final String counselorName;
 
+    private final boolean isOnline;
+
     private final String location;
 
     private final LocalDate counselDate;
@@ -26,9 +28,11 @@ public class ReservationDto {
 
 
     @Builder
-    public ReservationDto(Long reservationId, String counselorName,String location, LocalDate counselDate, LocalTime counselTime, LocalDateTime createdAt) {
+    public ReservationDto(Long reservationId, String counselorName, boolean isOnline, String location,
+                          LocalDate counselDate, LocalTime counselTime, LocalDateTime createdAt) {
         this.reservationId = reservationId;
         this.counselorName = counselorName;
+        this.isOnline = isOnline;
         this.location = location;
         this.counselDate = counselDate;
         this.counselTime = counselTime;
