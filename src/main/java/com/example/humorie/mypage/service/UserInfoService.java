@@ -49,17 +49,17 @@ public class UserInfoService {
     public String updateUserInfo(PrincipalDetails principalDetails, UserInfoUpdate updateDto) {
         AccountDetail account = principalDetails.getAccountDetail();
 
-        // 유효성 검사 및 필드 업데이트
         // 이름 (필수)
         userInfoValidationService.validateName(updateDto.getName());
         account.setName(updateDto.getName());
 
         // 비밀번호 (선택 사항)
-        if (updateDto.getNewPassword() != null && !updateDto.getNewPassword().isEmpty()) {
-            userInfoValidationService.validatePassword(updateDto.getNewPassword());
-            userInfoValidationService.validatePasswordConfirmation(updateDto.getNewPassword(), updateDto.getPasswordCheck());
-            account.setPassword(jwtSecurityConfig.passwordEncoder().encode(updateDto.getNewPassword()));
-        }
+        // 비밀번호 형식 검사
+        userInfoValidationService.validatePassword(updateDto.getNewPassword());
+        // 비밀번호 확인 필드 검사
+        userInfoValidationService.validatePasswordConfirmation(updateDto.getNewPassword(), updateDto.getPasswordCheck());
+        // 비밀번호가 유효하다면 암호화 후 저장
+        account.setPassword(jwtSecurityConfig.passwordEncoder().encode(updateDto.getNewPassword()));
 
         // 이메일 수신 여부 체크 (선택 사항)
         if (updateDto.getEmailSubscription() != null) {
