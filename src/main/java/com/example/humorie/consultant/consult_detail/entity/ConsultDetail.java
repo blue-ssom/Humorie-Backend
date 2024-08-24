@@ -43,6 +43,8 @@ public class ConsultDetail {
     private String symptom;
     private String content;
 
+    private boolean deleted = false;  // 소프트 삭제 여부를 나타내는 필드
+
     public void setStatus(Boolean status) { this.status = status; }
 
     public String getContent()  { return content; }

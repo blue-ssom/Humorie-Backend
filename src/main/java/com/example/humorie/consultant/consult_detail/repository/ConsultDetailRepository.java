@@ -3,6 +3,7 @@ package com.example.humorie.consultant.consult_detail.repository;
 import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import com.example.humorie.account.entity.AccountDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
@@ -21,5 +22,17 @@ public interface ConsultDetailRepository extends JpaRepository<ConsultDetail, Lo
     @Query("SELECT c FROM ConsultDetail c WHERE c.account = :account ORDER BY c.reservation.counselDate DESC, c.reservation.counselTime DESC")
     Page<ConsultDetail> findAllConsultDetail(@Param("account") AccountDetail account, Pageable pageable);
 
-    void deleteByAccount_Id(Long accountId);
+     void deleteByAccount_Id(Long accountId);
+
+    // accountId로 ConsultDetail 조회
+    List<ConsultDetail> findByAccountId(Long accountId);
+
+    @Modifying
+    @Query("UPDATE ConsultDetail c SET c.deleted = true WHERE c.account.id = :accountId")
+    void softDeleteByAccountId(Long accountId);
+
+    @Modifying
+    @Query("UPDATE ConsultDetail c SET c.account = NULL WHERE c.account.id = :accountId")
+    void detachAccountFromConsultDetail(@Param("accountId") Long accountId);
+
 }
