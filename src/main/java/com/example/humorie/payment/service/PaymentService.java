@@ -132,4 +132,17 @@ public class PaymentService {
 
         return paymentResDtos;
     }
+
+    public Integer getTotalPrice(PrincipalDetails principal){
+        Integer totalPrice = 0;
+
+        List<Reservation> reservations = reservationRepository.findAllByAccount_EmailOrderByCreatedAtDesc(principal.getUsername());
+
+        for(Reservation reservation : reservations){
+            totalPrice += reservation.getPayment().getFinalPrice();
+        }
+
+        return totalPrice;
+    }
+
 }

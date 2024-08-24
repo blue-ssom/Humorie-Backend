@@ -159,23 +159,24 @@ public class DataInitializer implements CommandLineRunner {
         Point point7 = Point.builder().points(70000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00))
                 .account(accountDetail2).build();
 
-        Payment payment1 = Payment.builder().price(5000).point(0).finalPrice(5000).status(PaymentStatus.READY).build();
-        Payment payment2 = Payment.builder().price(10000).point(1000).finalPrice(9000).status(PaymentStatus.READY).build();
-        Payment payment3 = Payment.builder().price(15000).point(5000).finalPrice(10000).status(PaymentStatus.READY).build();
-        Payment payment4 = Payment.builder().price(20000).point(0).finalPrice(20000).status(PaymentStatus.READY).build();
+        Payment payment1 = Payment.builder().price(50000).point(0).finalPrice(50000).status(PaymentStatus.READY).build();
+        Payment payment2 = Payment.builder().price(50000).point(0).finalPrice(50000).status(PaymentStatus.READY).build();
+        Payment payment3 = Payment.builder().price(55000).point(5000).finalPrice(50000).status(PaymentStatus.READY).build();
+        Payment payment4 = Payment.builder().price(50000).point(0).finalPrice(50000).status(PaymentStatus.READY).build();
 
-        payment1.changePaymentBySuccess(PaymentStatus.OK, String.valueOf(UUID.randomUUID()));
-        payment2.changePaymentBySuccess(PaymentStatus.OK, String.valueOf(UUID.randomUUID()));
-        payment3.changePaymentBySuccess(PaymentStatus.OK, String.valueOf(UUID.randomUUID()));
+        payment1.changePaymentBySuccess(PaymentStatus.OK, "imp_651256947592");
+        payment2.changePaymentBySuccess(PaymentStatus.OK, "imp_617755937144");
+        payment3.changePaymentBySuccess(PaymentStatus.OK, "imp_650825655292");
 
         paymentRepository.saveAll(Arrays.asList(payment1, payment2, payment3, payment4));
 
         Reservation reservation1 = Reservation.builder().counselDate(LocalDate.of(2024,8,18)).account(accountDetail1).counselTime(LocalTime.of(12,0))
-                .isOnline(false).location("서울 강남구").counselor(counselor1).counselContent("학업/진로").reservationUid(String.valueOf(UUID.randomUUID())).payment(payment1).build();
+                .isOnline(false).location("서울 강남구").counselor(counselor1).counselContent("학업/진로").reservationUid("d1be41f5-ad55-4060-9584-aee6ff1125a").payment(payment1).build();
         Reservation reservation2 = Reservation.builder().counselDate(LocalDate.of(2024,8,19)).account(accountDetail2).counselTime(LocalTime.of(15,30))
-                .isOnline(false).location("인천 연수구").counselor(counselor2).counselContent("대인관계").reservationUid(String.valueOf(UUID.randomUUID())).payment(payment2).build();
-        Reservation reservation3 = Reservation.builder().counselDate(LocalDate.of(2024,8,19)).account(accountDetail1).counselTime(LocalTime.of(16,0))
-                .isOnline(false).location("서울 은평구").counselor(counselor3).counselContent("정신건강").reservationUid(String.valueOf(UUID.randomUUID())).payment(payment3).build();
+                .isOnline(false).location("인천 연수구").counselor(counselor2).counselContent("대인관계").reservationUid("692fb669-1305-451d-b3a0-7d463531f215").payment(payment2).build();
+        Reservation reservation3 = Reservation.builder().counselDate(LocalDate.of(2024,8,20)).account(accountDetail1).counselTime(LocalTime.of(16,0))
+                .isOnline(false).location("서울 은평구").counselor(counselor3).counselContent("정신건강").reservationUid("3834b220-43bd-4f8d-bbb5-15b1ed4b85fb").payment(payment3).build();
+
         Reservation reservation4 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail2).counselTime(LocalTime.of(14,0))
                 .isOnline(true).location("Zoom").counselor(counselor2).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).payment(payment4).build();
         Reservation reservation5 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail1).counselTime(LocalTime.of(14,0))
