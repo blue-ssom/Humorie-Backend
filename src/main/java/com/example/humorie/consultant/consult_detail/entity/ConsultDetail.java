@@ -49,6 +49,8 @@ public class ConsultDetail {
 
     public String getContent()  { return content; }
 
+    public Long getCounselorId() { return counselor.getId(); }
+
     public String getCounselorName() {
         return counselor.getName();
     }
@@ -57,6 +59,7 @@ public class ConsultDetail {
         return counselor.getRating();
     }
 
+    public Boolean getIsOnline() { return reservation.getIsOnline(); }
     public String getLocation() {
         return reservation.getLocation();
     }
