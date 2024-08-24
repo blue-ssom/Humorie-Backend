@@ -11,12 +11,14 @@ import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -116,5 +118,18 @@ public class ConsultDetailService {
         }
 
         return SpecificConsultDetailDto.fromEntity(consultDetail);
+    }
+
+    @Transactional
+    public void softDeleteConsultDetailsByAccountId(Long accountId) {
+        List<ConsultDetail> consultDetails = consultDetailRepository.findByAccountId(accountId);
+        for (ConsultDetail consultDetail : consultDetails) {
+            consultDetail.setDeleted(true); // 소프트 삭제 처리
+            consultDetailRepository.save(consultDetail);
+        }
+    }
+    @Transactional
+    public void detachAccountFromConsultDetail(Long accountId) {
+        consultDetailRepository.detachAccountFromConsultDetail(accountId);
     }
 }

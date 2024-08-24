@@ -3,6 +3,7 @@ package com.example.humorie.reservation.repository;
 import com.example.humorie.reservation.entity.Reservation;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     Optional<Reservation> findReservationByReservationUid(String uid);
 
-    void deleteByAccount_Id(Long accountId);
+    @Modifying
+    @Query("UPDATE Reservation r SET r.account = NULL WHERE r.account.id = :accountId")
+    void detachAccountFromReservation(@Param("accountId") Long accountId);
+
 
 }
