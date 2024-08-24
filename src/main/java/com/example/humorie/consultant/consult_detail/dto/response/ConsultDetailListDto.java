@@ -1,38 +1,57 @@
 package com.example.humorie.consultant.consult_detail.dto.response;
 
 import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consultant.counselor.entity.Symptom;
+import com.example.humorie.consultant.counselor.repository.SymptomRepository;
+
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ConsultDetailListDto {
     private final Long id;
-    private final Boolean status;
-    private final String counselorName;
-    private final String counselContent;
-    private final String location;
+    private final Long counselorId;
+    private final String counselorName; // 담당자명
+    private final Boolean status; // 상담 상태
+    private final List<String> symptoms; // 상담 영역
+    private final Boolean isOnline; // 상담방법
     private final LocalDate counselDate;
+    private final LocalTime counselTIme;
 
     @Builder
-    public ConsultDetailListDto(Long id, Boolean status, String counselorName, String counselContent, String location, LocalDate counselDate) {
+    public ConsultDetailListDto(Long id, Long counselorId, String counselorName, Boolean status,
+                                Boolean isOnline, LocalDate counselDate, LocalTime counselTIme, List<String> symptoms) {
         this.id = id;
-        this.status = status;
+        this.counselorId = counselorId;
         this.counselorName = counselorName;
-        this.counselContent = counselContent;
-        this.location = location;
+        this.status = status;
+        this.symptoms = symptoms; // 상담 영역
+        this.isOnline = isOnline;
         this.counselDate = counselDate;
+        this.counselTIme = counselTIme;
     }
 
-    public static ConsultDetailListDto fromEntity(ConsultDetail consultDetail) {
+    public static ConsultDetailListDto fromEntity(ConsultDetail consultDetail, SymptomRepository symptomRepository) {
+        // 상담사의 증상 데이터를 리스트로 가져옴
+        List<Symptom> symptoms = symptomRepository.findByCounselorId(consultDetail.getCounselor().getId());
+        List<String> symptomNames = symptoms.stream()
+                .map(Symptom::getSymptom) // Symptom 객체에서 symptom 필드만 추출
+                .collect(Collectors.toList());
+
         return ConsultDetailListDto.builder()
                 .id(consultDetail.getId())
-                .status(consultDetail.getStatus())
+                .counselorId(consultDetail.getCounselorId())
                 .counselorName(consultDetail.getCounselorName())
-                .counselContent(consultDetail.getCounselContent())
-                .location(consultDetail.getLocation())
+                .status(consultDetail.getStatus())
+                .symptoms(symptomNames)// 상담 영역
+                .isOnline(consultDetail.getIsOnline())
                 .counselDate(consultDetail.getCounselDate())
+                .counselTIme(consultDetail.getCounselTime())
                 .build();
     }
 }
