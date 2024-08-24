@@ -1,6 +1,8 @@
 package com.example.humorie.payment.controller;
 
 import com.example.humorie.account.jwt.PrincipalDetails;
+import com.example.humorie.global.exception.ErrorCode;
+import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.global.exception.ErrorResponse;
 import com.example.humorie.payment.dto.request.PaymentCallbackRequest;
 import com.example.humorie.payment.dto.response.PaymentResDto;
@@ -40,6 +42,15 @@ public class PaymentController {
         List<PaymentResDto> payments = paymentService.getPayments(principal);
 
         return new ErrorResponse<>(payments);
+    }
+
+    @Operation(summary = "전체 결제 금액 조회")
+    @GetMapping("/total")
+    public ErrorResponse<Integer> getTotalPrice(@AuthenticationPrincipal PrincipalDetails principal){
+        if(principal == null) throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        Integer totalPrice = paymentService.getTotalPrice(principal);
+
+        return new ErrorResponse<>(totalPrice);
     }
 
 }
