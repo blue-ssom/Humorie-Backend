@@ -40,6 +40,8 @@ public class Reservation {
 
     private String counselContent;
 
+    private Boolean isOnline;
+
     private String location;
 
     private LocalDate counselDate;
@@ -51,12 +53,13 @@ public class Reservation {
     private LocalDateTime createdAt;
 
     @Builder
-    public Reservation(AccountDetail account, Counselor counselor, Payment payment, String reservationUid, String location,
-                       String counselContent, LocalDate counselDate, LocalTime counselTime) {
+    public Reservation(AccountDetail account, Counselor counselor, Payment payment, String reservationUid, Boolean isOnline,
+                       String location, String counselContent, LocalDate counselDate, LocalTime counselTime) {
         this.account = account;
         this.counselor = counselor;
         this.payment = payment;
         this.reservationUid = reservationUid;
+        this.isOnline = isOnline;
         this.location = location;
         this.counselContent = counselContent;
         this.counselDate = counselDate;
