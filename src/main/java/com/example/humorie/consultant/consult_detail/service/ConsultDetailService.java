@@ -122,7 +122,7 @@ public class ConsultDetailService {
             throw new ErrorException(ErrorCode.CONSULT_DETAIL_NOT_COMPLETED);
         }
 
-        return SpecificConsultDetailDto.fromEntity(consultDetail);
+        return SpecificConsultDetailDto.fromEntity(consultDetail, symptomRepository);
     }
 
     @Transactional
