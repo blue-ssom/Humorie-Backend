@@ -18,16 +18,16 @@ public class UserInfoValidationService {
 
     // 이름 유효성 검사
     public void validateName(String name) {
-        // 영어 알파벳(대소문자), 숫자, 그리고 자음과 모음이 결합된 완성된 한글로만 이루어진 문자열을 허용
-        // 그 외의 특수 문자나 미완성된 자모음 등은 허용하지 않음
-        String nameRegex = "^[a-zA-Z0-9가-힣]*$";
-        Pattern namePattern = Pattern.compile(nameRegex);
-        Matcher nameMatcher = namePattern.matcher(name);
-
         // null 또는 빈 값 체크 (추가 가능)
         if (name == null || name.isEmpty()) {
             throw new ErrorException(ErrorCode.EMPTY_NAME);
         }
+
+        // 자음과 모음이 결합된 완성된 한글로만 이루어진 문자열을 허용
+        // 영어, 숫자, 특수 문자는 허용하지 않음
+        String nameRegex = "^[가-힣]*$";
+        Pattern namePattern = Pattern.compile(nameRegex);
+        Matcher nameMatcher = namePattern.matcher(name);
 
         if (!nameMatcher.matches()) {
             throw new ErrorException(ErrorCode.INVALID_NAME);
@@ -36,6 +36,10 @@ public class UserInfoValidationService {
 
     // 비밀번호 유효성 검사
     public void validatePassword(String newPassword) {
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new ErrorException(ErrorCode. EMPTY_PASSWORD);
+        }
+
         String passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,16}$";
         Pattern pwPattern = Pattern.compile(passwordRegex);
         Matcher pwMatcher = pwPattern.matcher(newPassword);
@@ -47,6 +51,10 @@ public class UserInfoValidationService {
 
     // 비밀번호 재확인
     public void validatePasswordConfirmation(String newPassword, String passwordCheck) {
+        if (passwordCheck == null || passwordCheck.isEmpty()) {
+            throw new ErrorException(ErrorCode.PASSWORD_CONFIRMATION_EMPTY);
+        }
+
         if (!newPassword.equals(passwordCheck)) {
             throw new ErrorException(ErrorCode.PASSWORD_MISMATCH);
         }

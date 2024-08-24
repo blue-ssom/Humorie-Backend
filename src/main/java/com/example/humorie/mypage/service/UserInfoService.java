@@ -1,6 +1,8 @@
 package com.example.humorie.mypage.service;
 
 import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
+import com.example.humorie.consultant.consult_detail.service.ConsultDetailService;
+import com.example.humorie.consultant.review.service.TagService;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.PrincipalDetails;
@@ -12,6 +14,7 @@ import com.example.humorie.mypage.dto.request.UserInfoDelete;
 import com.example.humorie.mypage.dto.request.UserInfoUpdate;
 import com.example.humorie.mypage.dto.response.GetUserInfoResDto;
 import com.example.humorie.reservation.repository.ReservationRepository;
+import com.example.humorie.reservation.service.ReservationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,9 @@ public class UserInfoService {
     private final ReservationRepository reservationRepository;
     private final UserInfoValidationService userInfoValidationService;
     private final SecurityConfig jwtSecurityConfig;
+    private final ConsultDetailService consultDetailService;
+    private final ReservationService reservationService;
+    private final TagService tagService;
 
     // 사용자 정보 조회
     public GetUserInfoResDto getMyAccount(PrincipalDetails principalDetails) {
@@ -37,10 +43,11 @@ public class UserInfoService {
         }
 
         return GetUserInfoResDto.builder()
-                .accountName(account.getAccountName())
-                .email(account.getEmail())
-                .id(account.getId())
-                .emailSubscription(account.getEmailSubscription())
+                .id(account.getId()) // 식별자
+                .email(account.getEmail()) // 이메일
+                .accountName(account.getAccountName()) // 아이디
+                .name(account.getName()) // 이름
+                .emailSubscription(account.getEmailSubscription()) // 이메일 확인
                 .build();
     }
 
@@ -48,17 +55,17 @@ public class UserInfoService {
     public String updateUserInfo(PrincipalDetails principalDetails, UserInfoUpdate updateDto) {
         AccountDetail account = principalDetails.getAccountDetail();
 
-        // 유효성 검사 및 필드 업데이트
         // 이름 (필수)
         userInfoValidationService.validateName(updateDto.getName());
         account.setName(updateDto.getName());
 
         // 비밀번호 (선택 사항)
-        if (updateDto.getNewPassword() != null && !updateDto.getNewPassword().isEmpty()) {
-            userInfoValidationService.validatePassword(updateDto.getNewPassword());
-            userInfoValidationService.validatePasswordConfirmation(updateDto.getNewPassword(), updateDto.getPasswordCheck());
-            account.setPassword(jwtSecurityConfig.passwordEncoder().encode(updateDto.getNewPassword()));
-        }
+        // 비밀번호 형식 검사
+        userInfoValidationService.validatePassword(updateDto.getNewPassword());
+        // 비밀번호 확인 필드 검사
+        userInfoValidationService.validatePasswordConfirmation(updateDto.getNewPassword(), updateDto.getPasswordCheck());
+        // 비밀번호가 유효하다면 암호화 후 저장
+        account.setPassword(jwtSecurityConfig.passwordEncoder().encode(updateDto.getNewPassword()));
 
         // 이메일 수신 여부 체크 (선택 사항)
         if (updateDto.getEmailSubscription() != null) {
@@ -80,11 +87,15 @@ public class UserInfoService {
         userInfoValidationService.validatePassword(deleteDto.getPassword());
         userInfoValidationService.validatePasswordMatch(deleteDto.getPassword(), account.getPassword());
 
-        // 상담 내역 삭제
-         consultDetailRepository.deleteByAccount_Id(account.getId());
+        // 상담 내역 소프트 삭제 및 외래 키 참조 제거
+        consultDetailService.softDeleteConsultDetailsByAccountId(account.getId());
+        consultDetailService.detachAccountFromConsultDetail(account.getId());
 
-        // 예약 삭제
-        reservationRepository.deleteByAccount_Id(account.getId());
+        // 예약 소프트 삭제 처리 및 외래 키 참조 제거
+        reservationService.detachAccountFromReservation(account.getId());
+
+        // 태그 외래 키 참조 제거
+        tagService.detachAccountFromTag(account.getId());
 
         // 리뷰 삭제
         reviewRepository.deleteByAccount_Id(account.getId());

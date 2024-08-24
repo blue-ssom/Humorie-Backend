@@ -1,48 +1,69 @@
 package com.example.humorie.consultant.consult_detail.dto.response;
 
 import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
+import com.example.humorie.consultant.counselor.entity.Symptom;
+import com.example.humorie.consultant.counselor.repository.SymptomRepository;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class SpecificConsultDetailDto {
     private final Long id;
-    private final String counselorName;
-    private final String content;
-    private final Boolean status;
-    private final String symptom;
-    private final String title;
-    private final LocalDate counselDate;
-    private final LocalTime counselTime;
-    private final String location;
+    private final Long counselorId; // 상담사 식별자
+    private final String counselorName; // 상담사 이름
+    private final List<String> symptoms; // 상담 영역
+    private final Boolean isOnline; // 온오프라인
+    private final String location; // 지역
+    private final Boolean status; // 상태
+    private final String title; // 상담 제목
+    private final String symptom; // 상담 증상
+    private final String content; // 상담 내용
+    private final LocalDate counselDate; // 상담 날짜
+    private final LocalTime counselTime; // 상담 시간
 
     @Builder
-    public SpecificConsultDetailDto(Long id, String counselorName, String content, Boolean status, String symptom, String title, LocalDate counselDate, LocalTime counselTime, String location) {  // Boolean 타입으로 설정
+    public SpecificConsultDetailDto(Long id, Long counselorId, String counselorName, List<String> symptoms, Boolean isOnline,
+                                    Boolean status, String title, String symptom, String content, LocalDate counselDate, LocalTime counselTime, String location) {  // Boolean 타입으로 설정
         this.id = id;
+        this.counselorId = counselorId;
         this.counselorName = counselorName;
-        this.content = content;
+        this.symptoms = symptoms;
+        this.isOnline = isOnline;
+        this.location = location;
         this.status = status;
-        this.symptom = symptom;
         this.title = title;
+        this.symptom = symptom;
+        this.content = content;
         this.counselDate = counselDate;
         this.counselTime = counselTime;
-        this.location = location;
     }
 
-    public static SpecificConsultDetailDto fromEntity(ConsultDetail consultDetail) {
+    // ConsultDetail 엔티티에서 DTO로 변환하는 메서드
+    public static SpecificConsultDetailDto fromEntity(ConsultDetail consultDetail, SymptomRepository symptomRepository) {
+        // 상담사의 증상 데이터를 리스트로 가져옴
+        List<Symptom> symptoms = symptomRepository.findByCounselorId(consultDetail.getCounselor().getId());
+        List<String> symptomNames = symptoms.stream()
+                .map(Symptom::getSymptom) // Symptom 객체에서 symptom 필드만 추출
+                .collect(Collectors.toList());
+
         return SpecificConsultDetailDto.builder()
                 .id(consultDetail.getId())
+                .counselorId(consultDetail.getCounselor().getId())
                 .counselorName(consultDetail.getCounselor().getName())
-                .content(consultDetail.getContent())
+                .symptoms(symptomNames)// 상담 영역
+                .isOnline(consultDetail.getIsOnline())
+                .location(consultDetail.getReservation().getLocation())
                 .status(consultDetail.getStatus())
-                .symptom(consultDetail.getSymptom())
                 .title(consultDetail.getTitle())
+                .symptom(consultDetail.getSymptom())
+                .content(consultDetail.getContent())
                 .counselDate(consultDetail.getCounselDate())
                 .counselTime(consultDetail.getCounselTime())
-                .location(consultDetail.getReservation().getLocation())
                 .build();
     }
 }

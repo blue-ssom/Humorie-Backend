@@ -78,4 +78,8 @@ public class TagService {
         return "Deletion Success";
     }
 
+    @Transactional
+    public void detachAccountFromTag(Long accountId) {
+        tagRepository.detachAccountFromTag(accountId);
+    }
 }

@@ -176,26 +176,41 @@ public class DataInitializer implements CommandLineRunner {
                 .isOnline(false).location("인천 연수구").counselor(counselor2).counselContent("대인관계").reservationUid("692fb669-1305-451d-b3a0-7d463531f215").payment(payment2).build();
         Reservation reservation3 = Reservation.builder().counselDate(LocalDate.of(2024,8,20)).account(accountDetail1).counselTime(LocalTime.of(16,0))
                 .isOnline(false).location("서울 은평구").counselor(counselor3).counselContent("정신건강").reservationUid("3834b220-43bd-4f8d-bbb5-15b1ed4b85fb").payment(payment3).build();
+
         Reservation reservation4 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail2).counselTime(LocalTime.of(14,0))
                 .isOnline(true).location("Zoom").counselor(counselor2).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).payment(payment4).build();
+        Reservation reservation5 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail1).counselTime(LocalTime.of(14,0))
+                .isOnline(true).location("Google meet").counselor(counselor2).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).build();
+        Reservation reservation6 = Reservation.builder().counselDate(LocalDate.of(2024,8,22)).account(accountDetail1).counselTime(LocalTime.of(14,0))
+                .isOnline(false).location("인천 미추홀구").counselor(counselor4).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).build();
+        Reservation reservation7 = Reservation.builder().counselDate(LocalDate.of(2024,8,23)).account(accountDetail1).counselTime(LocalTime.of(14,0))
+                .isOnline(false).location("성남시 분당구").counselor(counselor5).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).build();
+        Reservation reservation8 = Reservation.builder().counselDate(LocalDate.of(2024,8,24)).account(accountDetail1).counselTime(LocalTime.of(14,0))
+                .isOnline(true).location("전화상담").counselor(counselor6).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).build();
+        Reservation reservation9 = Reservation.builder().counselDate(LocalDate.of(2024,8,25)).account(accountDetail1).counselTime(LocalTime.of(14,0))
+                .isOnline(true).location("전화상담").counselor(counselor1).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).build();
+        Reservation reservation10 = Reservation.builder().counselDate(LocalDate.of(2024,8,26)).account(accountDetail1).counselTime(LocalTime.of(11,0))
+                .isOnline(false).location("인천 부평구").counselor(counselor2).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).build();
+        Reservation reservation11 = Reservation.builder().counselDate(LocalDate.of(2024,8,26)).account(accountDetail1).counselTime(LocalTime.of(14,0))
+                .isOnline(false).location("서울 종로구").counselor(counselor3).counselContent("성격").reservationUid(String.valueOf(UUID.randomUUID())).build();
 
         ConsultDetail consultDetail1 = ConsultDetail.builder().status(true).account(accountDetail1).counselor(counselor1).reservation(reservation1).content("상담 내용 1")
                 .symptom("스트레스").title("상담 제목 1").build();
-        ConsultDetail consultDetail2 = ConsultDetail.builder().status(true).account(accountDetail1).counselor(counselor2).reservation(reservation2).content("상담 내용 2")
+        ConsultDetail consultDetail2 = ConsultDetail.builder().status(true).account(accountDetail1).counselor(counselor2).reservation(reservation3).content("상담 내용 2")
                 .symptom("우울").title("상담 제목 2").build();
-        ConsultDetail consultDetail3 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor3).reservation(reservation3).content("상담 내용 3")
+        ConsultDetail consultDetail3 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor3).reservation(reservation5).content("상담 내용 3")
                 .symptom("불안").title("상담 제목 3").build();
-        ConsultDetail consultDetail4 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor4).reservation(reservation3).content("상담 내용 4")
+        ConsultDetail consultDetail4 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor4).reservation(reservation6).content("상담 내용 4")
                 .symptom("트라우마").title("상담 제목 4").build();
-        ConsultDetail consultDetail5 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor5).reservation(reservation3).content("상담 내용 5")
+        ConsultDetail consultDetail5 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor5).reservation(reservation7).content("상담 내용 5")
                 .symptom("스트레스").title("상담 제목 5").build();
-        ConsultDetail consultDetail6 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor6).reservation(reservation3).content("상담 내용 6")
+        ConsultDetail consultDetail6 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor6).reservation(reservation8).content("상담 내용 6")
                 .symptom("우울").title("상담 제목 6").build();
-        ConsultDetail consultDetail7 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor1).reservation(reservation3).content("상담 내용 7")
+        ConsultDetail consultDetail7 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor1).reservation(reservation9).content("상담 내용 7")
                 .symptom("불안").title("상담 제목 7").build();
-        ConsultDetail consultDetail8 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor2).reservation(reservation3).content("상담 내용 8")
+        ConsultDetail consultDetail8 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor2).reservation(reservation10).content("상담 내용 8")
                 .symptom("트라우마").title("상담 제목 8").build();
-        ConsultDetail consultDetail9 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor3).reservation(reservation3).content("상담 내용 9")
+        ConsultDetail consultDetail9 = ConsultDetail.builder().status(false).account(accountDetail1).counselor(counselor3).reservation(reservation11).content("상담 내용 9")
                 .symptom("스트레스").title("상담 제목 9").build();
         ConsultDetail consultDetail10 = ConsultDetail.builder().status(false).account(accountDetail2).counselor(counselor4).reservation(reservation3).content("상담 내용 10")
                 .symptom("우울").title("상담 제목 10").build();
@@ -289,7 +304,7 @@ public class DataInitializer implements CommandLineRunner {
         educationRepository.saveAll(Arrays.asList(education1, education2, education3, education4, education5, education6));
         careerRepository.saveAll(Arrays.asList(career1, career2, career3, career4, career5, career6, career7, career8));
         pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7));
-        reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4));
+        reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4, reservation5, reservation6,reservation7, reservation8, reservation9, reservation10, reservation11));
         consultDetailRepository.saveAll(Arrays.asList(consultDetail1, consultDetail2, consultDetail3, consultDetail4, consultDetail5, consultDetail6, consultDetail7, consultDetail8, consultDetail9, consultDetail10, consultDetail1, consultDetail12, consultDetail13, consultDetail14, consultDetail15, consultDetail16, consultDetail17, consultDetail18));
         tagRepository.saveAll(Arrays.asList(tag1, tag2, tag3, tag4, tag5, tag6));
         noticeRepository.saveAll(notices);

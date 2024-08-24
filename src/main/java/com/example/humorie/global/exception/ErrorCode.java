@@ -49,7 +49,9 @@ public enum ErrorCode {
     DUPLICATE_TAG_NAME(false, 2019, "중복된 태그 이름입니다."),
     MAX_TAG_LIMIT_EXCEEDED(false, 2020, "등록할 수 있는 태그의 수는 최대 5개 입니다."),
 
-
+    // mypage
+    PASSWORD_CONFIRMATION_EMPTY(false,2021,"비밀번호 확인을 입력해주세요."),
+    EMPTY_PASSWORD(false,2022,"비밀번호를 입력해주세요."),
 
     /**
      * 3000 : Response 오류

@@ -9,14 +9,17 @@ import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.consultant.consult_detail.dto.response.SpecificConsultDetailDto;
 import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
+import com.example.humorie.consultant.counselor.repository.SymptomRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ import java.util.List;
 public class ConsultDetailService {
     private final AccountService accountService;
     private final ConsultDetailRepository consultDetailRepository;
+    private final SymptomRepository symptomRepository;
 
     // 가장 최근에 받은 상담 조회
     public LatestConsultDetailResDto getLatestConsultDetailResponse(PrincipalDetails principalDetails) {
@@ -79,19 +83,22 @@ public class ConsultDetailService {
         // Page 객체를 가져옴
         Page<ConsultDetail> consultDetails = consultDetailRepository.findAllConsultDetail(accountDetail, pageable);
 
-        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
-        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
-            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, consultDetails.getTotalPages());
-            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
-        }
-
-        // 페이지가 비어 있는지 확인
+        // 데이터가 없는 경우 예외 처리
         if (consultDetails.isEmpty()) {
             throw new ErrorException(ErrorCode.NO_RECENT_CONSULT_DETAIL);
         }
 
+        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+//        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
+//            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, consultDetails.getTotalPages());
+//            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+//        }
+
         // Page 객체를 ConsultDetailListDto로 변환
-        Page<ConsultDetailListDto> consultDetailListDtos = consultDetails.map(ConsultDetailListDto::fromEntity);
+        Page<ConsultDetailListDto> consultDetailListDtos = consultDetails.map(consultDetail ->
+                        ConsultDetailListDto.fromEntity(consultDetail, symptomRepository)
+        );
+
         log.info("Requested page number (0-based): {}", pageable.getPageNumber());
         log.info("Total pages available: {}", consultDetailListDtos.getTotalPages());
 
@@ -115,6 +122,19 @@ public class ConsultDetailService {
             throw new ErrorException(ErrorCode.CONSULT_DETAIL_NOT_COMPLETED);
         }
 
-        return SpecificConsultDetailDto.fromEntity(consultDetail);
+        return SpecificConsultDetailDto.fromEntity(consultDetail, symptomRepository);
+    }
+
+    @Transactional
+    public void softDeleteConsultDetailsByAccountId(Long accountId) {
+        List<ConsultDetail> consultDetails = consultDetailRepository.findByAccountId(accountId);
+        for (ConsultDetail consultDetail : consultDetails) {
+            consultDetail.setDeleted(true); // 소프트 삭제 처리
+            consultDetailRepository.save(consultDetail);
+        }
+    }
+    @Transactional
+    public void detachAccountFromConsultDetail(Long accountId) {
+        consultDetailRepository.detachAccountFromConsultDetail(accountId);
     }
 }
