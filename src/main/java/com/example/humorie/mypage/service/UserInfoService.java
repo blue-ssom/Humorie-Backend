@@ -37,10 +37,11 @@ public class UserInfoService {
         }
 
         return GetUserInfoResDto.builder()
-                .accountName(account.getAccountName())
-                .email(account.getEmail())
-                .id(account.getId())
-                .emailSubscription(account.getEmailSubscription())
+                .id(account.getId()) // 식별자
+                .email(account.getEmail()) // 이메일
+                .accountName(account.getAccountName()) // 아이디
+                .name(account.getName()) // 이름
+                .emailSubscription(account.getEmailSubscription()) // 이메일 확인
                 .build();
     }
 
