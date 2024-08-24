@@ -19,6 +19,7 @@ import com.example.humorie.reservation.dto.response.CreateReservationResDto;
 import com.example.humorie.reservation.dto.response.GetReservationResDto;
 import com.example.humorie.reservation.entity.Reservation;
 import com.example.humorie.reservation.repository.ReservationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -176,6 +177,11 @@ public class ReservationService {
         }
 
         return new AvailableReservationTimesResDto(timeList);
+    }
+
+    @Transactional
+    public void detachAccountFromReservation(Long accountId) {
+        reservationRepository.detachAccountFromReservation(accountId);
     }
 
 }
