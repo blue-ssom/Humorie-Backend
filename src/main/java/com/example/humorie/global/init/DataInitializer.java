@@ -275,26 +275,21 @@ public class DataInitializer implements CommandLineRunner {
         Tag tag5 = Tag.builder().tagName("좋아요").tagContent("상담이 매우 좋았습니다.").account(accountDetail2).build();
         Tag tag6 = Tag.builder().tagName("아쉬움").tagContent("상담이 아쉬웠습니다.").account(accountDetail2).build();
 
-        List<Notice> notices = new ArrayList<>();
-        int importanceCount = 0;
+        Notice notice1 = Notice.builder().importance(true).title("공지사항 제목 1").content("공지사항 내용 1").
+                createdDate(LocalDate.of(2024, 8, 25)).createdTime(LocalTime.of(18,00,00)).viewCount(50).author("관리자").build();
+        Notice notice2 = Notice.builder().importance(false).title("공지사항 제목 2").content("공지사항 내용 2").
+                createdDate(LocalDate.of(2024, 8, 25)).createdTime(LocalTime.of(15,00,00)).viewCount(50).author("관리자").build();
+        Notice notice3 = Notice.builder().importance(true).title("공지사항 제목 3").content("공지사항 내용 3").
+                createdDate(LocalDate.of(2024, 8, 25)).createdTime(LocalTime.of(12,00,00)).viewCount(40).author("관리자").build();
+        Notice notice4 = Notice.builder().importance(false).title("공지사항 제목 4").content("공지사항 내용 4").
+                createdDate(LocalDate.of(2024, 8, 24)).createdTime(LocalTime.of(18,00,00)).viewCount(25).author("관리자").build();
+        Notice notice5 = Notice.builder().importance(true).title("공지사항 제목 5").content("공지사항 내용 5").
+                createdDate(LocalDate.of(2024, 8, 23)).createdTime(LocalTime.of(18,00,00)).viewCount(25).author("관리자").build();
+        Notice notice6 = Notice.builder().importance(false).title("공지사항 제목 6").content("공지사항 내용 6").
+                createdDate(LocalDate.of(2024, 8, 22)).createdTime(LocalTime.of(18,00,00)).viewCount(25).author("관리자").build();
+        Notice notice7 = Notice.builder().importance(false  ).title("공지사항 제목 7").content("공지사항 내용 7").
+                createdDate(LocalDate.of(2024, 8, 22)).createdTime(LocalTime.of(14,00,00)).viewCount(25).author("관리자").build();
 
-        for (int i = 1; i <= 10; i++) {
-            boolean isImportant = importanceCount < 3;  // 처음 3개만 중요
-            if (isImportant) {
-                importanceCount++;
-            }
-
-            Notice notice = Notice.builder()
-                    .title("공지사항 제목 " + i)
-                    .content("이것은 공지사항 내용 " + i + "입니다.")
-                    .importance(isImportant)
-                    .createdDate(LocalDate.now().minusDays(i / 2))  // 두 개씩 같은 날짜로 설정
-                    .createdTime(LocalTime.of(9, 0).plusHours(i))   // 시간을 다르게 설정
-                    .viewCount(i * 10)
-                    .author("작성자 " + i)
-                    .build();
-            notices.add(notice);
-        }
 
         counselorRepository.saveAll(Arrays.asList(counselor1, counselor2, counselor3, counselor4, counselor5, counselor6));
         methodRepository.saveAll(Arrays.asList(method1, method2, method3, method4, method5, method6, method7, method8));
@@ -307,7 +302,7 @@ public class DataInitializer implements CommandLineRunner {
         reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4, reservation5, reservation6,reservation7, reservation8, reservation9, reservation10, reservation11));
         consultDetailRepository.saveAll(Arrays.asList(consultDetail1, consultDetail2, consultDetail3, consultDetail4, consultDetail5, consultDetail6, consultDetail7, consultDetail8, consultDetail9, consultDetail10, consultDetail1, consultDetail12, consultDetail13, consultDetail14, consultDetail15, consultDetail16, consultDetail17, consultDetail18));
         tagRepository.saveAll(Arrays.asList(tag1, tag2, tag3, tag4, tag5, tag6));
-        noticeRepository.saveAll(notices);
+        noticeRepository.saveAll(Arrays.asList(notice1,notice2,notice3,notice4,notice5,notice6,notice7));
     }
 
 }

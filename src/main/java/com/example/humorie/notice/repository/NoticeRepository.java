@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -17,8 +18,9 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Query("SELECT n FROM Notice n WHERE n.importance = true ORDER BY n.createdDate DESC, n.createdTime DESC")
     List<Notice> findImportantNotices(Pageable pageable);
 
-    // 제목 또는 내용에 검색어가 포함된 공지사항을 검색
-    Page<Notice> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
+    // 제목이나 내용에 키워드가 포함된 공지사항을 검색하는 메서드
+    @Query("SELECT n FROM Notice n WHERE n.title LIKE %:keyword% OR n.content LIKE %:keyword% ORDER BY n.createdDate DESC, n.createdTime DESC")
+    Page<Notice> findByTitleContainingOrContentContaining(@Param("keyword") String keyword, Pageable pageable);
 
     // 공지사항을 날짜와 시간 순으로 내림차순 정렬하여 전체 목록 반환
     List<Notice> findAllByOrderByCreatedDateDescCreatedTimeDesc();
