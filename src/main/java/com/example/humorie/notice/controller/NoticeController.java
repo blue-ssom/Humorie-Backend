@@ -31,8 +31,8 @@ public class NoticeController {
     @GetMapping("/get")
     @Operation(summary = "공지사항 전체 조회")
     public NoticePageDto getAllNotices(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size
+            @RequestParam int page,
+            @RequestParam int size
     ) {
         // 페이지 번호에 대한 유효성 검사
         if (page < 0) {
@@ -42,7 +42,8 @@ public class NoticeController {
         // 페이지 크기에 대한 유효성 검사
         if (size < 1) {
             throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
-        } else if (size > 9) {
+        }
+        if (size > 9) {
             throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
         }
 

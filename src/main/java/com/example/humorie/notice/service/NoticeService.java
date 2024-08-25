@@ -25,10 +25,7 @@ public class NoticeService {
     public NoticePageDto getAllNotices(Pageable pageable) {
         Page<Notice> noticePage = noticeRepository.findImportantAndRecentNotices(pageable);
 
-        // 페이지 번호가 전체 페이지 수를 초과하는 경우
-        if (pageable.getPageNumber() >= noticePage.getTotalPages()) {
-            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
-        }
+
 
         // 페이지가 비어 있는지 확인
         if (noticePage.isEmpty()) {
