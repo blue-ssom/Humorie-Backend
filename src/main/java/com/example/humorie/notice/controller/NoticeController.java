@@ -55,8 +55,8 @@ public class NoticeController {
     @Operation(summary = "공지사항 검색")
     public NoticePageDto searchNotices(
             @RequestParam(required = false) String keyword,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size
+            @RequestParam int page,
+            @RequestParam int size
     ) {
         // 페이지 번호에 대한 유효성 검사
         if (page < 0) {
