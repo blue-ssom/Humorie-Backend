@@ -72,6 +72,14 @@ public class DataInitializer implements CommandLineRunner {
                         "김여름",
                         false)));
 
+        AccountDetail accountDetail3 = accountRepository.findByEmail("test3@naver.com")
+                .orElseGet(() -> accountRepository.save(AccountDetail.joinAccount(
+                        "test3@naver.com",
+                        securityConfig.passwordEncoder().encode("test1234!"),
+                        "test345",
+                        "김가을",
+                        false)));
+
         Counselor counselor1 = Counselor.builder().name("김가을").phoneNumber("01000000000").email("rkdmf@naver.com").gender("여성").region("서울시 강남구").rating(4.8)
                 .counselingCount(17).reviewCount(8).introduction("편안한 상담사").build();
         Counselor counselor2 = Counselor.builder().name("김겨울").phoneNumber("01011111111").email("rudnf@naver.com").gender("남성").region("서울시 강남구").rating(4.1)
@@ -170,11 +178,11 @@ public class DataInitializer implements CommandLineRunner {
 
         paymentRepository.saveAll(Arrays.asList(payment1, payment2, payment3, payment4));
 
-        Reservation reservation1 = Reservation.builder().counselDate(LocalDate.of(2024,8,18)).account(accountDetail1).counselTime(LocalTime.of(12,0))
-                .isOnline(false).location("서울 강남구").counselor(counselor1).counselContent("학업/진로").reservationUid("d1be41f5-ad55-4060-9584-aee6ff1125a").payment(payment1).build();
+        Reservation reservation1 = Reservation.builder().counselDate(LocalDate.of(2024,8,18)).account(accountDetail3).counselTime(LocalTime.of(12,0))
+                .isOnline(false).location("서울 강남구").counselor(counselor1).counselContent("학업/진로").reservationUid("d1be41f5-ad55-4060-9584-aee6ff1125ad").payment(payment1).build();
         Reservation reservation2 = Reservation.builder().counselDate(LocalDate.of(2024,8,19)).account(accountDetail2).counselTime(LocalTime.of(15,30))
                 .isOnline(false).location("인천 연수구").counselor(counselor2).counselContent("대인관계").reservationUid("692fb669-1305-451d-b3a0-7d463531f215").payment(payment2).build();
-        Reservation reservation3 = Reservation.builder().counselDate(LocalDate.of(2024,8,20)).account(accountDetail1).counselTime(LocalTime.of(16,0))
+        Reservation reservation3 = Reservation.builder().counselDate(LocalDate.of(2024,8,20)).account(accountDetail3).counselTime(LocalTime.of(16,0))
                 .isOnline(false).location("서울 은평구").counselor(counselor3).counselContent("정신건강").reservationUid("3834b220-43bd-4f8d-bbb5-15b1ed4b85fb").payment(payment3).build();
 
         Reservation reservation4 = Reservation.builder().counselDate(LocalDate.of(2024,8,21)).account(accountDetail2).counselTime(LocalTime.of(14,0))
