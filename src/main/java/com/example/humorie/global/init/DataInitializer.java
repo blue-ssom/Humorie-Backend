@@ -166,6 +166,12 @@ public class DataInitializer implements CommandLineRunner {
                 .account(accountDetail2).build();
         Point point7 = Point.builder().points(70000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 5, 17, 12, 30, 00))
                 .account(accountDetail2).build();
+        Point point8 = Point.builder().points(100000).type("earn").title("웰컴 포인트").transactionDate(LocalDateTime.of(2024, 5, 20, 9, 30, 00))
+                .account(accountDetail3).build();
+        Point point9 = Point.builder().points(5000).type("spend").title("상담 예약").transactionDate(LocalDateTime.of(2024, 8, 20, 12, 00, 00))
+                .account(accountDetail3).build();
+        Point point10 = Point.builder().points(2000).type("earn").title("리뷰 작성").transactionDate(LocalDateTime.of(2024,8,21,12,00,00))
+                .account(accountDetail3).build();
 
         Payment payment1 = Payment.builder().price(50000).point(0).finalPrice(50000).status(PaymentStatus.READY).build();
         Payment payment2 = Payment.builder().price(50000).point(0).finalPrice(50000).status(PaymentStatus.READY).build();
@@ -306,7 +312,7 @@ public class DataInitializer implements CommandLineRunner {
         affiliationRepository.saveAll(Arrays.asList(affiliation1, affiliation2, affiliation3, affiliation4, affiliation5, affiliation6, affiliation7, affiliation8, affiliation9));
         educationRepository.saveAll(Arrays.asList(education1, education2, education3, education4, education5, education6));
         careerRepository.saveAll(Arrays.asList(career1, career2, career3, career4, career5, career6, career7, career8));
-        pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7));
+        pointRepository.saveAll(Arrays.asList(point1, point2, point3, point4, point5, point6, point7, point8, point9, point10));
         reservationRepository.saveAll(Arrays.asList(reservation1, reservation2, reservation3, reservation4, reservation5, reservation6,reservation7, reservation8, reservation9, reservation10, reservation11));
         consultDetailRepository.saveAll(Arrays.asList(consultDetail1, consultDetail2, consultDetail3, consultDetail4, consultDetail5, consultDetail6, consultDetail7, consultDetail8, consultDetail9, consultDetail10, consultDetail1, consultDetail12, consultDetail13, consultDetail14, consultDetail15, consultDetail16, consultDetail17, consultDetail18));
         tagRepository.saveAll(Arrays.asList(tag1, tag2, tag3, tag4, tag5, tag6));
