@@ -53,4 +53,12 @@ public class PaymentController {
         return new ErrorResponse<>(totalPrice);
     }
 
+    @Operation(summary = "결제 내역 삭제")
+    @DeleteMapping("/delete")
+    public ErrorResponse<String> deletePayments(@RequestParam("reservationUids") List<String> reservationUids){
+        String response = paymentService.deletePayments(reservationUids);
+
+        return new ErrorResponse<>(response);
+    }
+
 }

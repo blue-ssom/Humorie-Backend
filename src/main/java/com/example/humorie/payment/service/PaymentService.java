@@ -145,4 +145,19 @@ public class PaymentService {
         return totalPrice;
     }
 
+    public String deletePayments(List<String> reservationUids){
+
+        for(String reservationUid : reservationUids){
+            Reservation reservation = reservationRepository.findReservationByReservationUid(reservationUid)
+                    .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_RESERVATION));
+
+            com.example.humorie.payment.entity.Payment payment = reservation.getPayment();
+            reservation.setPayment(null);
+
+            paymentRepository.delete(payment);
+        }
+
+        return "Success Delete";
+    }
+
 }

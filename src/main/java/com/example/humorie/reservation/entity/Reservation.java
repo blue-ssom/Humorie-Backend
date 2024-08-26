@@ -4,10 +4,7 @@ import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.payment.entity.Payment;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
@@ -32,6 +29,7 @@ public class Reservation {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
+    @Setter
     private Payment payment;
 
     @ManyToOne
