@@ -14,6 +14,7 @@ import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,11 +45,14 @@ public class ConsultDetailService {
         // Pageable을 사용하여 결과를 하나로 제한
         List<ConsultDetail> consultDetails = consultDetailRepository.findLatestConsultDetail(accountDetail, PageRequest.of(0, 1));
 
-        // 첫 번째 결과만 선택, 없으면 예외 발생
-        ConsultDetail consultDetail = consultDetails.stream().findFirst().orElseThrow(() -> {
+        // 첫 번째 결과만 선택, 없으면 빈 객체 반환
+        ConsultDetail consultDetail = consultDetails.stream().findFirst().orElse(null);
+
+        if (consultDetail == null) {
             log.info("No consult details found for account ID: {}", accountDetail.getId());
-            return new ErrorException(ErrorCode.NO_RECENT_CONSULT_DETAIL);
-        });
+            // 빈 데이터를 초기화하여 반환
+            return new LatestConsultDetailResDto( null, null, "", null,  null,  "", 0.0);
+        }
 
         return LatestConsultDetailResDto.fromEntity(consultDetail);
     }
@@ -83,16 +89,17 @@ public class ConsultDetailService {
         // Page 객체를 가져옴
         Page<ConsultDetail> consultDetails = consultDetailRepository.findAllConsultDetail(accountDetail, pageable);
 
-        // 데이터가 없는 경우 예외 처리
-        if (consultDetails.isEmpty()) {
-            throw new ErrorException(ErrorCode.NO_RECENT_CONSULT_DETAIL);
+        // 데이터가 없는 경우 빈 Page 반환
+        if (consultDetails.getTotalPages() == 0) {
+            Page<ConsultDetailListDto> emptyPage = new PageImpl<>(new ArrayList<>(), PageRequest.of(page, size), 0);
+            return new ConsultDetailPageDto(emptyPage);
         }
 
         // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
-//        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
-//            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, consultDetails.getTotalPages());
-//            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
-//        }
+        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, consultDetails.getTotalPages());
+            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+        }
 
         // Page 객체를 ConsultDetailListDto로 변환
         Page<ConsultDetailListDto> consultDetailListDtos = consultDetails.map(consultDetail ->

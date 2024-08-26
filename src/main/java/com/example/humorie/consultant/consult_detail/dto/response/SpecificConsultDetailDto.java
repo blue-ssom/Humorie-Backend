@@ -3,6 +3,7 @@ package com.example.humorie.consultant.consult_detail.dto.response;
 import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import com.example.humorie.consultant.counselor.entity.Symptom;
 import com.example.humorie.consultant.counselor.repository.SymptomRepository;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,6 +24,8 @@ public class SpecificConsultDetailDto {
     private final String title; // 상담 제목
     private final String symptom; // 상담 증상
     private final String content; // 상담 내용
+    // 날짜 필드에 @JsonFormat 애너테이션 적용
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d")
     private final LocalDate counselDate; // 상담 날짜
     private final LocalTime counselTime; // 상담 시간
 
