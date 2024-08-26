@@ -14,6 +14,7 @@ import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -83,16 +85,17 @@ public class ConsultDetailService {
         // Page 객체를 가져옴
         Page<ConsultDetail> consultDetails = consultDetailRepository.findAllConsultDetail(accountDetail, pageable);
 
-        // 데이터가 없는 경우 예외 처리
-        if (consultDetails.isEmpty()) {
-            throw new ErrorException(ErrorCode.NO_RECENT_CONSULT_DETAIL);
+        // 데이터가 없는 경우 빈 Page 반환
+        if (consultDetails.getTotalPages() == 0) {
+            Page<ConsultDetailListDto> emptyPage = new PageImpl<>(new ArrayList<>(), PageRequest.of(page, size), 0);
+            return new ConsultDetailPageDto(emptyPage);
         }
 
         // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
-//        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
-//            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, consultDetails.getTotalPages());
-//            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
-//        }
+        if (pageable.getPageNumber() >= consultDetails.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, consultDetails.getTotalPages());
+            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+        }
 
         // Page 객체를 ConsultDetailListDto로 변환
         Page<ConsultDetailListDto> consultDetailListDtos = consultDetails.map(consultDetail ->
