@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,11 +45,14 @@ public class ConsultDetailService {
         // Pageable을 사용하여 결과를 하나로 제한
         List<ConsultDetail> consultDetails = consultDetailRepository.findLatestConsultDetail(accountDetail, PageRequest.of(0, 1));
 
-        // 첫 번째 결과만 선택, 없으면 예외 발생
-        ConsultDetail consultDetail = consultDetails.stream().findFirst().orElseThrow(() -> {
+        // 첫 번째 결과만 선택, 없으면 빈 객체 반환
+        ConsultDetail consultDetail = consultDetails.stream().findFirst().orElse(null);
+
+        if (consultDetail == null) {
             log.info("No consult details found for account ID: {}", accountDetail.getId());
-            return new ErrorException(ErrorCode.NO_RECENT_CONSULT_DETAIL);
-        });
+            // 빈 데이터를 초기화하여 반환
+            return new LatestConsultDetailResDto( null, null, "", null,  null,  "", 0.0);
+        }
 
         return LatestConsultDetailResDto.fromEntity(consultDetail);
     }
