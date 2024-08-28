@@ -81,7 +81,16 @@ public class NoticeService {
 
         // 키워드가 없는 경우 전체 공지사항 반환
         if (keyword == null || keyword.trim().isEmpty()) {
-            return getAllNotices(pageable);
+            // 전체 공지사항 조회
+            NoticePageDto allNotices = getAllNotices(pageable);
+
+            // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+            if (page >= allNotices.getTotalPages()) {
+                log.error("Page number {} exceeds total pages {}", page + 1, allNotices.getTotalPages());
+                throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+            }
+
+            return allNotices;
         }
 
         // 키워드 검색 결과 가져오기 (제목 또는 내용에서 검색)
@@ -90,6 +99,12 @@ public class NoticeService {
         // 검색 결과가 없을 경우 빈 페이지 반환
         if (searchResults.getTotalPages() == 0) {
             return NoticePageDto.from(Page.empty(pageable));
+        }
+
+        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+        if(pageable.getPageNumber() >= searchResults.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, searchResults.getTotalPages());
+            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
         }
 
         // 결과를 DTO로 변환
