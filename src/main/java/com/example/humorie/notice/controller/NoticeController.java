@@ -44,26 +44,7 @@ public class NoticeController {
             @RequestParam int page,
             @RequestParam int size
     ) {
-        // 페이지 번호에 대한 유효성 검사
-        if (page < 0) {
-            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
-        }
-
-        // 페이지 크기에 대한 유효성 검사
-        if (size < 1) {
-            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
-        } else if (size > 8) {
-            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
-        }
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        // 키워드가 없는 경우 전체 공지사항 반환
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return noticeService.getAllNotices(pageable);
-        }
-
-        return noticeService.searchNotices(keyword, pageable);
+        return noticeService.searchNotices(keyword, page, size);
     }
 
     @GetMapping("/{noticeId}")

@@ -57,8 +57,35 @@ public class NoticeService {
 
         return NoticePageDto.from(dtoPage);
     }
-    
-    public NoticePageDto searchNotices(String keyword, Pageable pageable) {
+
+    public NoticePageDto getAllNotices(Pageable pageable) {
+        Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
+
+        Page<GetAllNoticeDto> dtoPage = noticePage.map(GetAllNoticeDto::fromEntity);
+        return NoticePageDto.from(dtoPage);
+    }
+
+    public NoticePageDto searchNotices(String keyword, int page, int size) {
+        // 페이지 번호에 대한 유효성 검사
+        if (page < 0) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
+        }
+
+        // 페이지 크기에 대한 유효성 검사
+        if (size < 1) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
+        } else if (size > 8) {
+            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
+        }
+
+        // Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 키워드가 없는 경우 전체 공지사항 반환
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllNotices(pageable);
+        }
+
         // 키워드 검색 결과 가져오기 (제목 또는 내용에서 검색)
         Page<Notice> searchResults = noticeRepository.findByTitleContainingOrContentContaining(keyword, pageable);
 
