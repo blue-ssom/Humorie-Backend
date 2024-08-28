@@ -37,33 +37,16 @@ public class NoticeService {
     }
 
     public NoticePageDto searchNotices(String keyword, Pageable pageable) {
-        // 중요 공지사항 먼저 가져오기
-        List<Notice> importantNotices = noticeRepository.findImportantNotices(pageable);
-
-        // 키워드 검색 결과 가져오기
+        // 키워드 검색 결과 가져오기 (제목 또는 내용에서 검색)
         Page<Notice> searchResults = noticeRepository.findByTitleContainingOrContentContaining(keyword, pageable);
 
-        // 두 리스트를 병합하되, 중요 공지사항이 먼저 오도록 배치
-        List<Notice> combinedResults = new ArrayList<>();
-        combinedResults.addAll(importantNotices);  // 중요 공지사항 먼저 추가
-        combinedResults.addAll(searchResults.getContent());  // 그 아래에 키워드 검색 결과 추가
-
-        // 중요 공지사항은 항상 상단에 오므로, 전체 리스트는 정렬하지 않음
-
-        // 결과를 DTO로 변환
-        List<GetAllNoticeDto> dtoList = combinedResults.stream()
-                .map(GetAllNoticeDto::fromEntity)
-                .collect(Collectors.toList());
-
-        // 병합된 결과를 페이지네이션
-        int start = Math.min((int) pageable.getOffset(), dtoList.size());
-        int end = Math.min(start + pageable.getPageSize(), dtoList.size());
-
-        if (start >= dtoList.size()) {
-            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+        // 검색 결과가 비어 있을 경우 빈 페이지를 반환
+        if (searchResults.isEmpty()) {
+            return NoticePageDto.from(Page.empty(pageable));
         }
 
-        Page<GetAllNoticeDto> dtoPage = new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
+        // 결과를 DTO로 변환
+        Page<GetAllNoticeDto> dtoPage = searchResults.map(GetAllNoticeDto::fromEntity);
 
         return NoticePageDto.from(dtoPage);
     }
