@@ -80,7 +80,7 @@ public class NoticeController {
         return noticeService.searchNotices(keyword, pageable);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{noticeId}")
     @Operation(summary = "특정 공지사항 및 이전/다음 공지사항 조회")
     public NoticeDetailWithNavigationDto getNoticeWithNavigation(@PathVariable Long id) {
         return noticeService.getNoticeWithNavigation(id);
