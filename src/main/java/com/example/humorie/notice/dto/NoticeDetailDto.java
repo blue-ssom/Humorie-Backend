@@ -23,7 +23,6 @@ public class NoticeDetailDto {
     private LocalTime createdTime; // 작성 시간
     private String title;          // 제목
     private String content;        // 내용
-    private boolean importance;    // 중요 여부
 
     // Notice 엔티티를 DTO로 변환하는 메서드
     public static NoticeDetailDto fromEntity(Notice notice) {
@@ -35,7 +34,6 @@ public class NoticeDetailDto {
                 .createdTime(notice.getCreatedTime())
                 .title(notice.getTitle())
                 .content(notice.getContent())
-                .importance(notice.isImportance())
                 .build();
     }
 }
