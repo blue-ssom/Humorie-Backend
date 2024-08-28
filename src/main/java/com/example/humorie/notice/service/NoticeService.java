@@ -40,16 +40,15 @@ public class NoticeService {
         // 공지사항 조회 결과 가져오기
         Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
 
+        // 데이터가 없는 경우 빈 Page 반환
+        if (noticePage.getTotalPages() == 0) {
+            return NoticePageDto.from(Page.empty(pageable));
+        }
+
         // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
         if (pageable.getPageNumber() >= noticePage.getTotalPages()) {
             log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, noticePage.getTotalPages());
             throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
-        }
-
-        // 페이지가 비어 있을 경우 빈 리스트를 반환
-        if (noticePage.isEmpty()) {
-            // 빈 NoticePageDto 반환
-            return NoticePageDto.from(Page.empty(pageable));
         }
 
         // 엔티티를 DTO로 변환하여 NoticePageDto로 반환
@@ -88,8 +87,8 @@ public class NoticeService {
         // 키워드 검색 결과 가져오기 (제목 또는 내용에서 검색)
         Page<Notice> searchResults = noticeRepository.findByTitleContainingOrContentContaining(keyword, pageable);
 
-        // 검색 결과가 비어 있을 경우 빈 페이지를 반환
-        if (searchResults.isEmpty()) {
+        // 검색 결과가 없을 경우 빈 페이지 반환
+        if (searchResults.getTotalPages() == 0) {
             return NoticePageDto.from(Page.empty(pageable));
         }
 
