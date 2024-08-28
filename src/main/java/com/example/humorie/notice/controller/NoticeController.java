@@ -34,21 +34,7 @@ public class NoticeController {
             @RequestParam int page,
             @RequestParam int size
     ) {
-        // 페이지 번호에 대한 유효성 검사
-        if (page < 0) {
-            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
-        }
-
-        // 페이지 크기에 대한 유효성 검사
-        if (size < 1) {
-            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
-        }
-        if (size > 9) {
-            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
-        }
-
-        Pageable pageable = PageRequest.of(page, size);
-        return noticeService.getAllNotices(pageable);
+        return noticeService.getAllNotices(page, size);
     }
 
     @GetMapping("/search")
@@ -58,31 +44,12 @@ public class NoticeController {
             @RequestParam int page,
             @RequestParam int size
     ) {
-        // 페이지 번호에 대한 유효성 검사
-        if (page < 0) {
-            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
-        }
-
-        // 페이지 크기에 대한 유효성 검사
-        if (size < 1) {
-            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
-        } else if (size > 9) {
-            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
-        }
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        // 키워드가 없는 경우 전체 공지사항 반환
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return noticeService.getAllNotices(pageable);
-        }
-
-        return noticeService.searchNotices(keyword, pageable);
+        return noticeService.searchNotices(keyword, page, size);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{noticeId}")
     @Operation(summary = "특정 공지사항 및 이전/다음 공지사항 조회")
-    public NoticeDetailWithNavigationDto getNoticeWithNavigation(@PathVariable Long id) {
-        return noticeService.getNoticeWithNavigation(id);
+    public NoticeDetailWithNavigationDto getNoticeWithNavigation(@PathVariable Long noticeId) {
+        return noticeService.getNoticeWithNavigation(noticeId);
     }
 }

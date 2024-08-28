@@ -6,29 +6,49 @@ import com.example.humorie.notice.dto.*;
 import com.example.humorie.notice.entity.Notice;
 import com.example.humorie.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
     private final NoticeRepository noticeRepository;
 
-    public NoticePageDto getAllNotices(Pageable pageable) {
-        Page<Notice> noticePage = noticeRepository.findImportantAndRecentNotices(pageable);
+    public NoticePageDto getAllNotices(int page, int size) {
+        // 페이지 번호에 대한 유효성 검사
+        if (page < 0) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
+        }
 
-        // 페이지가 비어 있는지 확인
-        if (noticePage.isEmpty()) {
-            throw new ErrorException(ErrorCode.NO_CONTENT);
+        // 페이지 크기에 대한 유효성 검사
+        if (size < 1) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
+        }
+        if (size > 8) {
+            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
+        }
+
+        // Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 공지사항 조회 결과 가져오기
+        Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
+
+        // 데이터가 없는 경우 빈 Page 반환
+        if (noticePage.getTotalPages() == 0) {
+            return NoticePageDto.from(Page.empty(pageable));
+        }
+
+        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+        if (pageable.getPageNumber() >= noticePage.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, noticePage.getTotalPages());
+            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
         }
 
         // 엔티티를 DTO로 변환하여 NoticePageDto로 반환
@@ -36,34 +56,59 @@ public class NoticeService {
         return NoticePageDto.from(dtoPage);
     }
 
-    public NoticePageDto searchNotices(String keyword, Pageable pageable) {
-        // 중요 공지사항 먼저 가져오기
-        List<Notice> importantNotices = noticeRepository.findImportantNotices(pageable);
+    public NoticePageDto getAllNotices(Pageable pageable) {
+        Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
 
-        // 키워드 검색 결과 가져오기
+        Page<GetAllNoticeDto> dtoPage = noticePage.map(GetAllNoticeDto::fromEntity);
+        return NoticePageDto.from(dtoPage);
+    }
+
+    public NoticePageDto searchNotices(String keyword, int page, int size) {
+        // 페이지 번호에 대한 유효성 검사
+        if (page < 0) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
+        }
+
+        // 페이지 크기에 대한 유효성 검사
+        if (size < 1) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
+        } else if (size > 8) {
+            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
+        }
+
+        // Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 키워드가 없는 경우 전체 공지사항 반환
+        if (keyword == null || keyword.trim().isEmpty()) {
+            // 전체 공지사항 조회
+            NoticePageDto allNotices = getAllNotices(pageable);
+
+            // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+            if (page >= allNotices.getTotalPages()) {
+                log.error("Page number {} exceeds total pages {}", page + 1, allNotices.getTotalPages());
+                throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+            }
+
+            return allNotices;
+        }
+
+        // 키워드 검색 결과 가져오기 (제목 또는 내용에서 검색)
         Page<Notice> searchResults = noticeRepository.findByTitleContainingOrContentContaining(keyword, pageable);
 
-        // 두 리스트를 병합하되, 중요 공지사항이 먼저 오도록 배치
-        List<Notice> combinedResults = new ArrayList<>();
-        combinedResults.addAll(importantNotices);  // 중요 공지사항 먼저 추가
-        combinedResults.addAll(searchResults.getContent());  // 그 아래에 키워드 검색 결과 추가
+        // 검색 결과가 없을 경우 빈 페이지 반환
+        if (searchResults.getTotalPages() == 0) {
+            return NoticePageDto.from(Page.empty(pageable));
+        }
 
-        // 중요 공지사항은 항상 상단에 오므로, 전체 리스트는 정렬하지 않음
-
-        // 결과를 DTO로 변환
-        List<GetAllNoticeDto> dtoList = combinedResults.stream()
-                .map(GetAllNoticeDto::fromEntity)
-                .collect(Collectors.toList());
-
-        // 병합된 결과를 페이지네이션
-        int start = Math.min((int) pageable.getOffset(), dtoList.size());
-        int end = Math.min(start + pageable.getPageSize(), dtoList.size());
-
-        if (start >= dtoList.size()) {
+        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+        if(pageable.getPageNumber() >= searchResults.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, searchResults.getTotalPages());
             throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
         }
 
-        Page<GetAllNoticeDto> dtoPage = new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
+        // 결과를 DTO로 변환
+        Page<GetAllNoticeDto> dtoPage = searchResults.map(GetAllNoticeDto::fromEntity);
 
         return NoticePageDto.from(dtoPage);
     }

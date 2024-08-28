@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Builder
 public class GetAllNoticeDto {
     private Long id;
-    private boolean importance;
     private String title;
     private LocalDate createdDate;
     private LocalTime createdTime;
@@ -21,7 +20,6 @@ public class GetAllNoticeDto {
     public static GetAllNoticeDto fromEntity(Notice notice) {
         return GetAllNoticeDto.builder()
                 .id(notice.getId())
-                .importance(notice.isImportance())
                 .title(notice.getTitle())
                 .createdDate(notice.getCreatedDate())
                 .createdTime(notice.getCreatedTime())
