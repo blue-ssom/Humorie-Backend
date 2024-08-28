@@ -24,13 +24,13 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     public NoticePageDto getAllNotices(Pageable pageable) {
-        Page<Notice> noticePage = noticeRepository.findImportantAndRecentNotices(pageable);
+        Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
 
-        // 페이지가 비어 있는지 확인
+        // 페이지가 비어 있을 경우 빈 리스트를 반환
         if (noticePage.isEmpty()) {
-            throw new ErrorException(ErrorCode.NO_CONTENT);
+            // 빈 NoticePageDto 반환
+            return NoticePageDto.from(Page.empty(pageable));
         }
-
         // 엔티티를 DTO로 변환하여 NoticePageDto로 반환
         Page<GetAllNoticeDto> dtoPage = noticePage.map(GetAllNoticeDto::fromEntity);
         return NoticePageDto.from(dtoPage);

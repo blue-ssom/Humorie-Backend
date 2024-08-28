@@ -37,7 +37,5 @@ public class Notice {
     @Column(name = "view_count")
     private int viewCount;
 
-    private boolean importance;
-
     private String author;
 }
