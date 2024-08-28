@@ -66,7 +66,7 @@ public class NoticeController {
         // 페이지 크기에 대한 유효성 검사
         if (size < 1) {
             throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
-        } else if (size > 9) {
+        } else if (size > 8) {
             throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
         }
 
