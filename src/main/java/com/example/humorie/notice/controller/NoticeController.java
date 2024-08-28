@@ -43,7 +43,7 @@ public class NoticeController {
         if (size < 1) {
             throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
         }
-        if (size > 9) {
+        if (size > 8) {
             throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
         }
 
