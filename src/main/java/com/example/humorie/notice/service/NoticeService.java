@@ -40,6 +40,12 @@ public class NoticeService {
         // 공지사항 조회 결과 가져오기
         Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
 
+        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+        if (pageable.getPageNumber() >= noticePage.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", pageable.getPageNumber() + 1, noticePage.getTotalPages());
+            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+        }
+
         // 페이지가 비어 있을 경우 빈 리스트를 반환
         if (noticePage.isEmpty()) {
             // 빈 NoticePageDto 반환
@@ -48,13 +54,6 @@ public class NoticeService {
 
         // 엔티티를 DTO로 변환하여 NoticePageDto로 반환
         Page<GetAllNoticeDto> dtoPage = noticePage.map(GetAllNoticeDto::fromEntity);
-
-        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
-        if (page >= noticePage.getTotalPages()) {
-            log.error("Page number {} exceeds total pages {}", page + 1, noticePage.getTotalPages());
-            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
-        }
-
         return NoticePageDto.from(dtoPage);
     }
 
