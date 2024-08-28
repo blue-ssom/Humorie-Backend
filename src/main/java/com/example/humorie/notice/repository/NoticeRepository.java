@@ -17,4 +17,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     // 제목이나 내용에 키워드가 포함된 공지사항을 검색하는 메서드
     @Query("SELECT n FROM Notice n WHERE n.title LIKE %:keyword% OR n.content LIKE %:keyword% ORDER BY n.createdDate DESC, n.createdTime DESC")
     Page<Notice> findByTitleContainingOrContentContaining(@Param("keyword") String keyword, Pageable pageable);
+
+    // 공지사항 전체 조회(날짜, 시간)
+    List<Notice> findAllByOrderByCreatedDateDescCreatedTimeDesc();
 }
