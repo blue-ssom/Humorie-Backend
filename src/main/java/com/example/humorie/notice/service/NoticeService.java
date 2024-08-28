@@ -6,24 +6,38 @@ import com.example.humorie.notice.dto.*;
 import com.example.humorie.notice.entity.Notice;
 import com.example.humorie.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
     private final NoticeRepository noticeRepository;
 
-    public NoticePageDto getAllNotices(Pageable pageable) {
+    public NoticePageDto getAllNotices(int page, int size) {
+        // 페이지 번호에 대한 유효성 검사
+        if (page < 0) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_NUMBER);
+        }
+
+        // 페이지 크기에 대한 유효성 검사
+        if (size < 1) {
+            throw new ErrorException(ErrorCode.NEGATIVE_PAGE_SIZE);
+        }
+        if (size > 8) {
+            throw new ErrorException(ErrorCode.INVALID_PAGE_SIZE);
+        }
+
+        // Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 공지사항 조회 결과 가져오기
         Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
 
         // 페이지가 비어 있을 경우 빈 리스트를 반환
@@ -31,11 +45,19 @@ public class NoticeService {
             // 빈 NoticePageDto 반환
             return NoticePageDto.from(Page.empty(pageable));
         }
+
         // 엔티티를 DTO로 변환하여 NoticePageDto로 반환
         Page<GetAllNoticeDto> dtoPage = noticePage.map(GetAllNoticeDto::fromEntity);
+
+        // 총 페이지 수보다 요청된 페이지 번호가 클 경우 예외 처리
+        if (page >= noticePage.getTotalPages()) {
+            log.error("Page number {} exceeds total pages {}", page + 1, noticePage.getTotalPages());
+            throw new ErrorException(ErrorCode.INVALID_PAGE_NUMBER);
+        }
+
         return NoticePageDto.from(dtoPage);
     }
-
+    
     public NoticePageDto searchNotices(String keyword, Pageable pageable) {
         // 키워드 검색 결과 가져오기 (제목 또는 내용에서 검색)
         Page<Notice> searchResults = noticeRepository.findByTitleContainingOrContentContaining(keyword, pageable);
