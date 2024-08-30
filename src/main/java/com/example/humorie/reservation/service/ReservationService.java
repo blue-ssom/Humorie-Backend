@@ -180,6 +180,12 @@ public class ReservationService {
     }
 
     @Transactional
+    public void deleteReservationsByAccountId(Long accountId) {
+        // Reservation에서 특정 accountId에 해당하는 모든 예약 삭제
+        reservationRepository.deleteByAccountId(accountId);
+    }
+
+    @Transactional
     public void detachAccountFromReservation(Long accountId) {
         reservationRepository.detachAccountFromReservation(accountId);
     }
