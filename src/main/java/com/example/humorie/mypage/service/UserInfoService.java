@@ -2,12 +2,13 @@ package com.example.humorie.mypage.service;
 
 import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.consultant.consult_detail.service.ConsultDetailService;
+import com.example.humorie.consultant.review.repository.ReviewRepository;
+import com.example.humorie.consultant.review.service.ReviewService;
 import com.example.humorie.consultant.review.service.TagService;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.account.repository.AccountRepository;
-import com.example.humorie.consultant.review.repository.ReviewRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.mypage.dto.request.UserInfoDelete;
@@ -26,13 +27,13 @@ import org.springframework.stereotype.Service;
 public class UserInfoService {
     private final ConsultDetailRepository consultDetailRepository;
     private final AccountRepository accountRepository;
-    private final ReviewRepository reviewRepository;
     private final ReservationRepository reservationRepository;
     private final UserInfoValidationService userInfoValidationService;
     private final SecurityConfig jwtSecurityConfig;
     private final ConsultDetailService consultDetailService;
     private final ReservationService reservationService;
     private final TagService tagService;
+    private final ReviewService reviewService;
 
     // 사용자 정보 조회
     public GetUserInfoResDto getMyAccount(PrincipalDetails principalDetails) {
@@ -87,18 +88,19 @@ public class UserInfoService {
         userInfoValidationService.validatePassword(deleteDto.getPassword());
         userInfoValidationService.validatePasswordMatch(deleteDto.getPassword(), account.getPassword());
 
-        // 상담 내역 소프트 삭제 및 외래 키 참조 제거
-        consultDetailService.softDeleteConsultDetailsByAccountId(account.getId());
+        // 상담 내역 삭제 및 외래 키 참조 제거
+        consultDetailService.deleteConsultDetailsByAccountId(account.getId());
         consultDetailService.detachAccountFromConsultDetail(account.getId());
 
-        // 예약 소프트 삭제 처리 및 외래 키 참조 제거
+        // 예약 삭제 처리 및 외래 키 참조 제거
+        reservationService.deleteReservationsByAccountId(account.getId());
         reservationService.detachAccountFromReservation(account.getId());
 
         // 태그 외래 키 참조 제거
         tagService.detachAccountFromTag(account.getId());
 
-        // 리뷰 삭제
-        reviewRepository.deleteByAccount_Id(account.getId());
+        // 리뷰 외래 키 참조 제거 (리뷰는 삭제하지 않음)
+        reviewService.detachAccountFromReview(account.getId());
 
         // 사용자 삭제
         accountRepository.deleteById(account.getId());

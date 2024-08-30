@@ -28,5 +28,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("UPDATE Reservation r SET r.account = NULL WHERE r.account.id = :accountId")
     void detachAccountFromReservation(@Param("accountId") Long accountId);
 
-
+    @Modifying
+    @Transactional
+    void deleteByAccountId(Long accountId);
 }

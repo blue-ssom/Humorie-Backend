@@ -125,4 +125,9 @@ public class ReviewService {
         counselor.setRating(averageRating);
     }
 
+    @Transactional
+    public void detachAccountFromReview(Long accountId) {
+        // Review 테이블에서 해당 accountId와 연결된 외래 키 참조를 제거
+        reviewRepository.detachAccountFromReview(accountId);
+    }
 }

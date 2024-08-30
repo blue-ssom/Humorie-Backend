@@ -133,13 +133,11 @@ public class ConsultDetailService {
     }
 
     @Transactional
-    public void softDeleteConsultDetailsByAccountId(Long accountId) {
-        List<ConsultDetail> consultDetails = consultDetailRepository.findByAccountId(accountId);
-        for (ConsultDetail consultDetail : consultDetails) {
-            consultDetail.setDeleted(true); // 소프트 삭제 처리
-            consultDetailRepository.save(consultDetail);
-        }
+    public void deleteConsultDetailsByAccountId(Long accountId) {
+        // ConsultDetail에서 특정 accountId에 해당하는 모든 내역 삭제
+        consultDetailRepository.deleteByAccountId(accountId);
     }
+
     @Transactional
     public void detachAccountFromConsultDetail(Long accountId) {
         consultDetailRepository.detachAccountFromConsultDetail(accountId);
