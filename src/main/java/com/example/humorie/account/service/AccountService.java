@@ -35,7 +35,6 @@ public class AccountService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PointRepository pointRepository;
     private final AccountValidationService validationService;
-    private final CookieService cookieService;
     private final JwtTokenUtil jwtTokenUtil;
     private final SecurityConfig jwtSecurityConfig;
     private final RedisTemplate redisTemplate;
@@ -74,8 +73,6 @@ public class AccountService {
             TokenDto tokenDto = jwtTokenUtil.createToken(accountDetail.getEmail());
 
             redisTemplate.opsForValue().set("RT:" + accountDetail.getEmail(), tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
-
-            cookieService.setHeader(response, tokenDto);
 
             String accessToken = tokenDto.getAccessToken();
             String refreshToken = tokenDto.getRefreshToken();

@@ -30,16 +30,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String cookie_accessToken = getTokenByRequest(request, "accessToken");
-        String cookie_refreshToken = getTokenByRequest(request, "refreshToken");
         String accessToken = jwtTokenUtil.getHeaderToken(request, "Access");
         String refreshToken = jwtTokenUtil.getHeaderToken(request, "Refresh");
 
-        if(cookie_accessToken != null && cookie_refreshToken != null) {
-            processSecurity(cookie_accessToken, cookie_refreshToken, response);
-        } else {
-            processSecurity(accessToken, refreshToken, response);
-        }
+        processSecurity(accessToken, refreshToken, response);
 
         filterChain.doFilter(request, response);
     }
@@ -51,7 +45,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
             String isLogout = (String) redisTemplate.opsForValue().get(accessToken);
 
-            if(ObjectUtils.isEmpty(isLogout)) {
+            if (ObjectUtils.isEmpty(isLogout)) {
                 setAuthentication(jwtTokenUtil.getEmailFromToken(accessToken));
             }
         } else if (refreshToken != null) {
@@ -68,27 +62,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public void jwtExceptionHandler (HttpServletResponse response, String msg, HttpStatus status) {
+    public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus status) {
         response.setStatus(status.value());
         response.setContentType("application/json");
         try {
             String json = new ObjectMapper().writeValueAsString(new GlobalResDto(msg, status.value()));
-            // response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
-
-    public static String getTokenByRequest(HttpServletRequest request, String type) {
-        Cookie cookies[] = request.getCookies();
-
-        if (cookies != null && cookies.length != 0) {
-            return Arrays.stream(cookies)
-                    .filter(c -> c.getName().equals(type)).findFirst().map(Cookie::getValue)
-                    .orElse(null);
-        }
-
-        return null;
-    }
-
 }
