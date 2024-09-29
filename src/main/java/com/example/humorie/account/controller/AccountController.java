@@ -6,7 +6,6 @@ import com.example.humorie.account.dto.response.LoginRes;
 import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.service.AccountService;
-import com.example.humorie.account.service.CookieService;
 import com.example.humorie.account.service.EmailService;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorResponse;
@@ -25,7 +24,6 @@ import java.io.IOException;
 public class AccountController {
 
     private final AccountService accountService;
-    private final CookieService cookieService;
     private final EmailService emailService;
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -53,16 +51,7 @@ public class AccountController {
     @Operation(summary = "Access Token 갱신")
     public ErrorResponse<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response,
                                                 @RequestHeader(name = JwtTokenUtil.REFRESH_TOKEN, required = false) String refreshToken) {
-        TokenDto newTokenDto = null;
-
-        if (refreshToken == null) {
-            String cookie_refreshToken = JwtTokenFilter.getTokenByRequest(request, "refreshToken");
-            newTokenDto = accountService.refreshAccessToken(cookie_refreshToken);
-        } else {
-            newTokenDto = accountService.refreshAccessToken(refreshToken);
-        }
-
-        cookieService.setHeader(response, newTokenDto);
+        TokenDto newTokenDto = accountService.refreshAccessToken(refreshToken);
 
         return new ErrorResponse<>(newTokenDto);
     }
