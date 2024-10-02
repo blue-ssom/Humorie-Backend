@@ -5,8 +5,8 @@ import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.mypage.dto.PointDto;
-import com.example.humorie.mypage.dto.TotalPointDto;
+import com.example.humorie.mypage.dto.response.PointDto;
+import com.example.humorie.mypage.dto.response.TotalPointDto;
 import com.example.humorie.mypage.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
@@ -82,6 +82,19 @@ public class PointService {
         int totalPoints = totalEarnedPoints - totalSpentPoints;
 
         return TotalPointDto.builder().totalPoints(totalPoints).build();
+    }
+
+    public String deletePoints(String accessToken, List<Long> pointIds) {
+        String email = jwtTokenUtil.getEmailFromToken(accessToken);
+
+        AccountDetail account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+
+        List<Point> points = pointRepository.findAllByAccountAndIdIn(account, pointIds);
+
+        pointRepository.deleteAll(points);
+
+        return "Success Delete";
     }
 
 }
