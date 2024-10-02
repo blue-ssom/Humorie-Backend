@@ -1,26 +1,16 @@
 package com.example.humorie.notice.controller;
 
-import com.example.humorie.global.exception.ErrorCode;
-import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.notice.dto.GetAllNoticeDto;
-import com.example.humorie.notice.dto.NoticeDetailDto;
 import com.example.humorie.notice.dto.NoticeDetailWithNavigationDto;
 import com.example.humorie.notice.dto.NoticePageDto;
-import com.example.humorie.notice.entity.Notice;
 import com.example.humorie.notice.service.NoticeService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/notice")
