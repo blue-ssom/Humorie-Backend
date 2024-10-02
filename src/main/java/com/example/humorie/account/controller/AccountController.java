@@ -3,7 +3,6 @@ package com.example.humorie.account.controller;
 import com.example.humorie.account.dto.request.*;
 import com.example.humorie.account.dto.response.TokenDto;
 import com.example.humorie.account.dto.response.LoginRes;
-import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.account.service.AccountService;
 import com.example.humorie.account.service.EmailService;
@@ -58,8 +57,8 @@ public class AccountController {
 
     @PostMapping("/find-id")
     @Operation(summary = "아이디 찾기")
-    public ErrorResponse<String> findAccountNameByEmail(@RequestBody AccountNameFinder finder) {
-        return new ErrorResponse<>(accountService.findAccountNameByEmail(finder.getEmail()));
+    public ErrorResponse<String> findAccountNameByEmail(@RequestBody EmailDto emailDto) {
+        return new ErrorResponse<>(accountService.findAccountNameByEmail(emailDto.getEmail()));
     }
 
     @PostMapping("/find-password")
