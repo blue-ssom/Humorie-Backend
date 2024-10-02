@@ -22,7 +22,8 @@ public class SpecificConsultDetailDto {
     private final String location; // 지역
     private final Boolean status; // 상태
     private final String title; // 상담 제목
-    private final String symptom; // 상담 증상
+    private final String symptomCategory; // 상담 증상
+    private final String symptomDetail; // 상담 증상에 대한 설명
     private final String content; // 상담 내용
     // 날짜 필드에 @JsonFormat 애너테이션 적용
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d")
@@ -31,7 +32,7 @@ public class SpecificConsultDetailDto {
 
     @Builder
     public SpecificConsultDetailDto(Long id, Long counselorId, String counselorName, List<String> symptoms, Boolean isOnline,
-                                    Boolean status, String title, String symptom, String content, LocalDate counselDate, LocalTime counselTime, String location) {  // Boolean 타입으로 설정
+                                    Boolean status, String title, String symptomCategory, String symptomDetail, String content, LocalDate counselDate, LocalTime counselTime, String location) {  // Boolean 타입으로 설정
         this.id = id;
         this.counselorId = counselorId;
         this.counselorName = counselorName;
@@ -40,7 +41,8 @@ public class SpecificConsultDetailDto {
         this.location = location;
         this.status = status;
         this.title = title;
-        this.symptom = symptom;
+        this.symptomCategory = symptomCategory;
+        this.symptomDetail = symptomDetail;
         this.content = content;
         this.counselDate = counselDate;
         this.counselTime = counselTime;
@@ -60,10 +62,11 @@ public class SpecificConsultDetailDto {
                 .counselorName(consultDetail.getCounselor().getName())
                 .symptoms(symptomNames)// 상담 영역
                 .isOnline(consultDetail.getIsOnline())
-                .location(consultDetail.getReservation().getLocation())
+                .location(consultDetail.getLocation())
                 .status(consultDetail.getStatus())
                 .title(consultDetail.getTitle())
-                .symptom(consultDetail.getSymptom())
+                .symptomCategory(consultDetail.getSymptomCategory())
+                .symptomDetail(consultDetail.getSymptomDetail())
                 .content(consultDetail.getContent())
                 .counselDate(consultDetail.getCounselDate())
                 .counselTime(consultDetail.getCounselTime())
