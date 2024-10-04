@@ -24,9 +24,25 @@ public class ConsultDetail {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    private String title;
+
+    private String symptomCategory;
+
+    private String symptomDetail;
+
+    private String content;
+
+    private Boolean isOnline;
+
+    private String location;
+
+    private LocalDate counselDate;
+
+    private LocalTime counselTime;
+
+    /*@ManyToOne
     @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
+    private Reservation reservation;*/
 
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -38,10 +54,6 @@ public class ConsultDetail {
 
     @Column(nullable = false)
     private Boolean status = false;
-
-    private String title;
-    private String symptom;
-    private String content;
 
     public void setStatus(Boolean status) { this.status = status; }
 
@@ -57,7 +69,7 @@ public class ConsultDetail {
         return counselor.getRating();
     }
 
-    public Boolean getIsOnline() { return reservation.getIsOnline(); }
+    /*public Boolean getIsOnline() { return reservation.getIsOnline(); }
     public String getLocation() {
         return reservation.getLocation();
     }
@@ -68,5 +80,6 @@ public class ConsultDetail {
 
     public LocalTime getCounselTime() { return reservation.getCounselTime(); }
 
-    public String getCounselContent() { return reservation.getCounselContent(); }
+    public String getCounselContent() { return reservation.getCounselContent(); }*/
+
 }

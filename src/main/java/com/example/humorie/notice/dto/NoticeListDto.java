@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 @Getter
 @Builder
-public class GetAllNoticeDto {
+public class NoticeListDto {
     private Long id;
     private String title;
     private LocalDate createdDate;
@@ -17,8 +17,8 @@ public class GetAllNoticeDto {
     private int viewCount;
 
     // Notice 엔티티를 GetAllNoticeDto로 변환하는 메서드
-    public static GetAllNoticeDto fromEntity(Notice notice) {
-        return GetAllNoticeDto.builder()
+    public static NoticeListDto fromEntity(Notice notice) {
+        return NoticeListDto.builder()
                 .id(notice.getId())
                 .title(notice.getTitle())
                 .createdDate(notice.getCreatedDate())

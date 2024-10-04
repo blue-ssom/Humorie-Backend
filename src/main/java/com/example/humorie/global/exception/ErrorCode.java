@@ -53,6 +53,10 @@ public enum ErrorCode {
     PASSWORD_CONFIRMATION_EMPTY(false,2021,"비밀번호 확인을 입력해주세요."),
     EMPTY_PASSWORD(false,2022,"비밀번호를 입력해주세요."),
 
+    // admin
+    INVALID_DATE_TIME_FORMAT(false, 2023, "날짜 입력 형식이 잘못되었습니다. 날짜는 yyyy-MM-dd HH:mm 형식으로 입력되어야 합니다."),
+    ACCESS_DENIED(false, 2024, "허용되지 않은 권한입니다."),
+
     /**
      * 3000 : Response 오류
      */

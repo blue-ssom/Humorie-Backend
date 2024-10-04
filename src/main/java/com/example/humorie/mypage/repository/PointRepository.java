@@ -11,6 +11,9 @@ import java.util.List;
 public interface PointRepository extends JpaRepository<Point, Long> {
 
     List<Point> findByAccount(AccountDetail accountDetail);
+
     List<Point> findByAccountAndType(AccountDetail accountDetail, String type);
+
+    List<Point> findAllByAccountAndIdIn(AccountDetail account, List<Long> pointIds);
 
 }

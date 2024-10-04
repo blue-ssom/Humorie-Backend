@@ -2,17 +2,14 @@ package com.example.humorie.mypage.controller;
 
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import com.example.humorie.global.exception.ErrorResponse;
-import com.example.humorie.mypage.dto.PointDto;
-import com.example.humorie.mypage.dto.TotalPointDto;
+import com.example.humorie.mypage.dto.request.PointIdListDto;
+import com.example.humorie.mypage.dto.response.PointDto;
+import com.example.humorie.mypage.dto.response.TotalPointDto;
 import com.example.humorie.mypage.service.PointService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,6 +55,15 @@ public class PointController {
         TotalPointDto totalPoints = pointService.getTotalPoints(accessToken);
 
         return new ErrorResponse<>(totalPoints);
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "포인트 내역 삭제")
+    public ErrorResponse<String> deletePoints(@RequestBody PointIdListDto pointIdsDto, HttpServletRequest request) {
+        String accessToken = jwtTokenUtil.resolveToken(request);
+        List<Long> pointIds = pointIdsDto.getPointIdList();
+
+        return new ErrorResponse<>(pointService.deletePoints(accessToken, pointIds));
     }
 
 }

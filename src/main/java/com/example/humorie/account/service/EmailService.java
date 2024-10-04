@@ -1,5 +1,6 @@
 package com.example.humorie.account.service;
 
+import com.example.humorie.admin.dto.ConsultCompletionDto;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.repository.AccountRepository;
@@ -42,7 +43,7 @@ public class EmailService {
         helper.setFrom(new InternetAddress(sender, senderName));
         helper.setTo(sendTo);
         helper.setSubject("<&DAY> 임시 비밀번호 발급 관련 안내");
-        helper.setText("안녕하세요. &DAY 임시 비밀번호 안내 관련 이메일 입니다.\n\n" + " 회원님의 임시 비밀번호는 " + password + " 입니다. " + "로그인 후 비밀번호를 변경해 주세요.");
+        helper.setText("안녕하세요. &DAY 임시 비밀번호 안내 관련 이메일 입니다.\n\n" + "회원님의 임시 비밀번호는 " + password + " 입니다. " + "로그인 후 비밀번호를 변경해 주세요.");
 
         javaMailSender.send(mimeMessage);
         updatePassword(sendTo, password);
@@ -64,6 +65,20 @@ public class EmailService {
         storeVerificationCode(sendTo, verificationCode);
 
         return "Verification email sent successfully";
+    }
+
+    public String sendConsultationCompletionEmail(String sendTo, String counselDate, String counselorName) throws Exception {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+        helper.setFrom(new InternetAddress(sender, senderName));
+        helper.setTo(sendTo);
+        helper.setSubject("<&DAY> 상담 내역 작성 완료 안내");
+        helper.setText("안녕하세요. &DAY 상담 내역 작성 완료 안내 관련 이메일 입니다.\n\n" + "회원님께서 " + counselDate + "에 "
+                + counselorName + " 상담사님께 받은 상담에 대한 내역이 등록되었습니다.\n\n 상담 내역 페이지에서 확인해 주세요.");
+
+        javaMailSender.send(mimeMessage);
+
+        return "Email sent successfully";
     }
 
     public boolean verifyCode(String email, String code) {
@@ -97,7 +112,7 @@ public class EmailService {
     }
 
     @Transactional
-    private void updatePassword(String email, String password) {
+    public void updatePassword(String email, String password) {
         AccountDetail accountDetail = accountRepository.findByEmail(email).orElseThrow(
                 () -> new ErrorException(ErrorCode.NONE_EXIST_USER));
 

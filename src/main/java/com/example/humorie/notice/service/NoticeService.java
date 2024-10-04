@@ -52,14 +52,14 @@ public class NoticeService {
         }
 
         // 엔티티를 DTO로 변환하여 NoticePageDto로 반환
-        Page<GetAllNoticeDto> dtoPage = noticePage.map(GetAllNoticeDto::fromEntity);
+        Page<NoticeListDto> dtoPage = noticePage.map(NoticeListDto::fromEntity);
         return NoticePageDto.from(dtoPage);
     }
 
     public NoticePageDto getAllNotices(Pageable pageable) {
         Page<Notice> noticePage = noticeRepository.findAllByOrderByCreatedDateDescCreatedTimeDesc(pageable);
 
-        Page<GetAllNoticeDto> dtoPage = noticePage.map(GetAllNoticeDto::fromEntity);
+        Page<NoticeListDto> dtoPage = noticePage.map(NoticeListDto::fromEntity);
         return NoticePageDto.from(dtoPage);
     }
 
@@ -108,7 +108,7 @@ public class NoticeService {
         }
 
         // 결과를 DTO로 변환
-        Page<GetAllNoticeDto> dtoPage = searchResults.map(GetAllNoticeDto::fromEntity);
+        Page<NoticeListDto> dtoPage = searchResults.map(NoticeListDto::fromEntity);
 
         return NoticePageDto.from(dtoPage);
     }

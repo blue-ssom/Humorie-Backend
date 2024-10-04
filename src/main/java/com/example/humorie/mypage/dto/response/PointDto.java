@@ -1,4 +1,4 @@
-package com.example.humorie.mypage.dto;
+package com.example.humorie.mypage.dto.response;
 
 import com.example.humorie.mypage.entity.Point;
 import lombok.AllArgsConstructor;
