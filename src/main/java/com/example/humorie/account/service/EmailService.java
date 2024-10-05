@@ -1,6 +1,5 @@
 package com.example.humorie.account.service;
 
-import com.example.humorie.admin.dto.ConsultCompletionDto;
 import com.example.humorie.global.config.SecurityConfig;
 import com.example.humorie.account.entity.AccountDetail;
 import com.example.humorie.account.repository.AccountRepository;
