@@ -1,5 +1,6 @@
 package com.example.humorie.global.config;
 
+import com.example.humorie.account.entity.AccountRole;
 import com.example.humorie.account.jwt.JwtTokenFilter;
 import com.example.humorie.account.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                        .requestMatchers("/admin/**").hasAuthority(AccountRole.ADMIN.name())
                         .requestMatchers("/**").permitAll()
                 )
                 .addFilterBefore(new JwtTokenFilter(jwtTokenUtil, redisTemplate), UsernamePasswordAuthenticationFilter.class);
