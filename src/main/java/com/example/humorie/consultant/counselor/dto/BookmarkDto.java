@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BookmarkDto {
 
-    private long bookmarkId;
+    private Long bookmarkId;
 
     private CounselorDto counselor;
 

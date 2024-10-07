@@ -1,6 +1,6 @@
 package com.example.humorie.mypage.dto.response;
 
-import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.account.entity.Point;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PointDto {
 
-    private long pointId;
+    private Long pointId;
 
     private String title;
 

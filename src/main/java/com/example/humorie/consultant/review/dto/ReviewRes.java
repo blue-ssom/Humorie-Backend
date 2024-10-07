@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReviewRes {
 
-    private long reviewId;
+    private Long reviewId;
 
     private String title;
 
