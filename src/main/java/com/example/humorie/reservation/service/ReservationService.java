@@ -6,7 +6,7 @@ import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.account.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import com.example.humorie.payment.entity.Payment;
 import com.example.humorie.payment.entity.PaymentStatus;
@@ -21,8 +21,6 @@ import com.example.humorie.reservation.entity.Reservation;
 import com.example.humorie.reservation.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
