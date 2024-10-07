@@ -3,7 +3,7 @@ package com.example.humorie.payment.service;
 import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.account.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import com.example.humorie.payment.dto.request.PaymentCallbackRequest;
 import com.example.humorie.payment.dto.response.PaymentResDto;
@@ -73,7 +73,7 @@ public class PaymentService {
             }
 
             // 포인트 사용
-            Point point = new Point().builder()
+            Point point = Point.builder()
                     .title("상담 예약")
                     .transactionDate(LocalDateTime.now())
                     .points(reservation.getPayment().getPoint())
