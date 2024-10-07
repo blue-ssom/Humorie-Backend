@@ -1,13 +1,13 @@
 package com.example.humorie.consultant.counselor.service;
 
 import com.example.humorie.account.entity.AccountDetail;
+import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.consultant.counselor.dto.BookmarkDto;
 import com.example.humorie.consultant.counselor.dto.CounselorDto;
 import com.example.humorie.consultant.counselor.entity.Bookmark;
 import com.example.humorie.consultant.counselor.entity.Counselor;
 import com.example.humorie.consultant.counselor.entity.Symptom;
 import com.example.humorie.consultant.counselor.repository.BookmarkRepository;
-import com.example.humorie.consultant.counselor.repository.CounselorRepository;
 import com.example.humorie.consultant.counselor.repository.SymptomRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
@@ -25,13 +25,16 @@ import java.util.stream.Collectors;
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
-    private final CounselorRepository counselorRepository;
     private final SymptomRepository symptomRepository;
     private final CommonService commonService;
 
     @Transactional
-    public String addBookmark(String accessToken, long counselorId) {
-        AccountDetail account = commonService.getAccountFromToken(accessToken);
+    public String addBookmark(PrincipalDetails principal, long counselorId) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
+
+        AccountDetail account = principal.getAccountDetail();
         Counselor counselor = commonService.getCounselorById(counselorId);
 
         if (bookmarkRepository.existsByAccountAndCounselor(account, counselor)) {
@@ -49,8 +52,12 @@ public class BookmarkService {
     }
 
     @Transactional
-    public String removeBookmark(String accessToken, long counselorId) {
-        AccountDetail account = commonService.getAccountFromToken(accessToken);
+    public String removeBookmark(PrincipalDetails principal, long counselorId) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
+
+        AccountDetail account = principal.getAccountDetail();
         Counselor counselor = commonService.getCounselorById(counselorId);
 
         Bookmark bookmark = bookmarkRepository.findByAccountAndCounselor(account, counselor)
@@ -63,9 +70,12 @@ public class BookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookmarkDto> getAllBookmarks(String accessToken) {
-        AccountDetail account = commonService.getAccountFromToken(accessToken);
+    public List<BookmarkDto> getAllBookmarks(PrincipalDetails principal) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
+        AccountDetail account = principal.getAccountDetail();
         List<Bookmark> bookmarks = bookmarkRepository.findAllByAccount(account);
 
         return bookmarks.stream()

@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class CounselorProfileDto {
 
-    private long counselorId;
+    private Long counselorId;
 
     private String name;
 

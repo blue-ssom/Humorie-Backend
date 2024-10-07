@@ -1,7 +1,7 @@
 package com.example.humorie.admin.service;
 
 import com.example.humorie.account.entity.AccountDetail;
-import com.example.humorie.account.repository.AccountRepository;
+import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.account.service.EmailService;
 import com.example.humorie.admin.dto.ConsultDetailDto;
 import com.example.humorie.admin.mapper.AdminMapper;
@@ -23,24 +23,22 @@ import java.time.format.DateTimeParseException;
 @RequiredArgsConstructor
 public class AdminService {
 
-    private final AccountRepository accountRepository;
     private final CounselorRepository counselorRepository;
     private final ConsultDetailRepository consultDetailRepository;
     private final AdminMapper adminMapper;
     private final EmailService emailService;
 
     @Transactional
-    public String saveConsultDetail(ConsultDetailDto consultDetailDto) {
-        AccountDetail accountDetail = accountRepository.findByAccountName(consultDetailDto.getAccountName())
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+    public String saveConsultDetail(ConsultDetailDto consultDetailDto, Long counselorId, PrincipalDetails principal) {
+        AccountDetail account = principal.getAccountDetail();
 
-        Counselor counselor = counselorRepository.findById(consultDetailDto.getCounselorId())
+        Counselor counselor = counselorRepository.findById(counselorId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXIST_COUNSELOR));
 
         LocalDateTime counselDate = parseCounselDateTime(consultDetailDto.getCounselDate());
 
         ConsultDetail consultDetail = adminMapper.dtoToConsultDetail(consultDetailDto);
-            consultDetail.setAccount(accountDetail);
+            consultDetail.setAccount(account);
             consultDetail.setCounselor(counselor);
             consultDetail.setCounselDate(counselDate.toLocalDate());
             consultDetail.setCounselTime(counselDate.toLocalTime());
@@ -51,7 +49,7 @@ public class AdminService {
         counselorRepository.save(counselor);
 
         try {
-            emailService.sendConsultationCompletionEmail(accountDetail.getEmail(), consultDetailDto.getCounselDate(), counselor.getName());
+            emailService.sendConsultationCompletionEmail(account.getEmail(), consultDetailDto.getCounselDate(), counselor.getName());
         } catch (Exception e) {
             throw new ErrorException(ErrorCode.SEND_EMAIL_FAILED);
         }

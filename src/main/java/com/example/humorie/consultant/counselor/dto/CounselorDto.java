@@ -8,7 +8,7 @@ import java.util.Set;
 @Data
 public class CounselorDto {
 
-    private long counselorId;
+    private Long counselorId;
 
     private String name;
 

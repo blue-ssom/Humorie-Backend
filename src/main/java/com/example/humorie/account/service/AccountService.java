@@ -12,9 +12,8 @@ import com.example.humorie.account.repository.AccountRepository;
 import com.example.humorie.account.repository.RefreshTokenRepository;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
-import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.account.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +62,7 @@ public class AccountService {
     }
 
     @Transactional
-    public LoginRes login(LoginReq request, HttpServletResponse response) {
+    public LoginRes login(LoginReq request) {
         AccountDetail accountDetail = accountRepository.findByAccountName(request.getAccountName()).orElseThrow(() ->
                 new ErrorException(ErrorCode.NONE_EXIST_USER));
 

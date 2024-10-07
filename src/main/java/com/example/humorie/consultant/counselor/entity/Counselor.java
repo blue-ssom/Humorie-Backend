@@ -10,14 +10,14 @@ import java.util.Set;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Table(name = "counselor")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Counselor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 

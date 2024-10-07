@@ -5,8 +5,6 @@ import lombok.Getter;
 @Getter
 public class ConsultDetailDto {
 
-    private Long counselorId;
-
     private Boolean isOnline;
 
     private String accountName;

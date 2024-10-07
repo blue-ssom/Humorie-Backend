@@ -54,9 +54,15 @@ public class JwtTokenUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String getHeaderToken(HttpServletRequest request, String type) {
+    /*public String getHeaderToken(HttpServletRequest request, String type) {
         return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
+    }*/
+
+    public String getHeaderToken(HttpServletRequest request, String type) {
+        String token = type.equals("Access") ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
+        return resolveToken(token);
     }
+
 
     public TokenDto createToken(String email) {
         Date date = new Date();
@@ -167,16 +173,19 @@ public class JwtTokenUtil {
 
     public String resolveToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        return resolveToken(token); // 'Bearer ' 처리 및 공백 제거
+    }
 
-        if(StringUtils.hasText(token)) {
-            if(token.startsWith("Bearer ")) {
-                return token.substring(7).trim();
+    public String resolveToken(String token) {
+        if (StringUtils.hasText(token)) {
+            if (token.startsWith("Bearer ")) {
+                return token.substring(7).trim(); // 'Bearer ' 제거 및 공백 제거
             } else {
-                return token;
+                return token.trim(); // 공백 제거
             }
         }
-
         return null;
     }
+
 
 }

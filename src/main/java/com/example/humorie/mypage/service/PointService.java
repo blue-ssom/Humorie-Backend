@@ -1,13 +1,12 @@
 package com.example.humorie.mypage.service;
 
 import com.example.humorie.account.entity.AccountDetail;
-import com.example.humorie.account.jwt.JwtTokenUtil;
-import com.example.humorie.account.repository.AccountRepository;
+import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorException;
 import com.example.humorie.mypage.dto.response.PointDto;
 import com.example.humorie.mypage.dto.response.TotalPointDto;
-import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.account.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +21,13 @@ import java.util.stream.Collectors;
 public class PointService {
 
     private final PointRepository pointRepository;
-    private final AccountRepository accountRepository;
-    private final JwtTokenUtil jwtTokenUtil;
 
-    public List<PointDto> getAllPoints(String accessToken) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
+    public List<PointDto> getAllPoints(PrincipalDetails principal) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+        AccountDetail account = principal.getAccountDetail();
 
         return pointRepository.findByAccount(account).stream()
                 .sorted((t1, t2) -> t1.getTransactionDate().compareTo(t2.getTransactionDate()))
@@ -37,11 +35,12 @@ public class PointService {
                 .collect(Collectors.toList());
     }
 
-    public List<PointDto> getEarnedPoints(String accessToken) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
+    public List<PointDto> getEarnedPoints(PrincipalDetails principal) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+        AccountDetail account = principal.getAccountDetail();
 
         return pointRepository.findByAccountAndType(account, "earn").stream()
                 .sorted((t1, t2) -> t1.getTransactionDate().compareTo(t2.getTransactionDate()))
@@ -49,11 +48,12 @@ public class PointService {
                 .collect(Collectors.toList());
     }
 
-    public List<PointDto> getSpentPoints(String accessToken) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
+    public List<PointDto> getSpentPoints(PrincipalDetails principal) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
+        AccountDetail account = principal.getAccountDetail();
 
         return pointRepository.findByAccountAndType(account, "spend").stream()
                 .sorted((t1, t2) -> t1.getTransactionDate().compareTo(t2.getTransactionDate()))
@@ -61,12 +61,12 @@ public class PointService {
                 .collect(Collectors.toList());
     }
 
-    public TotalPointDto getTotalPoints(String accessToken) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
+    public TotalPointDto getTotalPoints(PrincipalDetails principal) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
-
+        AccountDetail account = principal.getAccountDetail();
         List<Point> points = pointRepository.findByAccount(account);
 
         int totalEarnedPoints = points.stream()
@@ -84,12 +84,12 @@ public class PointService {
         return TotalPointDto.builder().totalPoints(totalPoints).build();
     }
 
-    public String deletePoints(String accessToken, List<Long> pointIds) {
-        String email = jwtTokenUtil.getEmailFromToken(accessToken);
+    public String deletePoints(PrincipalDetails principal, List<Long> pointIds) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
-        AccountDetail account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_USER));
-
+        AccountDetail account = principal.getAccountDetail();
         List<Point> points = pointRepository.findAllByAccountAndIdIn(account, pointIds);
 
         pointRepository.deleteAll(points);

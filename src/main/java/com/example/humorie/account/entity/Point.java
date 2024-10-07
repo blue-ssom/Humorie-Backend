@@ -1,24 +1,21 @@
-package com.example.humorie.mypage.entity;
+package com.example.humorie.account.entity;
 
-import com.example.humorie.account.entity.AccountDetail;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "point")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Point {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private int points;
 
@@ -38,6 +35,16 @@ public class Point {
         this.title = title;
         this.type = type;
         this.transactionDate = LocalDateTime.now();
+    }
+
+    public Point build() {
+        Point point = new Point();
+        point.title = this.title;
+        point.transactionDate = this.transactionDate;
+        point.points = this.points;
+        point.account = this.account;
+        point.type = this.type;
+        return point;
     }
 
 }

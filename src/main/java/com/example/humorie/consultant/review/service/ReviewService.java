@@ -1,6 +1,7 @@
 package com.example.humorie.consultant.review.service;
 
 import com.example.humorie.account.entity.AccountDetail;
+import com.example.humorie.account.jwt.PrincipalDetails;
 import com.example.humorie.consultant.consult_detail.entity.ConsultDetail;
 import com.example.humorie.consultant.consult_detail.repository.ConsultDetailRepository;
 import com.example.humorie.consultant.counselor.entity.Counselor;
@@ -34,9 +35,12 @@ public class ReviewService {
     private final ReviewMapper mapper = ReviewMapper.INSTANCE;
 
     @Transactional
-    public String createReview(String accessToken, long consultId, ReviewReq reviewReq) {
-        AccountDetail account = commonService.getAccountFromToken(accessToken);
+    public String createReview(PrincipalDetails principal, long consultId, ReviewReq reviewReq) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
+        AccountDetail account = principal.getAccountDetail();
         ConsultDetail consultDetail = consultDetailRepository.findById(consultId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_CONSULT_DETAIL));
 
@@ -57,9 +61,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public String modifyReview(String accessToken, long reviewId, ReviewReq reviewReq) {
-        AccountDetail account = commonService.getAccountFromToken(accessToken);
+    public String modifyReview(PrincipalDetails principal, long reviewId, ReviewReq reviewReq) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
+        AccountDetail account = principal.getAccountDetail();
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_REVIEW));
 
@@ -83,9 +90,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public String deleteReview(String accessToken, long reviewId) {
-        AccountDetail account = commonService.getAccountFromToken(accessToken);
+    public String deleteReview(PrincipalDetails principal, long reviewId) {
+        if(principal == null){
+            throw new ErrorException(ErrorCode.NONE_EXIST_USER);
+        }
 
+        AccountDetail account = principal.getAccountDetail();
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NONE_EXIST_REVIEW));
 

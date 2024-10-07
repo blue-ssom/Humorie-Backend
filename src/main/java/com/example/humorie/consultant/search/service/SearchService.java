@@ -41,34 +41,47 @@ public class SearchService {
     }
 
 
-    public List<CounselorDto> searchByKeywords(SearchReq searchReq, String counselingMethod, String gender, String region, String order) {
-        List<Counselor> counselorList = counselorRepository.findAll();
-        List<CounselorDto> result = new ArrayList<>();
+    private Specification<Counselor> buildCounselorSpecification(String counselingMethod, String gender, String region) {
+        return Specification
+                .where(CounselorSpecification.hasCounselingMethod(counselingMethod))
+                .and(CounselorSpecification.hasGender(gender))
+                .and(CounselorSpecification.hasRegion(region));
+    }
 
+    public List<CounselorDto> searchByKeywords(SearchReq searchReq, String counselingMethod, String gender, String region, String order) {
         try {
+            Specification<Counselor> specification = buildCounselorSpecification(counselingMethod, gender, region)
+                    .and(CounselorSpecification.orderBy(order));
+
+            List<Counselor> counselorList = counselorRepository.findAll(specification);
+            List<CounselorDto> result = new ArrayList<>();
+
             for (Counselor counselor : counselorList) {
                 List<Symptom> counselorSymptoms = counselor.getSymptoms();
 
                 boolean matchAllGroups = searchReq.getSymptoms().stream()
                         .allMatch(group -> matchesCategoryIssueAndSymptom(counselorSymptoms, group));
 
-                if(matchAllGroups) {
+                if (matchAllGroups) {
                     CounselorDto counselorDto = mapToCounselorDto(counselor);
                     result.add(counselorDto);
                 }
             }
+
+            return result;
         } catch (Exception e) {
             throw new ErrorException(ErrorCode.SEARCH_FAILED);
         }
-
-        return filterByConditions(result, counselingMethod, gender, region, order);
     }
 
     public List<CounselorDto> searchBySingleKeyword(String keyword, String counselingMethod, String gender, String region, String order) {
-        List<Counselor> counselorList = counselorRepository.findAll();
-        List<CounselorDto> result = new ArrayList<>();
-
         try {
+            Specification<Counselor> specification = buildCounselorSpecification(counselingMethod, gender, region)
+                    .and(CounselorSpecification.orderBy(order));
+
+            List<Counselor> counselorList = counselorRepository.findAll(specification);
+            List<CounselorDto> result = new ArrayList<>();
+
             for (Counselor counselor : counselorList) {
                 List<Symptom> counselorSymptoms = counselor.getSymptoms();
 
@@ -77,18 +90,15 @@ public class SearchService {
                     result.add(counselorDto);
                 }
             }
+
+            return result;
         } catch (Exception e) {
             throw new ErrorException(ErrorCode.SEARCH_FAILED);
         }
-
-        return filterByConditions(result, counselingMethod, gender, region, order);
     }
 
     public List<CounselorDto> searchByConditions(String counselingMethod, String gender, String region, String order) {
-        Specification<Counselor> specification = Specification
-                .where(CounselorSpecification.hasCounselingMethod(counselingMethod))
-                .and(CounselorSpecification.hasGender(gender))
-                .and(CounselorSpecification.hasRegion(region))
+        Specification<Counselor> specification = buildCounselorSpecification(counselingMethod, gender, region)
                 .and(CounselorSpecification.orderBy(order));
 
         List<Counselor> counselors = counselorRepository.findAll(specification);
@@ -97,6 +107,7 @@ public class SearchService {
                 .map(this::mapToCounselorDto)
                 .collect(Collectors.toList());
     }
+
 
     private boolean matchesCategoryIssueAndSymptom(List<Symptom> symptoms, SymptoDto symptoDto) {
         for (Symptom symptom : symptoms) {
@@ -118,23 +129,6 @@ public class SearchService {
         return false;
     }
 
-    public List<CounselorDto> filterByConditions(List<CounselorDto> counselors, String counselingMethod, String gender, String region, String order) {
-        Specification<Counselor> specification = Specification
-                .where(CounselorSpecification.hasCounselingMethod(counselingMethod))
-                .and(CounselorSpecification.hasGender(gender))
-                .and(CounselorSpecification.hasRegion(region))
-                .and(CounselorSpecification.orderBy(order));
-
-        List<Counselor> filteredCounselors = counselorRepository.findAll(specification);
-
-        List<CounselorDto> filteredDtoList = filteredCounselors.stream()
-                .map(this::mapToCounselorDto)
-                .collect(Collectors.toList());
-
-        return counselors.stream()
-                .filter(counselorDto -> filteredDtoList.contains(counselorDto))
-                .collect(Collectors.toList());
-    }
 
     private CounselorDto mapToCounselorDto(Counselor counselor) {
         Set<String> symptoms = symptomRepository.findByCounselorId(counselor.getId()).stream()

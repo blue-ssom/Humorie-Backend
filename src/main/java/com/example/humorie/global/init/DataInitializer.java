@@ -11,7 +11,7 @@ import com.example.humorie.consultant.counselor.entity.*;
 import com.example.humorie.consultant.counselor.repository.*;
 import com.example.humorie.consultant.review.entity.Review;
 import com.example.humorie.consultant.review.repository.ReviewRepository;
-import com.example.humorie.mypage.entity.Point;
+import com.example.humorie.account.entity.Point;
 import com.example.humorie.mypage.repository.PointRepository;
 import com.example.humorie.notice.entity.Notice;
 import com.example.humorie.notice.repository.NoticeRepository;
@@ -28,9 +28,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @Component
