@@ -10,7 +10,6 @@ import com.example.humorie.global.exception.ErrorCode;
 import com.example.humorie.global.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +33,8 @@ public class AccountController {
 
     @PostMapping("/login")
     @Operation(summary = "일반 로그인 로그인")
-    public ErrorResponse<LoginRes> login(@RequestBody @Valid LoginReq request, HttpServletResponse response) {
-        return new ErrorResponse<>(accountService.login(request, response));
+    public ErrorResponse<LoginRes> login(@RequestBody @Valid LoginReq request) {
+        return new ErrorResponse<>(accountService.login(request));
     }
 
     @DeleteMapping("/logout")
@@ -48,8 +47,7 @@ public class AccountController {
 
     @PostMapping("/issue/token")
     @Operation(summary = "Access Token 갱신")
-    public ErrorResponse<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response,
-                                                @RequestHeader(name = JwtTokenUtil.REFRESH_TOKEN, required = false) String refreshToken) {
+    public ErrorResponse<?> refreshAccessToken(@RequestHeader(name = JwtTokenUtil.REFRESH_TOKEN, required = false) String refreshToken) {
         TokenDto newTokenDto = accountService.refreshAccessToken(refreshToken);
 
         return new ErrorResponse<>(newTokenDto);
