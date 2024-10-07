@@ -35,30 +35,6 @@ public class CounselorSpecification {
         };
     }
 
-    /*public static Specification<Counselor> orderBy(String order) {
-        return (root, query, criteriaBuilder) -> {
-            if (order == null) {
-                query.orderBy(criteriaBuilder.asc(root.get("id")));
-                return criteriaBuilder.conjunction();
-            }
-            switch (order) {
-                case "rating_desc":
-                    query.orderBy(criteriaBuilder.desc(root.get("rating")));
-                    break;
-                case "reviewCount_desc":
-                    query.orderBy(criteriaBuilder.desc(root.get("reviewCount")));
-                    break;
-                case "counselingCount_desc":
-                    query.orderBy(criteriaBuilder.desc(root.get("counselingCount")));
-                    break;
-                default:
-                    query.orderBy(criteriaBuilder.asc(root.get("id")));
-                    break;
-            }
-            return criteriaBuilder.conjunction();
-        };
-    }*/
-
     public static Specification<Counselor> orderBy(String order) {
         return (root, query, criteriaBuilder) -> {
             if (order == null) {
@@ -66,11 +42,11 @@ public class CounselorSpecification {
                 return criteriaBuilder.conjunction();
             }
             switch (order) {
-                case "reviewCount_desc":
-                    query.orderBy(criteriaBuilder.desc(root.get("reviewCount")));
+                case "reviewRating_desc":
+                    query.orderBy(criteriaBuilder.desc(root.get("rating")));
                     break;
-                case "reviewCount_asc":
-                    query.orderBy(criteriaBuilder.asc(root.get("counselingCount")));
+                case "reviewRating_asc":
+                    query.orderBy(criteriaBuilder.asc(root.get("rating")));
                     break;
                 default:
                     query.orderBy(criteriaBuilder.asc(root.get("id")));
@@ -79,5 +55,6 @@ public class CounselorSpecification {
             return criteriaBuilder.conjunction();
         };
     }
+
 }
 
