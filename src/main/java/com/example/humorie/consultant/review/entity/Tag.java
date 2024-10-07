@@ -2,23 +2,21 @@ package com.example.humorie.consultant.review.entity;
 
 import com.example.humorie.account.entity.AccountDetail;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "tag")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String tagName;
 

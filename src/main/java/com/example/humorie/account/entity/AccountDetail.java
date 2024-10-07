@@ -1,12 +1,8 @@
 package com.example.humorie.account.entity;
 
-import com.example.humorie.mypage.entity.Point;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,13 +10,14 @@ import java.util.List;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "account_detail")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String email;
 
