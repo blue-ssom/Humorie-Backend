@@ -28,8 +28,10 @@ public class ConsultDetail {
 
     private String symptomCategory;
 
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String symptomDetail;
 
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     private Boolean isOnline;
