@@ -56,6 +56,10 @@ public enum ErrorCode {
     // admin
     INVALID_DATE_TIME_FORMAT(false, 2023, "날짜 입력 형식이 잘못되었습니다. 날짜는 yyyy-MM-dd HH:mm 형식으로 입력되어야 합니다."),
     ACCESS_DENIED(false, 2024, "허용되지 않은 권한입니다."),
+    EMPTY_TITLE(false, 2025, "제목을 입력해주세요."),
+    EMPTY_CONTENT(false, 2026, "내용을 입력해주세요."),
+    TITLE_TOO_LONG(false, 2027, "제목은 최대 50자까지 입력 가능합니다."),
+    CONTENT_TOO_LONG(false,2028,"내용은 최대 1000자까지 입력 가능합니다."),
 
     /**
      * 3000 : Response 오류
